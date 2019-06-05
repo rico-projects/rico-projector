@@ -1,5 +1,3 @@
-archivesBaseName = 'rico-projector-server'
-
 dependencies {
     implementation project(':rico-projector-common')
 

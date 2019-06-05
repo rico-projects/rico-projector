@@ -1,4 +1,3 @@
-archivesBaseName = 'rico-projector-common'
 
 dependencies {
     implementation 'dev.rico:rico-remoting-common:1.0.0'
