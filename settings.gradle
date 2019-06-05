@@ -8,10 +8,10 @@ include 'rico-projector-common-javafx'
 include 'rico-projector-client-javafx'
 include 'rico-projector-server-javafx'
 
-project(':rico-projector-common').projectDir=file('base/common')
-project(':rico-projector-client').projectDir=file('base/client')
-project(':rico-projector-server').projectDir=file('base/server')
+project(':rico-projector-common').projectDir = file('base/common')
+project(':rico-projector-client').projectDir = file('base/client')
+project(':rico-projector-server').projectDir = file('base/server')
 
-project(':rico-projector-common-javafx').projectDir=file('javafx/common')
-project(':rico-projector-client-javafx').projectDir=file('javafx/client')
-project(':rico-projector-server-javafx').projectDir=file('javafx/server')
+project(':rico-projector-common-javafx').projectDir = file('javafx/common')
+project(':rico-projector-client-javafx').projectDir = file('javafx/client')
+project(':rico-projector-server-javafx').projectDir = file('javafx/server')
