@@ -18,7 +18,7 @@ public class ImageViewer extends ScrollPane {
     private ToolBar toolBar = new ToolBar();
     private DoubleProperty zoomProperty = new SimpleDoubleProperty(1.0);
 
-    ImageViewer() {
+    public ImageViewer() {
         imageView.fitWidthProperty().bind(widthProperty().multiply(zoomProperty).subtract(30));
         imageView.setPreserveRatio(true);
         imageView.setSmooth(true);
@@ -127,7 +127,7 @@ public class ImageViewer extends ScrollPane {
         zoomProperty.set(zoomProperty.get() / 1.1);
     }
 
-    ToolBar getToolBar() {
+    public ToolBar getToolBar() {
         return toolBar;
     }
 }

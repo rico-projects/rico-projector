@@ -1,8 +1,9 @@
 package dev.rico.internal.server.projector;
 
 import dev.rico.internal.projector.ui.*;
-import dev.rico.internal.projector.ui.autocompletion.AutoCompleteItemModel;
-import dev.rico.internal.projector.ui.autocompletion.AutoCompleteModel;
+import to.remove.ui.PaxCodeFieldModel;
+import to.remove.ui.autocompletion.AutoCompleteItemModel;
+import to.remove.ui.autocompletion.AutoCompleteModel;
 import dev.rico.internal.projector.ui.box.HBoxItemModel;
 import dev.rico.internal.projector.ui.box.HBoxModel;
 import dev.rico.internal.projector.ui.choicebox.ChoiceBoxItemModel;
@@ -39,8 +40,6 @@ public class ServerUiHelper {
                 .map(TextFieldModel::getText)
                 .orElse(null);
     }
-
-
 
     public static Optional<AutoCompleteItemModel> getLastValidOptional(AutoCompleteModel autoCompleteModel1, AutoCompleteModel autoCompleteModel2) {
         return Optional.ofNullable(

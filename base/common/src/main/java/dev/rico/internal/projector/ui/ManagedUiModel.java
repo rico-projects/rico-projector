@@ -1,7 +1,7 @@
 package dev.rico.internal.projector.ui;
 
 
-import dev.rico.internal.projector.mixed.RemotingEvent;
+import to.remove.RemotingEvent;
 import dev.rico.internal.projector.ui.dialog.DialogModel;
 import dev.rico.remoting.ObservableList;
 import dev.rico.remoting.Property;

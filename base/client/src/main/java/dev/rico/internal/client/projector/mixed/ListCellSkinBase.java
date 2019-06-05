@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.StackPane;
+import to.remove.EditableListCell;
 
 import java.util.ArrayList;
 import java.util.List;

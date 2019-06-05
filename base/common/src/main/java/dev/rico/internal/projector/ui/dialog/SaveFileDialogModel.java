@@ -1,7 +1,7 @@
 package dev.rico.internal.projector.ui.dialog;
 
 
-import dev.rico.internal.projector.mixed.DocumentData;
+import to.remove.DocumentData;
 import dev.rico.remoting.Property;
 import dev.rico.remoting.RemotingBean;
 

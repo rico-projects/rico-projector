@@ -2,44 +2,32 @@ package dev.rico.internal.client.projector.uimanager;
 
 import com.google.common.base.Strings;
 import dev.rico.client.Client;
-import dev.rico.internal.client.projector.mixed.*;
 import dev.rico.client.remoting.ControllerProxy;
 import dev.rico.client.remoting.FXBinder;
 import dev.rico.client.remoting.FXWrapper;
 import dev.rico.client.remoting.Param;
+import dev.rico.core.http.HttpClient;
+import dev.rico.core.http.RequestMethod;
+import dev.rico.internal.client.projector.mixed.Configuration;
+import dev.rico.internal.client.projector.mixed.FormatterFactory;
+import dev.rico.internal.client.projector.mixed.ListCellSkin;
+import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.mixed.CommonUiHelper;
-import dev.rico.internal.projector.mixed.DocumentData;
 import dev.rico.internal.projector.ui.*;
-import dev.rico.internal.projector.ui.autocompletion.AutoCompleteModel;
 import dev.rico.internal.projector.ui.box.HBoxModel;
 import dev.rico.internal.projector.ui.box.VBoxModel;
-import dev.rico.internal.projector.ui.breadcrumbbar.BreadCrumbBarModel;
-import dev.rico.internal.projector.ui.cardpane.CardPaneItemModel;
-import dev.rico.internal.projector.ui.cardpane.CardPaneModel;
-import dev.rico.internal.projector.ui.checklistview.CheckListViewModel;
 import dev.rico.internal.projector.ui.choicebox.ChoiceBoxItemModel;
 import dev.rico.internal.projector.ui.choicebox.ChoiceBoxModel;
 import dev.rico.internal.projector.ui.container.ItemListContainerModel;
 import dev.rico.internal.projector.ui.dialog.*;
 import dev.rico.internal.projector.ui.flowpane.FlowPaneModel;
 import dev.rico.internal.projector.ui.gridpane.GridPaneModel;
-import dev.rico.internal.projector.ui.listselectionview.ListSelectionViewModel;
 import dev.rico.internal.projector.ui.listview.ListViewItemModel;
 import dev.rico.internal.projector.ui.listview.ListViewModel;
-import dev.rico.internal.projector.ui.menubutton.MenuButtonItemModel;
-import dev.rico.internal.projector.ui.menubutton.MenuButtonModel;
-import dev.rico.internal.projector.ui.menuitem.MenuItemModel;
-import dev.rico.internal.projector.ui.migpane.MigPaneModel;
-import dev.rico.internal.projector.ui.nestedmenubutton.NestedMenuButtonModel;
-import dev.rico.internal.projector.ui.propertysheet.PropertySheetModel;
 import dev.rico.internal.projector.ui.splitpane.SplitPaneItemModel;
 import dev.rico.internal.projector.ui.splitpane.SplitPaneModel;
 import dev.rico.internal.projector.ui.table.*;
 import dev.rico.internal.projector.ui.tabpane.TabPaneModel;
-import dev.rico.core.functional.Binding;
-import dev.rico.core.http.HttpClient;
-import dev.rico.core.http.RequestMethod;
-import dev.rico.internal.core.Assert;
 import dev.rico.remoting.ObservableList;
 import dev.rico.remoting.Property;
 import impl.org.controlsfx.ImplUtils;
@@ -55,7 +43,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Side;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -76,6 +63,14 @@ import org.controlsfx.control.SegmentedButton;
 import org.controlsfx.control.decoration.Decorator;
 import org.controlsfx.control.decoration.StyleClassDecoration;
 import org.tbee.javafx.scene.layout.MigPane;
+import to.remove.*;
+import to.remove.ui.*;
+import to.remove.ui.menubutton.MenuButtonItemModel;
+import to.remove.ui.migpane.MigPaneModel;
+import to.remove.ui.propertysheet.PropertySheetModel;
+import to.remove.ui.table.TableInstantColumnModel;
+import to.remove.uimanager.DateTimeField;
+import to.remove.uimanager.PropertySheet;
 
 import java.io.File;
 import java.io.IOException;
@@ -89,16 +84,15 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static dev.rico.internal.client.projector.uimanager.TextField.configureTextInputControl;
 import static dev.rico.client.remoting.FXBinder.bind;
 import static dev.rico.client.remoting.FXWrapper.wrapList;
-import static dev.rico.client.remoting.FXWrapper.wrapStringProperty;
+import static dev.rico.internal.client.projector.uimanager.TextField.configureTextInputControl;
 import static java.util.Objects.requireNonNull;
 
 
 public class ClientUiManager {
     protected final ControllerProxy<? extends ManagedUiModel> controllerProxy;
-    private final PostProcessor postProcessor;
+    protected final PostProcessor postProcessor;
     private final WeakHashMap<IdentifiableModel, Node> modelToNodeMap = new WeakHashMap<>();
     private final WeakHashMap<String, Node> idToNodeMap = new WeakHashMap<>(); // TODO: String ist hier "weak" -> Problem!
     private final SimpleObjectProperty<Node> root = new SimpleObjectProperty<>();
@@ -285,7 +279,7 @@ public class ClientUiManager {
         root.set(createNode(itemModel));
     }
 
-    Node createNode(ItemModel itemModel) {
+    public Node createNode(ItemModel itemModel) {
         try {
             if (itemModel != null && itemModel.getId() != null && idToNodeMap.containsKey(itemModel.getId())) {
                 return idToNodeMap.get(itemModel.getId());
@@ -297,26 +291,18 @@ public class ClientUiManager {
                 newNode = createPasswordField((PasswordFieldModel) itemModel);
             } else if (itemModel instanceof MigPaneModel) {
                 newNode = createMigPane((MigPaneModel) itemModel);
-            } else if (itemModel instanceof CheckListViewModel) {
-                newNode = createCheckListView((CheckListViewModel) itemModel);
             } else if (itemModel instanceof SegmentedButtonModel) {
                 newNode = createSegmentedButton((SegmentedButtonModel) itemModel);
             } else if (itemModel instanceof SplitMenuButtonModel) {
                 newNode = createSplitMenuButton((SplitMenuButtonModel) itemModel);
-            } else if (itemModel instanceof ListSelectionViewModel) {
-                newNode = createListSelectionView((ListSelectionViewModel) itemModel);
             } else if (itemModel instanceof NotificationPaneModel) {
                 newNode = createNotificationPane((NotificationPaneModel) itemModel);
             } else if (itemModel instanceof CustomComponentModel) {
                 newNode = createCustomComponent((CustomComponentModel) itemModel);
-            } else if (itemModel instanceof NestedMenuButtonModel) {
-                newNode = createNestedMenuButton((NestedMenuButtonModel) itemModel);
-            } else if (itemModel instanceof ListViewModel) {
+            }  else if (itemModel instanceof ListViewModel) {
                 newNode = createListView((ListViewModel) itemModel);
             } else if (itemModel instanceof HiddenSidesPaneModel) {
                 newNode = createHiddenSidesPane((HiddenSidesPaneModel) itemModel);
-            } else if (itemModel instanceof CardPaneModel) {
-                newNode = createCardPane((CardPaneModel) itemModel);
             } else if (itemModel instanceof UploadButtonModel) {
                 newNode = createUploadButton((UploadButtonModel) itemModel);
             } else if (itemModel instanceof FlowPaneModel) {
@@ -325,20 +311,10 @@ public class ClientUiManager {
                 newNode = createSeparator((SeparatorModel) itemModel);
             } else if (itemModel instanceof TableModel) {
                 newNode = createTable((TableModel) itemModel);
-            } else if (itemModel instanceof BreadCrumbBarModel) {
-                newNode = createBreadCrumbBar((BreadCrumbBarModel) itemModel);
-            } else if (itemModel instanceof FuelFieldModel) {
-                newNode = createFuelFieldModel((FuelFieldModel) itemModel);
-            } else if (itemModel instanceof PaxCodeFieldModel) {
-                newNode = createPaxCodeFieldModel((PaxCodeFieldModel) itemModel);
-            } else if (itemModel instanceof MenuButtonModel) {
-                newNode = createMenuButton((MenuButtonModel) itemModel);
             } else if (itemModel instanceof ScrollPaneModel) {
                 newNode = createScrollPane((ScrollPaneModel) itemModel);
             } else if (itemModel instanceof ChoiceBoxModel) {
                 newNode = createChoiceBox((ChoiceBoxModel) itemModel);
-            } else if (itemModel instanceof AutoCompleteModel) {
-                newNode = createAutoCompleteField((AutoCompleteModel) itemModel);
             } else if (itemModel instanceof DateTimeFieldModel) {
                 newNode = createDateField((DateTimeFieldModel) itemModel);
             } else if (itemModel instanceof MessagePlaceholder) {
@@ -347,14 +323,10 @@ public class ClientUiManager {
                 newNode = createHyperlink((HyperlinkModel) itemModel);
             } else if (itemModel instanceof ImageViewModel) {
                 newNode = createImageView((ImageViewModel) itemModel);
-            } else if (itemModel instanceof ProgressIndicatorModel) {
-                newNode = createProgressIndicator((ProgressIndicatorModel) itemModel);
             } else if (itemModel instanceof TextAreaModel) {
                 newNode = createTextArea((TextAreaModel) itemModel);
             } else if (itemModel instanceof PropertySheetModel) {
                 newNode = createPropertySheet((PropertySheetModel) itemModel);
-            } else if (itemModel instanceof DocumentViewModel) {
-                newNode = createDocumentView((DocumentViewModel) itemModel);
             } else if (itemModel instanceof ToolBarModel) {
                 newNode = createToolBar((ToolBarModel) itemModel);
             } else if (itemModel instanceof SplitPaneModel) {
@@ -395,14 +367,6 @@ public class ClientUiManager {
                 WithPadding withPadding = (WithPadding) itemModel;
                 Region region = (Region) newNode;
                 bind(region.paddingProperty()).to(withPadding.paddingProperty(), value -> value == null ? new Insets(0) : new Insets(withPadding.getPadding()));
-            }
-            if (newNode instanceof BreadCrumbBar) {
-                ScrollPane scrollPane = new ScrollPane(new Group(newNode));
-                scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-                scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-                scrollPane.setFitToHeight(true);
-                scrollPane.setPannable(true);
-                return scrollPane;
             }
             return newNode;
         } catch (Throwable t) {
@@ -466,13 +430,6 @@ public class ClientUiManager {
         return nodeOptional.flatMap(node -> Optional.of(node).map(Node::getScene).map(Scene::getWindow));
     }
 
-    private Node createListSelectionView(ListSelectionViewModel itemModel) {
-        return new ListSelectionView(itemModel);
-    }
-
-    private Node createCheckListView(CheckListViewModel itemModel) {
-        return new CheckListView(itemModel);
-    }
 
     private Node createCustomComponent(CustomComponentModel itemModel) {
         return customComponentSupplier.apply(itemModel.getType());
@@ -511,44 +468,7 @@ public class ClientUiManager {
         System.exit(0);
     }
 
-    private Node createNestedMenuButton(NestedMenuButtonModel itemModel) {
-        ButtonBase button = configureButton(itemModel, new MenuButton());
-        bind(button.textProperty()).to(itemModel.captionProperty());
-        bind(((MenuButton) button).getItems()).to(itemModel.getItems(), this::createNestedMenuItem);
-        return button;
-    }
-
-    private MenuItem createNestedMenuItem(MenuItemModel model) {
-        if (model.getItems().isEmpty()) {
-            MenuItem menuItem = new MenuItem();
-            bind(menuItem.graphicProperty()).to(model.graphicProperty(), this::createNode);
-            bind(menuItem.textProperty()).to(model.captionProperty());
-            menuItem.setOnAction(event -> {
-                if (event.getTarget() == menuItem) {
-                    event.consume();
-                    createOnActionHandler(model).handle(event);
-                }
-            });
-            postProcessor.postProcess(model.getId(), model, menuItem);
-            return menuItem;
-        } else {
-            Menu menu = new Menu();
-            menu.setOnAction(event -> {
-                if (event.getTarget() == menu) {
-                    event.consume();
-                    menu.getParentPopup().hide();
-                    createOnActionHandler(model).handle(event);
-                }
-            });
-            bind(menu.graphicProperty()).to(model.graphicProperty(), this::createNode);
-            bind(menu.textProperty()).to(model.captionProperty());
-            bind(menu.getItems()).to(model.getItems(), this::createNestedMenuItem);
-            postProcessor.postProcess(model.getId(), model, menu);
-            return menu;
-        }
-    }
-
-    private EventHandler<ActionEvent> createOnActionHandler(IdentifiableModel identifiableModel) {
+    protected EventHandler<ActionEvent> createOnActionHandler(IdentifiableModel identifiableModel) {
         return createOnActionHandler("buttonClick", identifiableModel);
     }
 
@@ -618,26 +538,6 @@ public class ClientUiManager {
         return pane;
     }
 
-    private Node createCardPane(CardPaneModel model) {
-        CardPane cardPane = new CardPane(model);
-        bind(cardPane.getChildren()).to(model.getItems(),
-                cardPaneItemModel -> createNode(cardPaneItemModel.getItem()));
-        model.visibleItemProperty().onChanged(evt -> {
-            CardPaneItemModel visibleOne = evt.getNewValue();
-            model.getItems().forEach(cardPaneItemModel -> {
-                if (cardPaneItemModel.getItem() != null) {
-                    cardPaneItemModel.getItem().setVisible(false);
-                }
-            });
-            if (visibleOne != null && visibleOne.getItem() != null) {
-                visibleOne.getItem().setVisible(true);
-            }
-        });
-        if (model.getVisibleItem() == null && !model.getItems().isEmpty()) {
-            model.setVisibleItem(model.getItems().get(0));
-        }
-        return cardPane;
-    }
 
     private Node createUploadButton(UploadButtonModel itemModel) {
         ButtonBase button = configureButton(itemModel, new Button());
@@ -797,39 +697,8 @@ public class ClientUiManager {
         return tableColumn;
     }
 
-    private Node createBreadCrumbBar(BreadCrumbBarModel model) {
-        return new dev.rico.internal.client.projector.uimanager.BreadCrumbBar(model, controllerProxy);
-    }
 
-    private Node createFuelFieldModel(FuelFieldModel model) {
-        FuelField field = new FuelField(model);
-        Binding textPropertyBinding = configureTextInputControl(controllerProxy, model, field);
-        textPropertyBinding.unbind();
-        field.textProperty().bindBidirectional(wrapStringProperty(model.textProperty()));
-        return field;
-    }
-
-    private Node createPaxCodeFieldModel(PaxCodeFieldModel model) {
-        PaxCodeField field = new PaxCodeField();
-        Binding textPropertyBinding = configureTextInputControl(controllerProxy, model, field);
-        textPropertyBinding.unbind();
-        field.textProperty().bindBidirectional(wrapStringProperty(model.textProperty()));
-        return field;
-    }
-
-    private Node createMenuButton(MenuButtonModel itemModel) {
-        MenuButton button = new MenuButton();
-        if (itemModel.getCaption() == null) {
-            button.getStyleClass().add("activeButton");
-            button.setGraphic(new ImageView(Image.COG));
-        } else {
-            bind(button.textProperty()).to(itemModel.captionProperty());
-        }
-        bind(button.getItems()).to(itemModel.getItems(), this::createMenuItem);
-        return button;
-    }
-
-    private MenuItem createMenuItem(MenuButtonItemModel model) {
+    protected MenuItem createMenuItem(MenuButtonItemModel model) {
         MenuItem menuItem = new MenuItem();
         bind(menuItem.textProperty()).to(model.captionProperty());
         if (model.getAction() != null) {
@@ -867,11 +736,6 @@ public class ClientUiManager {
     }
 
 
-
-    private Node createAutoCompleteField(AutoCompleteModel itemModel) {
-        return new ServerBackedAutoCompletionField(controllerProxy, itemModel);
-    }
-
     private Node createDateField(DateTimeFieldModel itemModel) {
         return new DateTimeField(itemModel);
     }
@@ -902,30 +766,7 @@ public class ClientUiManager {
         return imageView;
     }
 
-    private Node createProgressIndicator(ProgressIndicatorModel itemModel) {
-        ProgressIndicator progressIndicator = new ProgressIndicator();
-        bind(itemModel.waitingProperty()).to(progressIndicator.activeProperty());
-        return progressIndicator;
-    }
-
-    private Node createDocumentView(DocumentViewModel itemModel) {
-        DocumentViewer documentViewer = new DocumentViewer(this, itemModel);
-        Consumer<DocumentData> consumer = documentData -> {
-            documentViewer.closeDocument();
-            if (documentData != null) {
-                documentViewer.openDocument(documentData, "");
-            }
-        };
-        consumer.accept(itemModel.getDocumentData());
-        CommonUiHelper.subscribeWithOptional(itemModel.documentByIdProperty(), idOptional -> {
-            documentViewer.closeDocument();
-            idOptional.ifPresent(id -> loadDocumentFromServerAndShow(id, consumer));
-        });
-        itemModel.documentDataProperty().onChanged(evt -> consumer.accept(evt.getNewValue()));
-        return documentViewer;
-    }
-
-    private void loadDocumentFromServerAndShow(String documentId, Consumer<DocumentData> onFinish) {
+    protected void loadDocumentFromServerAndShow(String documentId, Consumer<DocumentData> onFinish) {
         AsyncSequence.doAsync(() -> {
             try {
                 if (documentId == null) {
@@ -1161,7 +1002,7 @@ public class ClientUiManager {
         return button;
     }
 
-    private ButtonBase configureButton(ButtonModel item, ButtonBase button) {
+    protected ButtonBase configureButton(ButtonModel item, ButtonBase button) {
         bind(button.textProperty()).to(item.captionProperty());
         CommonUiHelper.subscribeWithOptional(item.tooltipProperty(), tooltipOptional -> {
             Tooltip tooltip = null;

@@ -6,7 +6,7 @@ import dev.rico.client.remoting.ControllerProxy;
 import static dev.rico.internal.client.projector.uimanager.TextField.configureTextInputControl;
 import static dev.rico.client.remoting.FXBinder.bind;
 
-class TextArea extends javafx.scene.control.TextArea {
+public class TextArea extends javafx.scene.control.TextArea {
     public TextArea(ControllerProxy<?> controllerProxy, TextAreaModel model) {
         bind(prefColumnCountProperty()).to(model.prefColumnCountProperty());
         bind(prefRowCountProperty()).to(model.prefRowCountProperty());

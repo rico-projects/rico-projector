@@ -11,13 +11,13 @@ import java.util.Optional;
 
 import static dev.rico.client.remoting.FXBinder.bind;
 
-class TextField extends javafx.scene.control.TextField {
+public class TextField extends javafx.scene.control.TextField {
     public TextField(ControllerProxy<?> controllerProxy, TextFieldModel model) {
         bind(prefColumnCountProperty()).to(model.prefColumnCountProperty());
         configureTextInputControl(controllerProxy, model, this);
     }
 
-    static Binding configureTextInputControl(ControllerProxy<?> controllerProxy, TextFieldModel model, TextInputControl control) {
+    public static Binding configureTextInputControl(ControllerProxy<?> controllerProxy, TextFieldModel model, TextInputControl control) {
         bind(control.promptTextProperty()).bidirectionalTo(model.promptTextProperty());
         bind(control.editableProperty()).to(model.editableProperty(), value -> value == null ? true : value);
         if (model.getAction() != null) {

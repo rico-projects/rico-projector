@@ -10,7 +10,7 @@ import javafx.util.StringConverter;
 import static dev.rico.client.remoting.FXWrapper.wrapList;
 
 public class ManagedChoiceBox extends ChoiceBox<ChoiceBoxItemModel> {
-    ManagedChoiceBox(ChoiceBoxModel model, ControllerProxy<? extends ManagedUiModel> controllerProxy) {
+    public ManagedChoiceBox(ChoiceBoxModel model, ControllerProxy<? extends ManagedUiModel> controllerProxy) {
         setConverter(new StringConverter<ChoiceBoxItemModel>() {
             @Override
             public String toString(ChoiceBoxItemModel object) {

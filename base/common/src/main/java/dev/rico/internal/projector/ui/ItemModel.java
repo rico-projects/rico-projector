@@ -3,6 +3,7 @@ package dev.rico.internal.projector.ui;
 import dev.rico.remoting.ObservableList;
 import dev.rico.remoting.Property;
 import dev.rico.remoting.RemotingBean;
+import to.remove.ui.MessagePlaceholder;
 
 @RemotingBean
 public class ItemModel extends IdentifiableModel {
