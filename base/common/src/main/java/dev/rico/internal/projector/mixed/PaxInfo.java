@@ -1,10 +1,13 @@
 package dev.rico.internal.projector.mixed;
 
 
+import dev.rico.internal.projector.ForRemoval;
+
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@ForRemoval
 public class PaxInfo {
    private final int standardCount;
    private final int malesCount;

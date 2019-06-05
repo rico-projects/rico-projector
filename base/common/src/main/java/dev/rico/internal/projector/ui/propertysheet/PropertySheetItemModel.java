@@ -1,6 +1,7 @@
 package dev.rico.internal.projector.ui.propertysheet;
 
 
+import dev.rico.internal.projector.ForRemoval;
 import dev.rico.internal.projector.ui.IdentifiableModel;
 import dev.rico.remoting.ObservableList;
 import dev.rico.remoting.Property;
@@ -8,6 +9,7 @@ import dev.rico.remoting.RemotingBean;
 
 
 @RemotingBean
+@ForRemoval
 public abstract class PropertySheetItemModel extends IdentifiableModel {
     private Property<String> caption;
     private Property<String> description;

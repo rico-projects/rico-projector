@@ -1,9 +1,10 @@
 package dev.rico.internal.projector.ui.propertysheet;
 
 
+import dev.rico.internal.projector.ForRemoval;
 import dev.rico.internal.projector.ui.TextAreaModel;
 import dev.rico.remoting.Property;
-
+@ForRemoval
 public class PropertySheetTextAreaItemModel extends PropertySheetTextItemModel {
     private Property<TextAreaModel> field;
 

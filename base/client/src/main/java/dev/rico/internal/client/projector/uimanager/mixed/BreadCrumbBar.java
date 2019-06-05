@@ -3,6 +3,7 @@ package dev.rico.internal.client.projector.uimanager.mixed;
 import com.sun.javafx.event.EventHandlerManager;
 
 import dev.rico.internal.client.projector.uimanager.mixed.BreadCrumbBarSkin.BreadCrumbButton;
+import dev.rico.internal.projector.ForRemoval;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ObjectPropertyBase;
@@ -29,6 +30,7 @@ import javafx.util.Callback;
  * <center> <img src="breadCrumbBar.png" alt="Screenshot of BreadCrumbBar">
  * </center>
  */
+@ForRemoval
 public class BreadCrumbBar<T> extends Control {
 
 	private final EventHandlerManager eventHandlerManager = new EventHandlerManager(this);

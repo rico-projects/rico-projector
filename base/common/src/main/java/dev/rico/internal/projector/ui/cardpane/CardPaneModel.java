@@ -1,12 +1,14 @@
 package dev.rico.internal.projector.ui.cardpane;
 
 
+import dev.rico.internal.projector.ForRemoval;
 import dev.rico.internal.projector.ui.container.ItemListContainerModel;
 import dev.rico.remoting.ObservableList;
 import dev.rico.remoting.Property;
 import dev.rico.remoting.RemotingBean;
 import javafx.geometry.Pos;
 
+@ForRemoval
 @RemotingBean
 public class CardPaneModel extends ItemListContainerModel<CardPaneItemModel>  {
     private ObservableList<CardPaneItemModel> items;

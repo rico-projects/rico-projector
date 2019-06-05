@@ -1,5 +1,6 @@
 package dev.rico.internal.client.projector.mixed.component;
 
+import dev.rico.internal.projector.ForRemoval;
 import dev.rico.internal.projector.mixed.DocumentData;
 import com.github.rodionmoiseev.c10n.C10N;
 import javafx.scene.Node;
@@ -10,6 +11,7 @@ import org.jpedal.examples.viewer.Commands;
 import org.jpedal.examples.viewer.OpenViewerFX;
 import org.jpedal.examples.viewer.gui.javafx.JavaFXThumbnailPanel;
 
+@ForRemoval
 public class PdfViewer extends BorderPane {
     private final ScrollPane scrollPane;
     private OpenViewerFX viewer = new OpenViewerFX(this, null);

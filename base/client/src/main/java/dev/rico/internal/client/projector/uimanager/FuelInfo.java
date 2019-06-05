@@ -1,11 +1,13 @@
 package dev.rico.internal.client.projector.uimanager;
 
+import dev.rico.internal.projector.ForRemoval;
 import dev.rico.internal.projector.mixed.WeightUnit;
 
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@ForRemoval
 public class FuelInfo {
     private final SpecialValues specialValue;
     private final Integer value;

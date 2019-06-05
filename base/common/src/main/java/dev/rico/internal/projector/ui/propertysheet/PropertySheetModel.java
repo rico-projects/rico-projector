@@ -1,10 +1,11 @@
 package dev.rico.internal.projector.ui.propertysheet;
 
+import dev.rico.internal.projector.ForRemoval;
 import dev.rico.internal.projector.ui.ItemModel;
 import dev.rico.remoting.ObservableList;
 import dev.rico.remoting.Property;
 
-
+@ForRemoval
 public class PropertySheetModel extends ItemModel {
     private ObservableList<PropertySheetItemGroupModel> groups;
     private Property<Boolean> hideNullItems;

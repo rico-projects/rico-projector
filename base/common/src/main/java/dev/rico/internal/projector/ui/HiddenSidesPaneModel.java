@@ -1,10 +1,12 @@
 package dev.rico.internal.projector.ui;
 
 
+import dev.rico.internal.projector.ForRemoval;
 import dev.rico.remoting.Property;
 import dev.rico.remoting.RemotingBean;
 import javafx.geometry.Side;
 
+@ForRemoval
 @RemotingBean
 public class HiddenSidesPaneModel extends ItemModel implements WithPadding {
     private Property<ItemModel> top;

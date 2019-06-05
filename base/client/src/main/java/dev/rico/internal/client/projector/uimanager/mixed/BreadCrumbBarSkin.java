@@ -8,6 +8,7 @@ import com.sun.javafx.scene.traversal.Algorithm;
 import com.sun.javafx.scene.traversal.Direction;
 import com.sun.javafx.scene.traversal.ParentTraversalEngine;
 import com.sun.javafx.scene.traversal.TraversalContext;
+import dev.rico.internal.projector.ForRemoval;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -30,6 +31,7 @@ import java.util.List;
  *
  * @param <T>
  */
+@ForRemoval
 public class BreadCrumbBarSkin<T> extends BehaviorSkinBase<BreadCrumbBar<T>, BehaviorBase<BreadCrumbBar<T>>> {
 
   private static final String STYLE_CLASS_FIRST = "first"; //$NON-NLS-1$

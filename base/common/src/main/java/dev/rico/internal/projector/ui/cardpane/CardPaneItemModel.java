@@ -1,10 +1,12 @@
 package dev.rico.internal.projector.ui.cardpane;
 
+import dev.rico.internal.projector.ForRemoval;
 import dev.rico.internal.projector.ui.IdentifiableModel;
 import dev.rico.internal.projector.ui.ItemModel;
 import dev.rico.remoting.Property;
 import dev.rico.remoting.RemotingBean;
 
+@ForRemoval
 @RemotingBean
 public class CardPaneItemModel extends IdentifiableModel {
     private Property<ItemModel> item;

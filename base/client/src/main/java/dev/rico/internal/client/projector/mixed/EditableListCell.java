@@ -1,6 +1,7 @@
 package dev.rico.internal.client.projector.mixed;
 
 import com.github.rodionmoiseev.c10n.C10N;
+import dev.rico.internal.projector.ForRemoval;
 import javafx.event.Event;
 import javafx.event.EventType;
 import javafx.geometry.HPos;
@@ -18,6 +19,7 @@ import javafx.scene.layout.VBox;
 
 import java.util.Objects;
 
+@ForRemoval
 public class EditableListCell<T> extends ListCell<T> {
     private static EditableListCellC10n C10 = C10N.get(EditableListCellC10n.class);
     public static EventType<ListCellEvent> EDITABLE_LIST_CELL_ALL = new EventType<>("EDITABLE_LIST_CELL_ALL");

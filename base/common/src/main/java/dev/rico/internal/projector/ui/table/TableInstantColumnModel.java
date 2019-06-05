@@ -1,9 +1,11 @@
 package dev.rico.internal.projector.ui.table;
 
+import dev.rico.internal.projector.ForRemoval;
 import dev.rico.remoting.Property;
 import dev.rico.remoting.RemotingBean;
 
 @RemotingBean
+@ForRemoval
 public class TableInstantColumnModel extends TableColumnModel {
     private Property<String> formatString;
 

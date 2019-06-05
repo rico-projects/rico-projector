@@ -1,5 +1,6 @@
 package dev.rico.internal.client.projector.uimanager.breadcrumbbar;
 
+import dev.rico.internal.projector.ForRemoval;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -8,6 +9,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 
+@ForRemoval
 public class BreadCrumbButton extends ToggleButton {
 
     private final ObjectProperty<Boolean> first = new SimpleObjectProperty<>(this, "first"); //$NON-NLS-1$
