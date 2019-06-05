@@ -24,3 +24,6 @@ hs_err_pid*
 .gradle
 .idea
 .DS_Store
+*.iml
+*.ipr
+*.iws
