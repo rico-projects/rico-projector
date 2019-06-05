@@ -1,5 +1,8 @@
-archivesBaseName='rico-projector-server'
+archivesBaseName = 'rico-projector-server'
 
 dependencies {
     implementation project(':rico-projector-common')
+
+    implementation 'dev.rico:rico-remoting-server:1.0.0'
+    implementation 'org.apache.commons:commons-lang3:3.7'
 }

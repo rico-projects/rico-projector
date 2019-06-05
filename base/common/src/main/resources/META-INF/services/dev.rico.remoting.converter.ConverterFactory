@@ -1,0 +1,3 @@
+dev.rico.common.projector.converters.InstantConverterFactory
+dev.rico.common.projector.converters.DocumentDataConverterFactory
+dev.rico.common.projector.converters.LocalTimeConverterFactory

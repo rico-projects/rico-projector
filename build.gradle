@@ -4,5 +4,7 @@ subprojects { proj ->
     targetCompatibility=1.8
 
     group='dev.rico'
-    
+    repositories {
+        jcenter()
+    }
 }
