@@ -1,6 +1,5 @@
-archivesBaseName='rico-projector-server-javafx'
-
 dependencies {
-    implementation project(':rico-projector-common-javafx')
+    implementation project(':rico-projector-common-sample')
     implementation project(':rico-projector-server')
+    implementation 'dev.rico:rico-remoting-server-spring:1.0.0'
 }
