@@ -1,5 +1,3 @@
-archivesBaseName='rico-projector-common-javafx'
-
 dependencies {
-    implementation project(':rico-projector-common')
+    implementation project(':base:rico-projector-common')
 }
