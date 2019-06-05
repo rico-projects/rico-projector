@@ -1,6 +1,6 @@
 package dev.rico.internal.projector.mixed;
 
-import eu.medsea.mimeutil.MimeUtil;
+//import eu.medsea.mimeutil.MimeUtil;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class DocumentData {
    static {
-      MimeUtil.registerMimeDetector("eu.medsea.mimeutil.detector.MagicMimeMimeDetector");
+//      MimeUtil.registerMimeDetector("eu.medsea.mimeutil.detector.MagicMimeMimeDetector");
    }
 
    private byte[] content;
@@ -57,7 +57,8 @@ public class DocumentData {
 
    public Object getMimeType() {
       Objects.requireNonNull(content);
-      return MimeUtil.getMimeTypes(content).iterator().next();
+//      return MimeUtil.getMimeTypes(content).iterator().next();
+      return "detection failed";
    }
 
    public byte[] getContent() {
