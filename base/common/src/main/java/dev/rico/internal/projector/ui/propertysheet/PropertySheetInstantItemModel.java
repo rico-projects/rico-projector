@@ -1,6 +1,7 @@
 package dev.rico.internal.projector.ui.propertysheet;
 
 
+import dev.rico.internal.projector.ForRemoval;
 import dev.rico.internal.projector.ui.DateTimeFieldModel;
 import dev.rico.remoting.Property;
 import dev.rico.remoting.RemotingBean;
@@ -8,6 +9,7 @@ import dev.rico.remoting.RemotingBean;
 import java.time.Instant;
 
 @RemotingBean
+@ForRemoval
 public class PropertySheetInstantItemModel extends PropertySheetItemModel {
     private Property<DateTimeFieldModel> field;
     private Property<Instant> value;

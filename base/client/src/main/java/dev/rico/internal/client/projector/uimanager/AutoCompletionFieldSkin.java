@@ -3,6 +3,7 @@ package dev.rico.internal.client.projector.uimanager;
 import com.sun.javafx.scene.control.behavior.TextFieldBehavior;
 import com.sun.javafx.scene.control.skin.TextFieldSkin;
 import com.sun.javafx.scene.text.HitInfo;
+import dev.rico.internal.projector.ForRemoval;
 import javafx.beans.property.ObjectProperty;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -11,6 +12,7 @@ import javafx.scene.layout.StackPane;
 
 import java.util.Objects;
 
+@ForRemoval
 public abstract class AutoCompletionFieldSkin extends TextFieldSkin {
     private final TextField control;
     private StackPane rightPane;

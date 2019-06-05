@@ -1,12 +1,14 @@
 package dev.rico.internal.projector.mixed;
 
 //import eu.medsea.mimeutil.MimeUtil;
+import dev.rico.internal.projector.ForRemoval;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
 import java.util.Base64;
 import java.util.Objects;
 
+@ForRemoval
 public class DocumentData {
    static {
 //      MimeUtil.registerMimeDetector("eu.medsea.mimeutil.detector.MagicMimeMimeDetector");

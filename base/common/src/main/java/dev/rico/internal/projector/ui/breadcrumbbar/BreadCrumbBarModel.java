@@ -1,9 +1,11 @@
 package dev.rico.internal.projector.ui.breadcrumbbar;
 
+import dev.rico.internal.projector.ForRemoval;
 import dev.rico.internal.projector.ui.container.ItemListContainerModel;
 import dev.rico.remoting.ObservableList;
 import dev.rico.remoting.Property;
 
+@ForRemoval
 public class BreadCrumbBarModel extends ItemListContainerModel<BreadCrumbItemModel> {
     private Property<String> caption;
     private ObservableList<BreadCrumbItemModel> items;

@@ -16,6 +16,7 @@
 package dev.rico.internal.projector.converters;
 
 
+import dev.rico.internal.projector.ForRemoval;
 import dev.rico.internal.remoting.converters.AbstractConverterFactory;
 import dev.rico.internal.remoting.converters.AbstractStringConverter;
 import dev.rico.remoting.converter.Converter;
@@ -29,6 +30,7 @@ import java.util.List;
 /**
  * Created by hendrikebbers on 25.10.16.
  */
+@ForRemoval
 public class InstantConverterFactory extends AbstractConverterFactory {
 
     @SuppressWarnings("rawtypes")

@@ -1,10 +1,12 @@
 package dev.rico.internal.projector.ui;
 
+import dev.rico.internal.projector.ForRemoval;
 import dev.rico.remoting.ObservableList;
 import dev.rico.remoting.Property;
 import dev.rico.remoting.RemotingBean;
 
 @RemotingBean
+@ForRemoval
 public class UploadButtonModel extends ButtonModel {
     private Property<String> uploadUrl;
     private ObservableList<String> allowedMimeTypes;

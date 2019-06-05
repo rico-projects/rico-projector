@@ -1,5 +1,6 @@
 package dev.rico.internal.client.projector.mixed;
 
+import dev.rico.internal.projector.ForRemoval;
 import dev.rico.internal.projector.ui.listview.ListViewItemModel;
 import com.github.rodionmoiseev.c10n.C10N;
 import dev.rico.client.remoting.FXBinder;
@@ -17,6 +18,7 @@ import java.util.Locale;
 
 import static dev.rico.internal.client.projector.mixed.EditableListCell.EDITABLE_LIST_CELL_ALL;
 
+@ForRemoval
 public class DocumentTemplateListCellSkin extends ListCellSkinBase<ListViewItemModel> {
 
     private static DocumentTemplateListCellSkinC10n C10 = C10N.get(DocumentTemplateListCellSkinC10n.class, Locale.GERMAN);

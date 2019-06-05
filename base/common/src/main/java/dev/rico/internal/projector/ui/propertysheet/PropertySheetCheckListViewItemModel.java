@@ -1,9 +1,11 @@
 package dev.rico.internal.projector.ui.propertysheet;
 
 
+import dev.rico.internal.projector.ForRemoval;
 import dev.rico.internal.projector.ui.checklistview.CheckListViewModel;
 import dev.rico.remoting.Property;
 
+@ForRemoval
 public class PropertySheetCheckListViewItemModel extends PropertySheetItemModel {
     private Property<CheckListViewModel> field;
 

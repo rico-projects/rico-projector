@@ -1,11 +1,13 @@
 package dev.rico.internal.projector.ui.checklistview;
 
+import dev.rico.internal.projector.ForRemoval;
 import dev.rico.internal.projector.ui.ItemModel;
 import dev.rico.internal.projector.ui.listselectionview.ListSelectionViewItemModel;
 import dev.rico.remoting.ObservableList;
 import dev.rico.remoting.Property;
 import dev.rico.remoting.RemotingBean;
 
+@ForRemoval
 @RemotingBean
 public class CheckListViewModel extends ItemModel {
     private ObservableList<ListSelectionViewItemModel> availableItems;

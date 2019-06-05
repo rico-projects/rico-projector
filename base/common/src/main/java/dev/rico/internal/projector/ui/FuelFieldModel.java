@@ -1,8 +1,10 @@
 package dev.rico.internal.projector.ui;
 
+import dev.rico.internal.projector.ForRemoval;
 import dev.rico.internal.projector.mixed.WeightUnit;
 import dev.rico.remoting.Property;
 
+@ForRemoval
 public class FuelFieldModel extends TextFieldModel {
 
     private Property<WeightUnit> weightUnit;

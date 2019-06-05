@@ -1,11 +1,13 @@
 package dev.rico.internal.projector.ui.propertysheet;
 
 
+import dev.rico.internal.projector.ForRemoval;
 import dev.rico.internal.projector.ui.choicebox.ChoiceBoxModel;
 import dev.rico.remoting.Property;
 import dev.rico.remoting.RemotingBean;
 
 @RemotingBean
+@ForRemoval
 public class PropertySheetChoiceBoxItemModel extends PropertySheetItemModel{
     private Property<ChoiceBoxModel> field;
 

@@ -1,5 +1,6 @@
 package dev.rico.internal.client.projector.uimanager;
 
+import dev.rico.internal.projector.ForRemoval;
 import dev.rico.internal.projector.mixed.WeightUnit;
 import dev.rico.internal.projector.ui.FuelFieldModel;
 import dev.rico.remoting.ValueChangeEvent;
@@ -11,6 +12,7 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@ForRemoval
 public class FuelField extends AutoCompleteField<FuelInfo> {
     private final FuelFieldModel model;
 

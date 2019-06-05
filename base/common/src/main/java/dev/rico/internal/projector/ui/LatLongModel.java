@@ -1,10 +1,12 @@
 package dev.rico.internal.projector.ui;
 
 
+import dev.rico.internal.projector.ForRemoval;
 import dev.rico.remoting.Property;
 import dev.rico.remoting.RemotingBean;
 
 @RemotingBean
+@ForRemoval
 public class LatLongModel extends ItemModel {
     private Property<Double> latitude;
     private Property<Double> longitude;

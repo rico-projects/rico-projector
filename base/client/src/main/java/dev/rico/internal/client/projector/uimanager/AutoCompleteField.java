@@ -1,6 +1,7 @@
 package dev.rico.internal.client.projector.uimanager;
 
 import com.sun.javafx.scene.traversal.Direction;
+import dev.rico.internal.projector.ForRemoval;
 import impl.org.controlsfx.autocompletion.AutoCompletionTextFieldBinding;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
@@ -16,6 +17,7 @@ import org.controlsfx.control.textfield.AutoCompletionBinding.ISuggestionRequest
 import java.util.ArrayList;
 import java.util.Collection;
 
+@ForRemoval
 public abstract class AutoCompleteField<T> extends TextField {
 
     private final TextFormatter<T> formatter = new TextFormatter<>(new StringConverter<T>() {

@@ -1,5 +1,8 @@
 package dev.rico.internal.client.projector.mixed;
 
+import dev.rico.internal.projector.ForRemoval;
+
+@ForRemoval
 public class Image {
    public static final javafx.scene.image.Image LOCKED = new javafx.scene.image.Image(
          Image.class.getResource("/image/locked.png").toExternalForm(), 22, 22, true, true);

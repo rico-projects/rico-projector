@@ -7,6 +7,7 @@ import com.sun.javafx.scene.traversal.Algorithm;
 import com.sun.javafx.scene.traversal.Direction;
 import com.sun.javafx.scene.traversal.ParentTraversalEngine;
 import com.sun.javafx.scene.traversal.TraversalContext;
+import dev.rico.internal.projector.ForRemoval;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.ObservableList;
@@ -17,6 +18,7 @@ import org.controlsfx.control.SegmentedButton;
 
 import java.util.Collections;
 
+@ForRemoval
 public class BreadCrumbBarSkin extends BehaviorSkinBase<SegmentedButton, BehaviorBase<SegmentedButton>> {
 
     private static final String STYLE_CLASS_FIRST = "first"; //$NON-NLS-1$

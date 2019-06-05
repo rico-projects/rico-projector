@@ -1,5 +1,6 @@
 package dev.rico.internal.projector.ui.autocompletion;
 
+import dev.rico.internal.projector.ForRemoval;
 import dev.rico.internal.projector.ui.ItemModel;
 import dev.rico.internal.projector.ui.WithPromptText;
 import dev.rico.remoting.ObservableList;
@@ -8,6 +9,7 @@ import dev.rico.remoting.RemotingBean;
 
 
 @RemotingBean
+@ForRemoval
 public class AutoCompleteModel extends ItemModel implements WithPromptText {
     private Property<String> searchAction;
     private Property<String> action;

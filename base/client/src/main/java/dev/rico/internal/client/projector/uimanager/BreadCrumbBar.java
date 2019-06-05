@@ -6,6 +6,7 @@ import dev.rico.client.remoting.ControllerProxy;
 import dev.rico.client.remoting.FXBinder;
 import dev.rico.client.remoting.FXWrapper;
 import dev.rico.client.remoting.Param;
+import dev.rico.internal.projector.ForRemoval;
 import dev.rico.internal.projector.ui.ManagedUiModel;
 import dev.rico.internal.projector.ui.breadcrumbbar.BreadCrumbBarModel;
 import dev.rico.internal.projector.ui.breadcrumbbar.BreadCrumbItemModel;
@@ -14,6 +15,7 @@ import javafx.beans.InvalidationListener;
 import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
 
+@ForRemoval
 class BreadCrumbBar extends dev.rico.internal.client.projector.uimanager.mixed.BreadCrumbBar<BreadCrumbItemModel> {
     BreadCrumbBar(BreadCrumbBarModel model, ControllerProxy<? extends ManagedUiModel> controllerProxy) {
         setAutoNavigationEnabled(false);

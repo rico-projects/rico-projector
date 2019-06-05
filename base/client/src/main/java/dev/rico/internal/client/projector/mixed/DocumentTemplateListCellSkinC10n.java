@@ -1,7 +1,9 @@
 package dev.rico.internal.client.projector.mixed;
 
 import com.github.rodionmoiseev.c10n.annotations.De;
+import dev.rico.internal.projector.ForRemoval;
 
+@ForRemoval
 public interface DocumentTemplateListCellSkinC10n {
     @De("Eine Vorlage hinterlegen...")
     String addTemplate();

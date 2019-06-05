@@ -15,6 +15,7 @@
  */
 package dev.rico.internal.projector.converters;
 
+import dev.rico.internal.projector.ForRemoval;
 import dev.rico.internal.projector.mixed.DocumentData;
 import dev.rico.internal.remoting.converters.AbstractConverterFactory;
 import dev.rico.internal.remoting.converters.AbstractStringConverter;
@@ -24,6 +25,7 @@ import dev.rico.remoting.converter.ValueConverterException;
 import java.util.Collections;
 import java.util.List;
 
+@ForRemoval
 public class DocumentDataConverterFactory extends AbstractConverterFactory {
 
     @SuppressWarnings("rawtypes")
