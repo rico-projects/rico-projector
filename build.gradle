@@ -1,11 +1,19 @@
 subprojects { proj ->
     apply plugin: 'java'
-    sourceCompatibility=1.8
-    targetCompatibility=1.8
+    apply plugin: 'maven-publish'
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
 
-    group='dev.rico'
+    group = 'dev.rico'
 
     repositories {
         jcenter()
+    }
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+            }
+        }
     }
 }
