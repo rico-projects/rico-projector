@@ -1,17 +1,17 @@
 rootProject.name='rico-projector'
 
-include 'base:common'
-include 'base:client'
-include 'base:server'
+include 'rico-projector-common'
+include 'rico-projector-client'
+include 'rico-projector-server'
 
-project(':base:common').name = 'rico-projector-common'
-project(':base:client').name = 'rico-projector-client'
-project(':base:server').name = 'rico-projector-server'
+include 'rico-projector-common-javafx'
+include 'rico-projector-client-javafx'
+include 'rico-projector-server-javafx'
 
-include 'javafx:common'
-include 'javafx:client'
-include 'javafx:server'
+project(':rico-projector-common').projectDir = file('base/common')
+project(':rico-projector-client').projectDir = file('base/client')
+project(':rico-projector-server').projectDir = file('base/server')
 
-project(':javafx:common').name = 'rico-projector-common-javafx'
-project(':javafx:client').name = 'rico-projector-client-javafx'
-project(':javafx:server').name = 'rico-projector-server-javafx'
+project(':rico-projector-common-javafx').projectDir = file('javafx/common')
+project(':rico-projector-client-javafx').projectDir = file('javafx/client')
+project(':rico-projector-server-javafx').projectDir = file('javafx/server')
