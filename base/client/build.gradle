@@ -1,0 +1,5 @@
+archivesBaseName='rico-projector-client'
+
+dependencies {
+    implementation project(':rico-projector-common')
+}

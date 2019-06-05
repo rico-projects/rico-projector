@@ -1,0 +1,6 @@
+archivesBaseName='rico-projector-server-javafx'
+
+dependencies {
+    implementation project(':rico-projector-common-javafx')
+    implementation project(':rico-projector-server')
+}
