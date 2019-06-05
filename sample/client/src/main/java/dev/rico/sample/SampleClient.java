@@ -1,8 +1,10 @@
 package dev.rico.sample;
 
-import dev.rico.client.remoting.*;
+import dev.rico.client.remoting.AbstractRemotingApplication;
+import dev.rico.client.remoting.ClientContext;
+import dev.rico.internal.client.projector.mixed.ClientContextHolder;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.net.MalformedURLException;
@@ -20,17 +22,11 @@ public class SampleClient extends AbstractRemotingApplication {
     @Override
     protected void start(final Stage primaryStage, final ClientContext clientContext) throws Exception {
 
-        final Label demo = new Label("OFFLINE");
+        ClientContextHolder.setContext(clientContext);
 
-        clientContext.createController(CONTROLLER_NAME).handle((c, e) -> {
-            if(e != null) {
-                throw new RuntimeException("Error", e);
-            }
-            demo.setText("ONLINE");
-            return null;
-        });
+        SampleViewPresenter presenter = new SampleViewPresenter(CONTROLLER_NAME);
 
-        final Scene scene = new Scene(demo);
+        final Scene scene = new Scene((Parent) presenter.getView());
         primaryStage.setScene(scene);
         primaryStage.show();
     }

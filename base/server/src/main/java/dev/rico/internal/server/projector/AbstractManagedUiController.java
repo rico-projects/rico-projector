@@ -122,8 +122,6 @@ public abstract class AbstractManagedUiController implements ManagedUiController
 
     }
 
-
-
     @RemotingAction
     public void receivedFocus(@Param("id") String id) {
         processReceivedFocus(id);
