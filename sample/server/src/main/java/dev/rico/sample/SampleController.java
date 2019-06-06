@@ -1,6 +1,7 @@
 package dev.rico.sample;
 
 import dev.rico.internal.projector.ui.*;
+import dev.rico.internal.projector.ui.box.HBoxModel;
 import dev.rico.internal.projector.ui.dialog.InfoDialogModel;
 import dev.rico.internal.server.projector.AbstractManagedUiController;
 import dev.rico.remoting.BeanManager;
@@ -22,14 +23,18 @@ public class SampleController extends AbstractManagedUiController {
 
     @Override
     public ItemModel buildUi() {
-        BorderPaneModel borderPane = ui().borderPane();
-        borderPane.setTop(ui().label("Hello World"));
+        LabelModel label = ui().label("Hello World");
         TextAreaModel center = ui().textArea();
         center.setText("Rico rocks!");
-        borderPane.setCenter(center);
+
         ButtonModel button = ui().button("Don't press this button!");
         button.setAction("onDontPressButtonAction");
-        borderPane.setBottom(button);
+
+        ButtonModel button2 = ui().button("Don't press this button!");
+        button2.setAction("onDontPressButtonAction");
+
+        HBoxModel borderPane = ui().hBox(label, center, button, button2);
+
         return borderPane;
     }
 

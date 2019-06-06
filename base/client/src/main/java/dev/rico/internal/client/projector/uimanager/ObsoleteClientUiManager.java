@@ -2,6 +2,7 @@ package dev.rico.internal.client.projector.uimanager;
 
 import com.google.common.base.Strings;
 import dev.rico.client.Client;
+import dev.rico.client.projector.PostProcessor;
 import dev.rico.client.remoting.ControllerProxy;
 import dev.rico.client.remoting.FXBinder;
 import dev.rico.client.remoting.FXWrapper;

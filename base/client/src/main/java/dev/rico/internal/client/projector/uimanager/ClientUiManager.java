@@ -20,7 +20,7 @@ public class ClientUiManager {
     }
 
     public ClientUiManager(ControllerProxy<? extends ManagedUiModel> controllerProxy, DolphinEventHandler handler, PostProcessor postProcessor, Function<String, Node> customComponentSupplier) {
-        projector = new JavaFXProjectorImpl(controllerProxy);
+        projector = new JavaFXProjectorImpl(controllerProxy, postProcessor);
     }
 
     public Node createNode(ItemModel itemModel) {
