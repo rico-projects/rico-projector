@@ -4,10 +4,6 @@ include 'rico-projector-common'
 include 'rico-projector-client'
 include 'rico-projector-server'
 
-include 'rico-projector-common-javafx'
-include 'rico-projector-client-javafx'
-include 'rico-projector-server-javafx'
-
 include 'rico-projector-common-sample'
 include 'rico-projector-client-sample'
 include 'rico-projector-server-sample'
@@ -15,10 +11,6 @@ include 'rico-projector-server-sample'
 project(':rico-projector-common').projectDir=file('base/common')
 project(':rico-projector-client').projectDir=file('base/client')
 project(':rico-projector-server').projectDir=file('base/server')
-
-project(':rico-projector-common-javafx').projectDir=file('javafx/common')
-project(':rico-projector-client-javafx').projectDir=file('javafx/client')
-project(':rico-projector-server-javafx').projectDir=file('javafx/server')
 
 project(':rico-projector-common-sample').projectDir=file('sample/common')
 project(':rico-projector-client-sample').projectDir=file('sample/client')
