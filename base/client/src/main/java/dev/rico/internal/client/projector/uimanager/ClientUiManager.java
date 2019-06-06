@@ -808,8 +808,7 @@ public class ClientUiManager {
         return toolBar;
     }
 
-    private void updateBindItems
-            (ObservableList<ItemModel> remoteItems, javafx.collections.ObservableList<Node> fxItems) {
+    private void updateBindItems(ObservableList<ItemModel> remoteItems, javafx.collections.ObservableList<Node> fxItems) {
         bind(fxItems).to(remoteItems, this::createNode);
     }
 
