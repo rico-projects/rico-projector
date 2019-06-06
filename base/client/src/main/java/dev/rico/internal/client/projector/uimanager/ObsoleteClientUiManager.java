@@ -1121,10 +1121,6 @@ public class ObsoleteClientUiManager {
         return requireNonNull((T) idToNodeMap.get(id), "Missing injected node with id: " + id);
     }
 
-    public interface PostProcessor {
-        void postProcess(String id, IdentifiableModel model, Object node);
-    }
-
     private static class PlainStringConverter extends StringConverter<Object> {
         @Override
         public String toString(Object object) {

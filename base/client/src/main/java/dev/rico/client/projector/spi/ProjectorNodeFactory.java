@@ -5,7 +5,7 @@ import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.IdentifiableModel;
 import javafx.scene.Node;
 
-public interface ProjectorNodeFactory<M extends IdentifiableModel, N extends Node> {
+public interface ProjectorNodeFactory<M extends IdentifiableModel, N extends Node> extends TypeBasedProvider<M> {
 
     N create(Projector projector, M model);
 
@@ -17,6 +17,4 @@ public interface ProjectorNodeFactory<M extends IdentifiableModel, N extends Nod
             return value;
         }
     }
-
-    Class<M> getSupportedType();
 }
