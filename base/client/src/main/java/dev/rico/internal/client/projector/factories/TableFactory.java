@@ -16,7 +16,7 @@ import dev.rico.internal.client.projector.uimanager.ClientUiHelper;
 import dev.rico.internal.client.projector.uimanager.IndexedJavaFXListBinder;
 import dev.rico.internal.client.projector.uimanager.UnexpectedErrorDialog;
 import dev.rico.internal.core.Assert;
-import dev.rico.internal.projector.ui.choicebox.ChoiceBoxItemModel;
+import dev.rico.internal.projector.ui.IdentifiableModel;
 import dev.rico.internal.projector.ui.table.TableCheckBoxColumnModel;
 import dev.rico.internal.projector.ui.table.TableChoiceBoxColumnModel;
 import dev.rico.internal.projector.ui.table.TableColumnModel;
@@ -68,10 +68,11 @@ public class TableFactory implements ProjectorNodeFactory<TableModel, TableView>
 
         table.setUserData(conversionInfo.getInput());
         bind(tableColumn.textProperty()).to(conversionInfo.getInput().captionProperty());
-        tableColumn.setCellValueFactory(param -> FXWrapper.wrapObjectProperty(
-                param.getValue().getCells().get(conversionInfo.getIndex()).valueProperty()));
         bind(tableColumn.prefWidthProperty()).to(conversionInfo.getInput().prefWidthProperty(), value -> getValue(value, 80));
         bind(tableColumn.editableProperty()).to(conversionInfo.getInput().editableProperty(), value -> getValue(value, true));
+
+        tableColumn.setCellValueFactory(param -> FXWrapper.wrapObjectProperty(
+                param.getValue().getCells().get(conversionInfo.getIndex()).valueProperty()));
         if (conversionInfo.getInput() instanceof TableInstantColumnModel) {
             final TableInstantColumnModel columnModel = (TableInstantColumnModel) conversionInfo.getInput();
             tableColumn.setCellFactory(column -> new TableCell<TableRowModel, Object>() {
@@ -90,40 +91,45 @@ public class TableFactory implements ProjectorNodeFactory<TableModel, TableView>
         } else if (conversionInfo.getInput() instanceof TableStringColumnModel) {
             tableColumn.setCellFactory(TextFieldTableCell.forTableColumn(new PlainStringConverter()));
             tableColumn.setOnEditCommit(
-                    t -> {
-                        final Object newValue = t.getNewValue();
-                        projector.getControllerProxy().invoke("onTableStringCommit",
-                                new Param("row", t.getRowValue().getReference()),
-                                new Param("column", conversionInfo.getInput().getReference()),
-                                new Param("newValue", newValue)).exceptionally(throwable -> UnexpectedErrorDialog
-                                .showError(table, throwable));
-                    }
-            );
+                    event -> onCommit("onTableStringCommit", projector, table, event, conversionInfo));
         } else if (conversionInfo.getInput() instanceof TableChoiceBoxColumnModel) {
             final TableChoiceBoxColumnModel choiceBoxColumnModel = (TableChoiceBoxColumnModel) conversionInfo.getInput();
             tableColumn.setCellFactory(ChoiceBoxTableCell
                     .forTableColumn(new ChoiceBoxItemConverter(choiceBoxColumnModel.getItems()), (javafx.collections.ObservableList) FXWrapper.wrapList(choiceBoxColumnModel.getItems())));
-            tableColumn.setOnEditCommit(t -> {
-                        final Object newValue = t.getNewValue();
-                                projector.getControllerProxy().invoke("onTableChoiceBoxCommit",
-                                new Param("row", t.getRowValue().getReference()),
-                                new Param("column", conversionInfo.getInput().getReference()),
-                                new Param("newValue", ((ChoiceBoxItemModel) newValue).getReference())).exceptionally(throwable -> UnexpectedErrorDialog.showError(table, throwable));
-                    }
-            );
+            tableColumn.setOnEditCommit(event -> onCommit("onTableChoiceBoxCommit", projector, table, event, conversionInfo));
         } else if (conversionInfo.getInput() instanceof TableCheckBoxColumnModel) {
             tableColumn.setCellValueFactory(param -> {
                 final TableRowModel row = param.getValue();
                 final BooleanProperty property = new SimpleBooleanProperty((Boolean) row.getCells().get(conversionInfo.getIndex()).getValue());
                 property.addListener((ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) -> projector.getControllerProxy().invoke("onTableCheckBoxCommit",
-                        new Param("row", param.getValue().getReference()),
-                        new Param("column", conversionInfo.getInput().getReference()),
-                        new Param("newValue", newValue)).exceptionally(throwable -> UnexpectedErrorDialog.showError(table, throwable)));
+                        createRow(param.getValue()),
+                        createColumn(conversionInfo.getInput()),
+                        createNewValue(newValue)).exceptionally(throwable -> UnexpectedErrorDialog.showError(table, throwable)));
                 return (ObservableValue) property;
             });
             tableColumn.setCellFactory(column -> new CheckBoxTableCell<>());
         }
         return tableColumn;
+    }
+
+    private void onCommit(final String name, final Projector projector, final TableView<TableRowModel> table, final TableColumn.CellEditEvent<TableRowModel, Object> event, final IndexedJavaFXListBinder.ConversionInfo<TableColumnModel> conversionInfo) {
+        projector.getControllerProxy().invoke(name,
+                createRow(event.getRowValue()),
+                createColumn(conversionInfo.getInput()),
+                createNewValue(event.getNewValue())).exceptionally(throwable -> UnexpectedErrorDialog.showError(table, throwable));
+
+    }
+
+    private Param createRow(final IdentifiableModel model) {
+        return new Param("row", model.getReference());
+    }
+
+    private Param createColumn(final IdentifiableModel model) {
+        return new Param("column", model.getReference());
+    }
+
+    private Param createNewValue(final Object value) {
+        return new Param("newValue", value);
     }
 
 }
