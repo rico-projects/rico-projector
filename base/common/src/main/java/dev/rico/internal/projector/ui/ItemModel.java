@@ -6,7 +6,7 @@ import dev.rico.remoting.RemotingBean;
 import to.remove.ui.MessagePlaceholder;
 
 @RemotingBean
-public class ItemModel extends IdentifiableModel {
+public class ItemModel<M extends ItemModel> extends IdentifiableModel {
     private Property<Boolean> disable;
     private Property<Boolean> visible;
     private Property<Boolean> managed;
@@ -18,6 +18,11 @@ public class ItemModel extends IdentifiableModel {
     private Property<ItemModel> messageDisplay;
     private ObservableList<String> styleClass;
     private ObservableList<String> validationMessages;
+
+    public M withMaxWidth(double maxWidth) {
+        setMaxWidth(maxWidth);
+        return (M) this;
+    }
 
     public Double getPrefWidth() {
         return prefWidth.get();
