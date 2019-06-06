@@ -1,7 +1,6 @@
 package to.remove;
 
 import com.github.rodionmoiseev.c10n.C10N;
-import dev.rico.internal.client.projector.mixed.ListCellSkin;
 import dev.rico.internal.projector.ForRemoval;
 import javafx.event.Event;
 import javafx.event.EventType;

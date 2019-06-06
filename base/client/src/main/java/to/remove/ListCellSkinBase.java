@@ -1,9 +1,9 @@
-package dev.rico.internal.client.projector.mixed;
+package to.remove;
 
+import dev.rico.client.remoting.ControllerProxy;
+import dev.rico.internal.client.projector.uimanager.UnexpectedErrorDialog;
 import dev.rico.internal.projector.ui.listview.ListViewModel;
 import dev.rico.internal.projector.ui.menuitem.MenuItemModel;
-import dev.rico.internal.client.projector.uimanager.UnexpectedErrorDialog;
-import dev.rico.client.remoting.ControllerProxy;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -15,7 +15,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.StackPane;
-import to.remove.EditableListCell;
 
 import java.util.ArrayList;
 import java.util.List;

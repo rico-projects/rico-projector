@@ -1,7 +1,6 @@
-package to.remove.ui.table;
+package dev.rico.internal.projector.ui.table;
 
 import dev.rico.internal.projector.ForRemoval;
-import dev.rico.internal.projector.ui.table.TableColumnModel;
 import dev.rico.remoting.Property;
 import dev.rico.remoting.RemotingBean;
 

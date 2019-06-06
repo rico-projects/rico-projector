@@ -1,7 +1,7 @@
-package dev.rico.internal.projector.ui.dialog;
+package to.remove;
 
 
-import to.remove.DocumentData;
+import dev.rico.internal.projector.ui.dialog.DialogModel;
 import dev.rico.remoting.Property;
 import dev.rico.remoting.RemotingBean;
 

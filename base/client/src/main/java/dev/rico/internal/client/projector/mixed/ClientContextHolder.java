@@ -4,13 +4,16 @@ package dev.rico.internal.client.projector.mixed;
 import dev.rico.client.remoting.ClientContext;
 
 public class ClientContextHolder {
+
 	private static ClientContext context;
 
-	public synchronized static ClientContext getContext() {
+	private ClientContextHolder() {}
+
+	public static synchronized ClientContext getContext() {
 		return context;
 	}
 
-    public synchronized static void setContext(ClientContext context) {
+    public static synchronized void setContext(final ClientContext context) {
         ClientContextHolder.context = context;
     }
 }

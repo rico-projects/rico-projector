@@ -3,7 +3,6 @@ package dev.rico.internal.projector.ui;
 import dev.rico.remoting.ObservableList;
 import dev.rico.remoting.Property;
 import dev.rico.remoting.RemotingBean;
-import to.remove.ui.MessagePlaceholder;
 
 @RemotingBean
 public class ItemModel extends IdentifiableModel {
@@ -89,10 +88,6 @@ public class ItemModel extends IdentifiableModel {
 
     public ItemModel getMessageDisplay() {
         return messageDisplay.get();
-    }
-
-    public void setMessageDisplay(MessagePlaceholder messageDisplay) {
-        this.messageDisplay.set(messageDisplay);
     }
 
     public Property<ItemModel> messageDisplayProperty() {
