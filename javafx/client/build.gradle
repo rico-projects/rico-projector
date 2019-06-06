@@ -1,4 +1,0 @@
-dependencies {
-    implementation project(':rico-projector-common-javafx')
-    implementation project(':rico-projector-client')
-}
