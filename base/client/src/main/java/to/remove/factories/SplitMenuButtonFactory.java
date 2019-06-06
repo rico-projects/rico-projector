@@ -42,6 +42,6 @@ public class SplitMenuButtonFactory implements ProjectorNodeFactory<SplitMenuBut
 
     @Override
     public Class<SplitMenuButtonModel> getSupportedType() {
-        return null;
+        return SplitMenuButtonModel.class;
     }
 }

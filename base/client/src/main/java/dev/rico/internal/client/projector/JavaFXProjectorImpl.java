@@ -31,13 +31,21 @@ public class JavaFXProjectorImpl implements Projector {
         this.controllerProxy = controllerProxy;
 
         factories = new HashMap<>();
-        ServiceLoader.load(ProjectorNodeFactory.class).iterator().forEachRemaining(f -> {
-            final Class<? extends ItemModel> type = f.getSupportedType();
-            if (factories.containsKey(type)) {
-                throw new IllegalStateException("Modeltype " + type + " is already defined by factory");
+//        try {
+            ServiceLoader<ProjectorNodeFactory> factories = ServiceLoader.load(ProjectorNodeFactory.class);
+            for (ProjectorNodeFactory factory : factories) {
+                final Class<? extends ItemModel> type = factory.getSupportedType();
+                if (type == null) {
+                    throw new IllegalStateException("ProjectorNodeFactory implementation '" + factory.getClass() + "' method getSupportedType() must not return 'null'");
+                }
+                if (this.factories.containsKey(type)) {
+                    throw new IllegalStateException("ProjectorNodeFactory implementation '" + factory.getClass() + "' for '" + type + "' is already defined by factory");
+                }
+                this.factories.put(type, factory);
             }
-            factories.put(f.getSupportedType(), f);
-        });
+//        } catch (Throwable e) {
+//            e.printStackTrace();
+//        }
 
         ManagedUiModel model = controllerProxy.getModel();
         model.rootProperty().onChanged(evt -> updateUiRoot(evt.getNewValue()));

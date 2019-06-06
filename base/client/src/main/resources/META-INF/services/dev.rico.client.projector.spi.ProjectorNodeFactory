@@ -1,4 +1,3 @@
-dev.rico.internal.client.projector.factories.ButtonBaseFactory
 dev.rico.internal.client.projector.factories.ButtonFactory
 dev.rico.internal.client.projector.factories.CheckBoxFactory
 dev.rico.internal.client.projector.factories.ChoiceBoxFactory
@@ -24,6 +23,7 @@ dev.rico.internal.client.projector.factories.ToggleButtonFactory
 dev.rico.internal.client.projector.factories.ToolBarFactory
 dev.rico.internal.client.projector.factories.UploadButtonFactory
 dev.rico.internal.client.projector.factories.VBoxFactory
+dev.rico.internal.client.projector.factories.BorderPaneFactory
 to.remove.factories.CardPaneFactory
 to.remove.factories.CheckListViewFactory
 to.remove.factories.DateTimeFieldFactory

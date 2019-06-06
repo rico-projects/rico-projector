@@ -28,7 +28,7 @@ public class UploadButtonFactory extends ButtonBaseFactory<UploadButtonModel, Bu
 
     @Override
     public Class<UploadButtonModel> getSupportedType() {
-        return null;
+        return UploadButtonModel.class;
     }
 
     private void onDoUpload(final Projector projector, final ActionEvent actionEvent, final UploadButtonModel uploadButton) {
