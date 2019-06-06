@@ -8,6 +8,7 @@ import dev.rico.client.remoting.FXWrapper;
 import dev.rico.client.remoting.Param;
 import dev.rico.core.http.HttpClient;
 import dev.rico.core.http.RequestMethod;
+import dev.rico.internal.client.projector.factories.TabPaneFactory;
 import dev.rico.internal.client.projector.mixed.Configuration;
 import dev.rico.internal.client.projector.mixed.FormatterFactory;
 import dev.rico.internal.client.projector.mixed.ListCellSkin;
@@ -286,7 +287,7 @@ public class ClientUiManager {
             }
             Node newNode;
             if (itemModel instanceof TabPaneModel) {
-                newNode = createTabPane((TabPaneModel) itemModel);
+                newNode = new TabPaneFactory().create()
             } else if (itemModel instanceof PasswordFieldModel) {
                 newNode = createPasswordField((PasswordFieldModel) itemModel);
             } else if (itemModel instanceof MigPaneModel) {

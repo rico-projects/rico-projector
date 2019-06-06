@@ -1,10 +1,5 @@
 package dev.rico.internal.client.projector;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ServiceLoader;
-import java.util.WeakHashMap;
-
 import dev.rico.client.projector.PostProcessor;
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorNodeFactory;
@@ -15,6 +10,11 @@ import dev.rico.internal.projector.ui.ManagedUiModel;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ServiceLoader;
+import java.util.WeakHashMap;
+
 public class JavaFXProjectorImpl implements Projector {
 
     private final ControllerProxy<? extends ManagedUiModel> controllerProxy;
@@ -24,9 +24,7 @@ public class JavaFXProjectorImpl implements Projector {
     //TODO: REFACTOR
     private final WeakHashMap<IdentifiableModel, Node> modelToNodeMap = new WeakHashMap<>();
 
-
     private final SimpleObjectProperty<Node> root = new SimpleObjectProperty<>();
-
 
     public JavaFXProjectorImpl(final ControllerProxy<? extends ManagedUiModel> controllerProxy) {
         this.controllerProxy = controllerProxy;
