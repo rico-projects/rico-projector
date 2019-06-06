@@ -1,9 +1,11 @@
 package to.remove.factories;
 
+import static dev.rico.client.remoting.FXBinder.bind;
+
+import dev.rico.client.projector.PostProcessor;
 import dev.rico.client.projector.Projector;
 import dev.rico.internal.client.projector.factories.ActionHandlerFactory;
 import dev.rico.internal.client.projector.factories.ButtonBaseFactory;
-import dev.rico.internal.client.projector.uimanager.ClientUiManager;
 import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.menuitem.MenuItemModel;
 import dev.rico.remoting.ObservableList;
@@ -13,8 +15,6 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import to.remove.ui.nestedmenubutton.NestedMenuButtonModel;
 import to.remove.uimanager.MenuButton;
-
-import static dev.rico.client.remoting.FXBinder.bind;
 
 public class NestedMenuButtonFactory extends ButtonBaseFactory<NestedMenuButtonModel, MenuButton> implements ActionHandlerFactory {
 
@@ -34,7 +34,7 @@ public class NestedMenuButtonFactory extends ButtonBaseFactory<NestedMenuButtonM
         Assert.requireNonNull(projector, "projector");
         Assert.requireNonNull(model, "model");
 
-        final ClientUiManager.PostProcessor postProcessor = projector.getPostProcessor();
+        final PostProcessor postProcessor = projector.getPostProcessor();
         Assert.requireNonNull(postProcessor, "postProcessor");
 
         final ObservableList<MenuItemModel> items = model.getItems();

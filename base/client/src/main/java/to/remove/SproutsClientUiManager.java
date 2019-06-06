@@ -3,16 +3,12 @@ package to.remove;
 import dev.rico.client.remoting.ControllerProxy;
 import dev.rico.core.functional.Binding;
 import dev.rico.internal.client.projector.uimanager.ClientUiManager;
-import dev.rico.internal.projector.mixed.CommonUiHelper;
 import dev.rico.internal.projector.ui.ItemModel;
 import dev.rico.internal.projector.ui.ManagedUiModel;
 import dev.rico.internal.projector.ui.menuitem.MenuItemModel;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.control.ButtonBase;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import to.remove.ui.DocumentViewModel;
 import to.remove.ui.FuelFieldModel;
@@ -26,9 +22,10 @@ import to.remove.ui.checklistview.CheckListViewModel;
 import to.remove.ui.listselectionview.ListSelectionViewModel;
 import to.remove.ui.menubutton.MenuButtonModel;
 import to.remove.ui.nestedmenubutton.NestedMenuButtonModel;
+import to.remove.uimanager.MenuButton;
+import to.remove.uimanager.ProgressIndicator;
 import to.remove.uimanager.*;
 
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static dev.rico.client.remoting.FXBinder.bind;
@@ -152,20 +149,21 @@ public class SproutsClientUiManager extends ClientUiManager {
     }
 
     private Node createDocumentView(DocumentViewModel itemModel) {
-        DocumentViewer documentViewer = new DocumentViewer(this, itemModel);
-        Consumer<DocumentData> consumer = documentData -> {
-            documentViewer.closeDocument();
-            if (documentData != null) {
-                documentViewer.openDocument(documentData, "");
-            }
-        };
-        consumer.accept(itemModel.getDocumentData());
-        CommonUiHelper.subscribeWithOptional(itemModel.documentByIdProperty(), idOptional -> {
-            documentViewer.closeDocument();
-            idOptional.ifPresent(id -> loadDocumentFromServerAndShow(id, consumer));
-        });
-        itemModel.documentDataProperty().onChanged(evt -> consumer.accept(evt.getNewValue()));
-        return documentViewer;
+//        DocumentViewer documentViewer = new DocumentViewer(this, itemModel);
+//        Consumer<DocumentData> consumer = documentData -> {
+//            documentViewer.closeDocument();
+//            if (documentData != null) {
+//                documentViewer.openDocument(documentData, "");
+//            }
+//        };
+//        consumer.accept(itemModel.getDocumentData());
+//        CommonUiHelper.subscribeWithOptional(itemModel.documentByIdProperty(), idOptional -> {
+//            documentViewer.closeDocument();
+//            idOptional.ifPresent(id -> loadDocumentFromServerAndShow(id, consumer));
+//        });
+//        itemModel.documentDataProperty().onChanged(evt -> consumer.accept(evt.getNewValue()));
+//        return documentViewer;
+        return new Label("Placeholder");
     }
 
     private Node createFuelFieldModel(FuelFieldModel model) {
