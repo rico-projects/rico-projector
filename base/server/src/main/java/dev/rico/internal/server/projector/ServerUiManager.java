@@ -1,22 +1,11 @@
 package dev.rico.internal.server.projector;
 
 import dev.rico.internal.projector.mixed.CommonUiHelper;
-import to.remove.DocumentData;
-import to.remove.RemotingEvent;
 import dev.rico.internal.projector.ui.*;
-import to.remove.SaveFileDialogModel;
-import to.remove.ui.*;
-import to.remove.ui.autocompletion.AutoCompleteItemModel;
-import to.remove.ui.autocompletion.AutoCompleteModel;
 import dev.rico.internal.projector.ui.box.HBoxItemModel;
 import dev.rico.internal.projector.ui.box.HBoxModel;
 import dev.rico.internal.projector.ui.box.VBoxItemModel;
 import dev.rico.internal.projector.ui.box.VBoxModel;
-import to.remove.ui.breadcrumbbar.BreadCrumbBarModel;
-import to.remove.ui.breadcrumbbar.BreadCrumbItemModel;
-import to.remove.ui.cardpane.CardPaneItemModel;
-import to.remove.ui.cardpane.CardPaneModel;
-import to.remove.ui.checklistview.CheckListViewModel;
 import dev.rico.internal.projector.ui.choicebox.ChoiceBoxItemModel;
 import dev.rico.internal.projector.ui.choicebox.ChoiceBoxModel;
 import dev.rico.internal.projector.ui.dialog.*;
@@ -24,19 +13,9 @@ import dev.rico.internal.projector.ui.flowpane.FlowPaneItemModel;
 import dev.rico.internal.projector.ui.flowpane.FlowPaneModel;
 import dev.rico.internal.projector.ui.gridpane.GridPaneItemModel;
 import dev.rico.internal.projector.ui.gridpane.GridPaneModel;
-import to.remove.ui.listselectionview.ListSelectionViewItemModel;
-import to.remove.ui.listselectionview.ListSelectionViewModel;
 import dev.rico.internal.projector.ui.listview.ListViewItemModel;
 import dev.rico.internal.projector.ui.listview.ListViewModel;
-import to.remove.ui.menubutton.MenuButtonItemModel;
-import to.remove.ui.menubutton.MenuButtonModel;
 import dev.rico.internal.projector.ui.menuitem.MenuItemModel;
-import to.remove.ui.migpane.MigPaneItemModel;
-import to.remove.ui.migpane.MigPaneModel;
-import to.remove.ui.nestedmenubutton.NestedMenuButtonModel;
-import to.remove.ui.propertysheet.PropertySheetItemGroupModel;
-import to.remove.ui.propertysheet.PropertySheetItemModel;
-import to.remove.ui.propertysheet.PropertySheetModel;
 import dev.rico.internal.projector.ui.splitpane.SplitPaneItemModel;
 import dev.rico.internal.projector.ui.splitpane.SplitPaneModel;
 import dev.rico.internal.projector.ui.table.*;
@@ -47,8 +26,26 @@ import dev.rico.remoting.BeanManager;
 import dev.rico.remoting.Property;
 import javafx.geometry.Orientation;
 import javafx.scene.layout.Priority;
-import dev.rico.internal.projector.ui.table.TableInstantCellModel;
-import dev.rico.internal.projector.ui.table.TableInstantColumnModel;
+import to.remove.DocumentData;
+import to.remove.SaveFileDialogModel;
+import to.remove.ui.*;
+import to.remove.ui.autocompletion.AutoCompleteItemModel;
+import to.remove.ui.autocompletion.AutoCompleteModel;
+import to.remove.ui.breadcrumbbar.BreadCrumbBarModel;
+import to.remove.ui.breadcrumbbar.BreadCrumbItemModel;
+import to.remove.ui.cardpane.CardPaneItemModel;
+import to.remove.ui.cardpane.CardPaneModel;
+import to.remove.ui.checklistview.CheckListViewModel;
+import to.remove.ui.listselectionview.ListSelectionViewItemModel;
+import to.remove.ui.listselectionview.ListSelectionViewModel;
+import to.remove.ui.menubutton.MenuButtonItemModel;
+import to.remove.ui.menubutton.MenuButtonModel;
+import to.remove.ui.migpane.MigPaneItemModel;
+import to.remove.ui.migpane.MigPaneModel;
+import to.remove.ui.nestedmenubutton.NestedMenuButtonModel;
+import to.remove.ui.propertysheet.PropertySheetItemGroupModel;
+import to.remove.ui.propertysheet.PropertySheetItemModel;
+import to.remove.ui.propertysheet.PropertySheetModel;
 
 import java.time.Instant;
 import java.util.*;
@@ -252,16 +249,6 @@ public class ServerUiManager {
         }
     }
 
-    @Deprecated
-    public <T extends RemotingEvent> T createEvent(Class<T> eventClass) {
-        return beanManager.create(eventClass);
-    }
-
-    @Deprecated
-    public <T extends RemotingEvent> void sendEvent(T event) {
-        model.setEvent(event);
-    }
-
     public SplitPaneModel splitPane(Orientation orientation, SplitPaneItemModel... items) {
         SplitPaneModel model = create(SplitPaneModel.class);
         model.setOrientation(orientation);
@@ -350,12 +337,6 @@ public class ServerUiManager {
         HyperlinkModel hyperlinkModel = hyperlink(caption, (Runnable) null);
         hyperlinkModel.setAction(action);
         return hyperlinkModel;
-    }
-
-    public MessagePlaceholder messagePlaceholder(ItemModel forComponent) {
-        MessagePlaceholder messagePlaceholder = messagePlaceholder();
-        forComponent.setMessageDisplay(messagePlaceholder);
-        return messagePlaceholder;
     }
 
     private MessagePlaceholder messagePlaceholder() {

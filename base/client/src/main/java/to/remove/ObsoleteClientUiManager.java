@@ -147,11 +147,6 @@ public class ObsoleteClientUiManager {
 
         transferFocus(model.getFocusedItem());
         model.focusedItemProperty().onChanged(evt -> transferFocus(evt.getNewValue()));
-
-        model.eventProperty().onChanged(evt -> {
-            requireNonNull(this.handler, "Received event, but there is no EventHandler installed");
-            this.handler.onEvent(evt.getNewValue());
-        });
     }
 
     private void createCustomDialog(final CustomDialogModel newDialog) {
