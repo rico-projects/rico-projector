@@ -1,11 +1,5 @@
 package to.remove;
 
-import static dev.rico.client.remoting.FXBinder.bind;
-import static dev.rico.client.remoting.FXWrapper.wrapStringProperty;
-import static dev.rico.internal.client.projector.uimanager.TextField.configureTextInputControl;
-
-import java.util.function.Function;
-
 import dev.rico.client.projector.PostProcessor;
 import dev.rico.client.remoting.ControllerProxy;
 import dev.rico.core.functional.Binding;
@@ -15,11 +9,7 @@ import dev.rico.internal.projector.ui.ManagedUiModel;
 import dev.rico.internal.projector.ui.menuitem.MenuItemModel;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.control.ButtonBase;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import to.remove.ui.DocumentViewModel;
 import to.remove.ui.FuelFieldModel;
@@ -33,13 +23,9 @@ import to.remove.ui.checklistview.CheckListViewModel;
 import to.remove.ui.listselectionview.ListSelectionViewModel;
 import to.remove.ui.menubutton.MenuButtonModel;
 import to.remove.ui.nestedmenubutton.NestedMenuButtonModel;
-import to.remove.uimanager.CardPane;
-import to.remove.uimanager.CheckListView;
-import to.remove.uimanager.FuelField;
 import to.remove.uimanager.MenuButton;
-import to.remove.uimanager.PaxCodeField;
 import to.remove.uimanager.ProgressIndicator;
-import to.remove.uimanager.ServerBackedAutoCompletionField;
+import to.remove.uimanager.*;
 
 import java.util.function.Function;
 

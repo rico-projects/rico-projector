@@ -1,33 +1,5 @@
 package dev.rico.internal.client.projector.uimanager;
 
-import static dev.rico.client.remoting.FXBinder.bind;
-import static dev.rico.client.remoting.FXWrapper.wrapList;
-import static dev.rico.internal.client.projector.uimanager.TextField.configureTextInputControl;
-import static java.util.Objects.requireNonNull;
-
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
-import java.time.Instant;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.WeakHashMap;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import org.apache.commons.io.FileUtils;
-import org.controlsfx.control.HiddenSidesPane;
-import org.controlsfx.control.NotificationPane;
-import org.controlsfx.control.SegmentedButton;
-import org.controlsfx.control.decoration.Decorator;
-import org.controlsfx.control.decoration.StyleClassDecoration;
-import org.tbee.javafx.scene.layout.MigPane;
 import com.google.common.base.Strings;
 import dev.rico.client.Client;
 import dev.rico.client.projector.PostProcessor;
@@ -42,54 +14,20 @@ import dev.rico.internal.client.projector.mixed.FormatterFactory;
 import dev.rico.internal.client.projector.mixed.ListCellSkin;
 import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.mixed.CommonUiHelper;
-import dev.rico.internal.projector.ui.BorderPaneModel;
-import dev.rico.internal.projector.ui.ButtonModel;
-import dev.rico.internal.projector.ui.CheckBoxModel;
-import dev.rico.internal.projector.ui.CustomComponentModel;
-import dev.rico.internal.projector.ui.DateTimeFieldModel;
-import dev.rico.internal.projector.ui.HyperlinkModel;
-import dev.rico.internal.projector.ui.IdentifiableModel;
-import dev.rico.internal.projector.ui.ImageViewModel;
-import dev.rico.internal.projector.ui.ItemModel;
-import dev.rico.internal.projector.ui.LabelModel;
-import dev.rico.internal.projector.ui.ManagedUiModel;
-import dev.rico.internal.projector.ui.PasswordFieldModel;
-import dev.rico.internal.projector.ui.RadioButtonModel;
-import dev.rico.internal.projector.ui.ScrollPaneModel;
-import dev.rico.internal.projector.ui.SeparatorModel;
-import dev.rico.internal.projector.ui.SingleItemContainerModel;
-import dev.rico.internal.projector.ui.TextAreaModel;
-import dev.rico.internal.projector.ui.TextFieldModel;
-import dev.rico.internal.projector.ui.TitledPaneModel;
-import dev.rico.internal.projector.ui.ToggleButtonModel;
-import dev.rico.internal.projector.ui.ToggleItemModel;
-import dev.rico.internal.projector.ui.ToolBarModel;
-import dev.rico.internal.projector.ui.WithPadding;
+import dev.rico.internal.projector.ui.*;
 import dev.rico.internal.projector.ui.box.HBoxModel;
 import dev.rico.internal.projector.ui.box.VBoxModel;
 import dev.rico.internal.projector.ui.choicebox.ChoiceBoxItemModel;
 import dev.rico.internal.projector.ui.choicebox.ChoiceBoxModel;
 import dev.rico.internal.projector.ui.container.ItemListContainerModel;
-import dev.rico.internal.projector.ui.dialog.ConfirmationDialogModel;
-import dev.rico.internal.projector.ui.dialog.CustomDialogModel;
-import dev.rico.internal.projector.ui.dialog.DialogModel;
-import dev.rico.internal.projector.ui.dialog.InfoDialogModel;
-import dev.rico.internal.projector.ui.dialog.QualifiedErrorDialogModel;
-import dev.rico.internal.projector.ui.dialog.SaveFileDialogModel;
-import dev.rico.internal.projector.ui.dialog.ShutdownDialogModel;
-import dev.rico.internal.projector.ui.dialog.UnexpectedErrorDialogModel;
+import dev.rico.internal.projector.ui.dialog.*;
 import dev.rico.internal.projector.ui.flowpane.FlowPaneModel;
 import dev.rico.internal.projector.ui.gridpane.GridPaneModel;
 import dev.rico.internal.projector.ui.listview.ListViewItemModel;
 import dev.rico.internal.projector.ui.listview.ListViewModel;
 import dev.rico.internal.projector.ui.splitpane.SplitPaneItemModel;
 import dev.rico.internal.projector.ui.splitpane.SplitPaneModel;
-import dev.rico.internal.projector.ui.table.TableCheckBoxColumnModel;
-import dev.rico.internal.projector.ui.table.TableChoiceBoxColumnModel;
-import dev.rico.internal.projector.ui.table.TableColumnModel;
-import dev.rico.internal.projector.ui.table.TableModel;
-import dev.rico.internal.projector.ui.table.TableRowModel;
-import dev.rico.internal.projector.ui.table.TableStringColumnModel;
+import dev.rico.internal.projector.ui.table.*;
 import dev.rico.internal.projector.ui.tabpane.TabPaneModel;
 import dev.rico.remoting.ObservableList;
 import dev.rico.remoting.Property;
@@ -108,64 +46,49 @@ import javafx.geometry.Insets;
 import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBase;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Separator;
-import javafx.scene.control.SplitMenuButton;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TitledPane;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToolBar;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
-import to.remove.DocumentData;
-import to.remove.DocumentTemplateListCellSkin;
-import to.remove.DolphinEventHandler;
-import to.remove.EditableListCell;
-import to.remove.Image;
-import to.remove.ui.HiddenSidesPaneModel;
-import to.remove.ui.MessagePlaceholder;
-import to.remove.ui.NotificationPaneModel;
-import to.remove.ui.SegmentedButtonModel;
-import to.remove.ui.SplitMenuButtonModel;
-import to.remove.ui.UploadButtonModel;
+import org.apache.commons.io.FileUtils;
+import org.controlsfx.control.HiddenSidesPane;
+import org.controlsfx.control.NotificationPane;
+import org.controlsfx.control.SegmentedButton;
+import org.controlsfx.control.decoration.Decorator;
+import org.controlsfx.control.decoration.StyleClassDecoration;
+import org.tbee.javafx.scene.layout.MigPane;
+import to.remove.*;
+import to.remove.ui.*;
 import to.remove.ui.menubutton.MenuButtonItemModel;
 import to.remove.ui.migpane.MigPaneModel;
 import to.remove.ui.propertysheet.PropertySheetModel;
 import to.remove.ui.table.TableInstantColumnModel;
 import to.remove.uimanager.DateTimeField;
 import to.remove.uimanager.PropertySheet;
+
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.time.Instant;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static dev.rico.client.remoting.FXBinder.bind;
+import static dev.rico.client.remoting.FXWrapper.wrapList;
+import static dev.rico.internal.client.projector.uimanager.TextField.configureTextInputControl;
+import static java.util.Objects.requireNonNull;
 
 
 public class ObsoleteClientUiManager {
@@ -375,10 +298,8 @@ public class ObsoleteClientUiManager {
             } else if (itemModel instanceof SplitMenuButtonModel) {
                 newNode = createSplitMenuButton((SplitMenuButtonModel) itemModel);
             } else if (itemModel instanceof NotificationPaneModel) {
-                newNode = createNotificationPane((NotificationPaneModel) itemModel);
-            } else if (itemModel instanceof CustomComponentModel) {
-                newNode = createCustomComponent((CustomComponentModel) itemModel);
-            }  else if (itemModel instanceof ListViewModel) {
+                    newNode = createNotificationPane((NotificationPaneModel) itemModel);
+                } else if (itemModel instanceof ListViewModel) {
                 newNode = createListView((ListViewModel) itemModel);
             } else if (itemModel instanceof HiddenSidesPaneModel) {
                 newNode = createHiddenSidesPane((HiddenSidesPaneModel) itemModel);
@@ -507,11 +428,6 @@ public class ObsoleteClientUiManager {
     private Optional<Window> findWindowOptional(final DialogModel newDialog) {
         final Optional<Node> nodeOptional = Optional.ofNullable(newDialog.getOwner()).map(modelToNodeMap::get);
         return nodeOptional.flatMap(node -> Optional.of(node).map(Node::getScene).map(Scene::getWindow));
-    }
-
-
-    private Node createCustomComponent(final CustomComponentModel itemModel) {
-        return customComponentSupplier.apply(itemModel.getType());
     }
 
     private Node createSplitMenuButton(final SplitMenuButtonModel itemModel) {

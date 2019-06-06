@@ -8,6 +8,8 @@ import dev.rico.internal.projector.ui.ImageViewModel;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.net.URL;
+
 import static dev.rico.client.remoting.FXBinder.bind;
 
 public class ImageViewFactory implements ProjectorNodeFactory<ImageViewModel, ImageView> {
@@ -29,7 +31,16 @@ public class ImageViewFactory implements ProjectorNodeFactory<ImageViewModel, Im
     }
 
     private Image getImageForPath(final String v) {
-        return v == null ? null : new Image(Image.class.getResource(v.substring("classpath:".length())).toExternalForm());
+        if (v == null) {
+            return null;
+        } else {
+            URL resource = Image.class.getResource(v.substring("classpath:".length()));
+            if (resource == null) {
+                System.out.println("Image " + v + "' not found!");
+                return null;
+            }
+            return new Image(resource.toExternalForm());
+        }
     }
 
     @Override

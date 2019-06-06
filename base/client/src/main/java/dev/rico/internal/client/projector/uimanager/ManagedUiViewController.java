@@ -1,9 +1,5 @@
 package dev.rico.internal.client.projector.uimanager;
 
-import java.net.URL;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import dev.rico.client.projector.PostProcessor;
 import dev.rico.client.remoting.FXBinder;
 import dev.rico.client.remoting.view.AbstractViewController;
@@ -16,6 +12,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Window;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.URL;
 
 public class ManagedUiViewController<M extends ManagedUiModel> extends AbstractViewController<M> implements ViewPresenter {
 
@@ -77,7 +77,9 @@ public class ManagedUiViewController<M extends ManagedUiModel> extends AbstractV
     }
 
     protected PostProcessor newPostProcessor() {
-        return null;
+        return (id, model, node) -> {
+
+        };
     }
 
     private String getStyleSheetName() {

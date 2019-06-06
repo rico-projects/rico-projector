@@ -56,10 +56,10 @@ import java.util.function.Function;
 @SuppressWarnings("WeakerAccess")
 public class ServerUiManager {
 
-    private final ManagedUiModel model;
-    private final BeanManager beanManager;
-    private final WeakHashMap<String, IdentifiableModel> idToItemMap = new WeakHashMap<>();
-    private final WeakHashMap<IdentifiableModel, Runnable> modelToEventHandlerMap = new WeakHashMap<>();
+    protected final ManagedUiModel model;
+    protected final BeanManager beanManager;
+    protected final WeakHashMap<String, IdentifiableModel> idToItemMap = new WeakHashMap<>();
+    protected final WeakHashMap<IdentifiableModel, Runnable> modelToEventHandlerMap = new WeakHashMap<>();
 
     public ServerUiManager(ManagedUiModel model, BeanManager beanManager) {
         this.model = model;
@@ -192,7 +192,7 @@ public class ServerUiManager {
         return button;
     }
 
-    private ButtonModel configureButton(ButtonModel buttonModel, String caption, Runnable handler) {
+    protected ButtonModel configureButton(ButtonModel buttonModel, String caption, Runnable handler) {
         buttonModel.setCaption(caption);
         maybeInstallActionHandler(buttonModel, handler);
         return buttonModel;
@@ -481,7 +481,7 @@ public class ServerUiManager {
         return column;
     }
 
-    private void configureTableColumn(String reference, TableColumnModel column, String caption, Double prefWidth) {
+    protected void configureTableColumn(String reference, TableColumnModel column, String caption, Double prefWidth) {
         column.setReference(reference);
         column.setCaption(caption);
         column.setPrefWidth(prefWidth);
@@ -744,12 +744,6 @@ public class ServerUiManager {
         dialog.setTitle(title);
         dialog.setSaveThis(saveThis);
         return dialog;
-    }
-
-    public ItemModel customComponent(String type) {
-        CustomComponentModel model = create(CustomComponentModel.class);
-        model.setType(type);
-        return model;
     }
 
     public NotificationPaneModel notificationPane() {
