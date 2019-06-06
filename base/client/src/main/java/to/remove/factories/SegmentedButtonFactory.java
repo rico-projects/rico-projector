@@ -1,4 +1,4 @@
-package dev.rico.internal.client.projector.factories;
+package to.remove.factories;
 
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorNodeFactory;
