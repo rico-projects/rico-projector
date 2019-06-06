@@ -5,6 +5,7 @@ import static dev.rico.client.remoting.FXBinder.bind;
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorNodeFactory;
 import dev.rico.internal.projector.ui.gridpane.GridPaneItemModel;
+import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.gridpane.GridPaneModel;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
@@ -13,7 +14,10 @@ public class GridPaneFactory implements ProjectorNodeFactory<GridPaneModel, Grid
 
     @Override
     public GridPane create(final Projector projector, final GridPaneModel model) {
-        GridPane gridPane = new GridPane();
+        Assert.requireNonNull(projector, "projector");
+        Assert.requireNonNull(model, "model");
+
+        final GridPane gridPane = new GridPane();
         bind(gridPane.hgapProperty()).to(model.hGapProperty());
         bind(gridPane.vgapProperty()).to(model.vGapProperty());
         bind(gridPane.getChildren()).to(model.getItems(), content -> bindChildNode(projector, content));
@@ -26,7 +30,7 @@ public class GridPaneFactory implements ProjectorNodeFactory<GridPaneModel, Grid
     }
 
     private Node bindChildNode(final Projector projector, final GridPaneItemModel model) {
-        Node child = projector.createNode(model.getItem());
+        final Node child = projector.createNode(model.getItem());
         GridPane.setRowIndex(child, model.getRow());
         GridPane.setColumnIndex(child, model.getCol());
         GridPane.setRowSpan(child, model.getRowSpan());
