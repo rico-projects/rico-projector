@@ -5,6 +5,7 @@ import dev.rico.client.projector.spi.ProjectorNodeFactory;
 import dev.rico.internal.client.projector.mixed.ListCellSkin;
 import dev.rico.internal.client.projector.uimanager.ClientUiHelper;
 import dev.rico.internal.client.projector.uimanager.UnexpectedErrorDialog;
+import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.listview.ListViewItemModel;
 import dev.rico.internal.projector.ui.listview.ListViewModel;
 import javafx.scene.control.ListView;
@@ -19,6 +20,9 @@ public class ListViewFactory implements ProjectorNodeFactory<ListViewModel, List
 
     @Override
     public ListView<ListViewItemModel> create(final Projector projector, final ListViewModel model) {
+        Assert.requireNonNull(projector, "projector");
+        Assert.requireNonNull(model, "model");
+
         ListView<ListViewItemModel> listView = new ListView<>();
         bind(listView.getItems()).to(model.getItems());
         ClientUiHelper.bindWithSelectionModel(model.selectedProperty(), listView.getSelectionModel());

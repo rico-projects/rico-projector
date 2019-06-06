@@ -2,6 +2,7 @@ package to.remove.factories;
 
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorNodeFactory;
+import dev.rico.internal.core.Assert;
 import org.controlsfx.control.NotificationPane;
 import to.remove.ui.NotificationPaneModel;
 
@@ -11,6 +12,9 @@ public class NotificationPaneFactory implements ProjectorNodeFactory<Notificatio
 
     @Override
     public NotificationPane create(final Projector projector, final NotificationPaneModel model) {
+        Assert.requireNonNull(projector, "projector");
+        Assert.requireNonNull(model, "model");
+
         NotificationPane pane = new NotificationPane();
         bind(pane.contentProperty()).to(model.contentProperty(), projector::createNode);
         bind(pane.textProperty()).to(model.textProperty());

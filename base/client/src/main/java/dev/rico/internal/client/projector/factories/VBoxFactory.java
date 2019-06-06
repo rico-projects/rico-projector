@@ -2,6 +2,7 @@ package dev.rico.internal.client.projector.factories;
 
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorNodeFactory;
+import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.box.VBoxModel;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
@@ -12,6 +13,9 @@ public class VBoxFactory implements ProjectorNodeFactory<VBoxModel, VBox> {
 
     @Override
     public VBox create(final Projector projector, final VBoxModel model) {
+        Assert.requireNonNull(projector, "projector");
+        Assert.requireNonNull(model, "model");
+
         VBox vBox = new VBox();
         bind(vBox.spacingProperty()).to(model.spacingProperty(), value -> getValue(value, 0));
         bind(vBox.alignmentProperty()).to(model.alignmentProperty());
