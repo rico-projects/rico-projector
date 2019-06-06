@@ -3,6 +3,7 @@ package dev.rico.internal.client.projector;
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorNodeFactory;
 import dev.rico.client.remoting.ControllerProxy;
+import dev.rico.internal.projector.ui.IdentifiableModel;
 import dev.rico.internal.projector.ui.ItemModel;
 import dev.rico.internal.projector.ui.ManagedUiModel;
 import javafx.scene.Node;
@@ -10,12 +11,17 @@ import javafx.scene.Node;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.WeakHashMap;
 
 public class JavaFXProjectorImpl implements Projector {
 
     private final ControllerProxy<? extends ManagedUiModel> controllerProxy;
 
     private final Map<Class<? extends ItemModel>, ProjectorNodeFactory> factories;
+
+    //TODO: REFACTOR
+    private final WeakHashMap<IdentifiableModel, Node> modelToNodeMap = new WeakHashMap<>();
+
 
     public JavaFXProjectorImpl(final ControllerProxy<? extends ManagedUiModel> controllerProxy) {
         this.controllerProxy = controllerProxy;
@@ -43,5 +49,9 @@ public class JavaFXProjectorImpl implements Projector {
     @Override
     public ControllerProxy<? extends ManagedUiModel> getControllerProxy() {
         return controllerProxy;
+    }
+
+    public WeakHashMap<IdentifiableModel, Node> getModelToNodeMap() {
+        return modelToNodeMap;
     }
 }
