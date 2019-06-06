@@ -19,13 +19,17 @@ public class ImageViewFactory implements ProjectorNodeFactory<ImageViewModel, Im
 
         final ImageView imageView = new ImageView();
 
-        final Converter<String, Image> imageConverter = v -> v == null ? null : new Image(Image.class.getResource(v.substring("classpath:".length())).toExternalForm());
+        final Converter<String, Image> imageConverter = v -> getImageForPath(v);
         bind(imageView.imageProperty()).to(model.resourcePathProperty(), imageConverter);
-        bind(imageView.preserveRatioProperty()).to(model.preserveRatioProperty(), value -> value == null ? true : value);
+        bind(imageView.preserveRatioProperty()).to(model.preserveRatioProperty(), value -> getValue(value, true));
         bind(imageView.fitWidthProperty()).to(model.fitWidthProperty());
         bind(imageView.fitHeightProperty()).to(model.fitHeightProperty());
 
         return imageView;
+    }
+
+    private Image getImageForPath(final String v) {
+        return v == null ? null : new Image(Image.class.getResource(v.substring("classpath:".length())).toExternalForm());
     }
 
     @Override

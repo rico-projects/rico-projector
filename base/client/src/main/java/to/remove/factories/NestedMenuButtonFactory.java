@@ -6,6 +6,9 @@ import dev.rico.internal.client.projector.factories.ButtonBaseFactory;
 import dev.rico.internal.client.projector.uimanager.ClientUiManager;
 import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.menuitem.MenuItemModel;
+import dev.rico.remoting.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import to.remove.ui.nestedmenubutton.NestedMenuButtonModel;
@@ -34,14 +37,19 @@ public class NestedMenuButtonFactory extends ButtonBaseFactory<NestedMenuButtonM
         final ClientUiManager.PostProcessor postProcessor = projector.getPostProcessor();
         Assert.requireNonNull(postProcessor, "postProcessor");
 
-        if (model.getItems().isEmpty()) {
+        final ObservableList<MenuItemModel> items = model.getItems();
+        Assert.requireNonNull(items, "items");
+
+        if (items.isEmpty()) {
             final MenuItem menuItem = new MenuItem();
             bind(menuItem.graphicProperty()).to(model.graphicProperty(), v -> projector.createNode(v));
             bind(menuItem.textProperty()).to(model.captionProperty());
             menuItem.setOnAction(event -> {
                 if (event.getTarget() == menuItem) {
                     event.consume();
-                    createOnActionHandler("buttonClick", model, projector).handle(event);
+                    final EventHandler<ActionEvent> actionHandler = createOnActionHandler("buttonClick", model, projector);
+                    Assert.requireNonNull(actionHandler, "actionHandler");
+                    actionHandler.handle(event);
                 }
             });
             postProcessor.postProcess(model.getId(), model, menuItem);
@@ -52,12 +60,14 @@ public class NestedMenuButtonFactory extends ButtonBaseFactory<NestedMenuButtonM
                 if (event.getTarget() == menu) {
                     event.consume();
                     menu.getParentPopup().hide();
-                    createOnActionHandler("buttonClick", model, projector).handle(event);
+                    final EventHandler<ActionEvent> actionHandler = createOnActionHandler("buttonClick", model, projector);
+                    Assert.requireNonNull(actionHandler, "actionHandler");
+                    actionHandler.handle(event);
                 }
             });
             bind(menu.graphicProperty()).to(model.graphicProperty(), v -> projector.createNode(v));
             bind(menu.textProperty()).to(model.captionProperty());
-            bind(menu.getItems()).to(model.getItems(), v -> createNestedMenuItem(projector, v));
+            bind(menu.getItems()).to(items, v -> createNestedMenuItem(projector, v));
             postProcessor.postProcess(model.getId(), model, menu);
             return menu;
         }

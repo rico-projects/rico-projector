@@ -23,7 +23,7 @@ public class ListViewFactory implements ProjectorNodeFactory<ListViewModel, List
         Assert.requireNonNull(projector, "projector");
         Assert.requireNonNull(model, "model");
 
-        ListView<ListViewItemModel> listView = new ListView<>();
+        final ListView<ListViewItemModel> listView = new ListView<>();
         bind(listView.getItems()).to(model.getItems());
         ClientUiHelper.bindWithSelectionModel(model.selectedProperty(), listView.getSelectionModel());
         if (model.getSelectedAction() != null) {

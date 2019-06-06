@@ -11,6 +11,8 @@ import dev.rico.internal.projector.ui.ManagedUiModel;
 import dev.rico.internal.projector.ui.ToggleButtonModel;
 import javafx.scene.control.ToggleButton;
 
+import java.util.concurrent.CompletableFuture;
+
 import static dev.rico.client.remoting.FXBinder.bind;
 
 public class ToggleButtonFactory implements ProjectorNodeFactory<ToggleButtonModel, ToggleButton> {
@@ -30,9 +32,13 @@ public class ToggleButtonFactory implements ProjectorNodeFactory<ToggleButtonMod
         button.setOnAction(event -> {
             event.consume();
             if (Strings.isNullOrEmpty(model.getAction())) {
-                controllerProxy.invoke("onToggleButtonAction", new Param("model", model), new Param("selected", button.isSelected())).exceptionally(throwable -> UnexpectedErrorDialog.showError(button, throwable));
+                final CompletableFuture<Void> actionInvocation = controllerProxy.invoke("onToggleButtonAction", new Param("model", model), new Param("selected", button.isSelected()));
+                Assert.requireNonNull(actionInvocation, "actionInvocation");
+                actionInvocation.exceptionally(throwable -> UnexpectedErrorDialog.showError(button, throwable));
             } else {
-                controllerProxy.invoke(model.getAction()).exceptionally(throwable -> UnexpectedErrorDialog.showError(button, throwable));
+                final CompletableFuture<Void> actionInvocation = controllerProxy.invoke(model.getAction());
+                Assert.requireNonNull(actionInvocation, "actionInvocation");
+                actionInvocation.exceptionally(throwable -> UnexpectedErrorDialog.showError(button, throwable));
             }
         });
         return button;

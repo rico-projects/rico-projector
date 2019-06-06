@@ -15,7 +15,7 @@ public class ToolBarFactory implements ProjectorNodeFactory<ToolBarModel, ToolBa
         Assert.requireNonNull(projector, "projector");
         Assert.requireNonNull(model, "model");
 
-        ToolBar toolBar = new ToolBar();
+        final ToolBar toolBar = new ToolBar();
         bind(toolBar.getItems()).to(model.getItems(), projector::createNode);
         return toolBar;
     }

@@ -16,11 +16,11 @@ public class VBoxFactory implements ProjectorNodeFactory<VBoxModel, VBox> {
         Assert.requireNonNull(projector, "projector");
         Assert.requireNonNull(model, "model");
 
-        VBox vBox = new VBox();
+        final VBox vBox = new VBox();
         bind(vBox.spacingProperty()).to(model.spacingProperty(), value -> getValue(value, 0));
         bind(vBox.alignmentProperty()).to(model.alignmentProperty());
         bind(vBox.getChildren()).to(model.getItems(), content -> {
-            Node child = projector.createNode(content.getItem());
+            final Node child = projector.createNode(content.getItem());
             VBox.setVgrow(child, content.getvGrow());
             return child;
         });

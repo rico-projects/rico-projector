@@ -34,6 +34,7 @@ public class MenuButtonFactory implements ProjectorNodeFactory<MenuButtonModel, 
     }
 
     private MenuItem createMenuItem(final Projector projector, MenuButtonItemModel model) {
+        Assert.requireNonNull(projector, "projector");
         Assert.requireNonNull(model, "model");
 
         final ControllerProxy<? extends ManagedUiModel> controllerProxy = projector.getControllerProxy();

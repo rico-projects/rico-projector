@@ -15,7 +15,7 @@ public class NotificationPaneFactory implements ProjectorNodeFactory<Notificatio
         Assert.requireNonNull(projector, "projector");
         Assert.requireNonNull(model, "model");
 
-        NotificationPane pane = new NotificationPane();
+        final NotificationPane pane = new NotificationPane();
         bind(pane.contentProperty()).to(model.contentProperty(), projector::createNode);
         bind(pane.textProperty()).to(model.textProperty());
         model.textProperty().onChanged(evt -> {

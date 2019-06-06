@@ -11,10 +11,7 @@ public class ListSelectionViewFactory implements ProjectorNodeFactory<ListSelect
 
 
     @Override
-    public ListSelectionView<ListSelectionViewItemModel> create(Projector projector, ListSelectionViewModel model) {
-        Assert.requireNonNull(projector, "projector");
-        Assert.requireNonNull(model, "model");
-
+    public ListSelectionView<ListSelectionViewItemModel> create(final Projector projector, final ListSelectionViewModel model) {
         return new ListSelectionView<>();
     }
 

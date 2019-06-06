@@ -6,8 +6,9 @@ import dev.rico.internal.projector.ui.DateTimeFieldModel;
 import to.remove.uimanager.DateTimeField;
 
 public class DateTimeFieldFactory implements ProjectorNodeFactory<DateTimeFieldModel, DateTimeField> {
+
     @Override
-    public DateTimeField create(Projector projector, DateTimeFieldModel model) {
+    public DateTimeField create(final Projector projector, final DateTimeFieldModel model) {
         return new DateTimeField(model);
     }
 

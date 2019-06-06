@@ -14,6 +14,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 
 import java.util.WeakHashMap;
+import java.util.concurrent.CompletableFuture;
 
 public interface ActionHandlerFactory {
 
@@ -27,16 +28,33 @@ public interface ActionHandlerFactory {
             Assert.requireNonNull(modelToNodeMap, "modelToNodeMap");
 
             event.consume();
+
             if (identifiableModel instanceof ButtonModel && ((ButtonModel) identifiableModel).getAction() != null) {
-                String action = ((ButtonModel) identifiableModel).getAction();
-                controllerProxy.invoke(action).exceptionally(throwable -> UnexpectedErrorDialog.showError(modelToNodeMap.get(identifiableModel), throwable));
-                controllerProxy.invoke(type, new Param("button", identifiableModel)).exceptionally(throwable -> UnexpectedErrorDialog.showError(modelToNodeMap.get(identifiableModel), throwable));
+                final String action = ((ButtonModel) identifiableModel).getAction();
+
+                final CompletableFuture<Void> actionInvocation = controllerProxy.invoke(action);
+                Assert.requireNonNull(actionInvocation, "actionInvocation");
+                actionInvocation.exceptionally(throwable -> UnexpectedErrorDialog.showError(modelToNodeMap.get(identifiableModel), throwable));
+
+                final CompletableFuture<Void> typeInvocation = controllerProxy.invoke(type, new Param("button", identifiableModel));
+                Assert.requireNonNull(typeInvocation, "typeInvocation");
+                typeInvocation.exceptionally(throwable -> UnexpectedErrorDialog.showError(modelToNodeMap.get(identifiableModel), throwable));
+
             } else if (identifiableModel instanceof ToggleItemModel && ((ToggleItemModel) identifiableModel).getAction() != null) {
-                String action = ((ToggleItemModel) identifiableModel).getAction();
-                controllerProxy.invoke(action).exceptionally(throwable -> UnexpectedErrorDialog.showError(modelToNodeMap.get(identifiableModel), throwable));
-                controllerProxy.invoke(type, new Param("button", identifiableModel)).exceptionally(throwable -> UnexpectedErrorDialog.showError(modelToNodeMap.get(identifiableModel), throwable));
+                final String action = ((ToggleItemModel) identifiableModel).getAction();
+
+                final CompletableFuture<Void> actionInvocation = controllerProxy.invoke(action);
+                Assert.requireNonNull(actionInvocation, "actionInvocation");
+                actionInvocation.exceptionally(throwable -> UnexpectedErrorDialog.showError(modelToNodeMap.get(identifiableModel), throwable));
+
+                final CompletableFuture<Void> typeInvocation = controllerProxy.invoke(type, new Param("button", identifiableModel));
+                Assert.requireNonNull(typeInvocation, "typeInvocation");
+                typeInvocation.exceptionally(throwable -> UnexpectedErrorDialog.showError(modelToNodeMap.get(identifiableModel), throwable));
+
             } else {
-                controllerProxy.invoke(type, new Param("button", identifiableModel)).exceptionally(throwable -> UnexpectedErrorDialog.showError(modelToNodeMap.get(identifiableModel), throwable));
+                final CompletableFuture<Void> typeInvocation = controllerProxy.invoke(type, new Param("button", identifiableModel));
+                Assert.requireNonNull(typeInvocation, "typeInvocation");
+                typeInvocation.exceptionally(throwable -> UnexpectedErrorDialog.showError(modelToNodeMap.get(identifiableModel), throwable));
             }
         };
     }

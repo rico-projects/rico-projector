@@ -10,9 +10,6 @@ public class CardPaneFactory implements ProjectorNodeFactory<CardPaneModel, Card
 
     @Override
     public CardPane create(final Projector projector, final CardPaneModel model) {
-        Assert.requireNonNull(projector, "projector");
-        Assert.requireNonNull(model, "model");
-
         return new CardPane(model);
     }
 

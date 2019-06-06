@@ -10,9 +10,6 @@ public class CheckListViewFactory implements ProjectorNodeFactory<CheckListViewM
 
     @Override
     public CheckListView create(final Projector projector, final CheckListViewModel model) {
-        Assert.requireNonNull(projector, "projector");
-        Assert.requireNonNull(model, "model");
-
         return new CheckListView(model);
     }
 

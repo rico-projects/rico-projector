@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class UploadButtonFactory extends ButtonBaseFactory<UploadButtonModel, ButtonBase> {
     @Override
     public ButtonBase create(Projector projector, UploadButtonModel itemModel) {
-        ButtonBase button = createButtonBase(projector, itemModel, new Button());
+        final ButtonBase button = createButtonBase(projector, itemModel, new Button());
         button.setOnAction(event -> onDoUpload(projector, event, itemModel));
         return button;
     }
@@ -31,18 +31,18 @@ public class UploadButtonFactory extends ButtonBaseFactory<UploadButtonModel, Bu
         return null;
     }
 
-    private void onDoUpload(Projector projector, ActionEvent actionEvent, UploadButtonModel uploadButton) {
+    private void onDoUpload(final Projector projector, final ActionEvent actionEvent, final UploadButtonModel uploadButton) {
         Assert.requireNonNull(uploadButton.getUploadUrl(), "buttonModel.uploadUrl");
-        Button sourceButton = (Button) actionEvent.getSource();
-        FileChooser chooser = new FileChooser();
-        File loadFile = chooser.showOpenDialog(sourceButton.getScene().getWindow());
+        final Button sourceButton = (Button) actionEvent.getSource();
+        final FileChooser chooser = new FileChooser();
+        final File loadFile = chooser.showOpenDialog(sourceButton.getScene().getWindow());
         if (loadFile != null && loadFile.exists() && loadFile.isFile() && !loadFile.isDirectory()) {
             try {
-                DocumentData documentData = DocumentData.from(loadFile);
-                Object detectedMimeType = documentData.getMimeType();
+                final DocumentData documentData = DocumentData.from(loadFile);
+                final Object detectedMimeType = documentData.getMimeType();
                 if (detectedMimeType == null || uploadButton.getAllowedMimeTypes().stream()
                         .noneMatch(mimeType -> mimeType.equals(detectedMimeType.toString()))) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    final Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setHeaderText("Das Dokument kann nicht verarbeitet werden.");
                     String allowedOnes = uploadButton.getAllowedMimeTypes().stream().collect(Collectors.joining("\n- ", "- ", ""));
                     if ("- ".equals(allowedOnes)) {
@@ -56,12 +56,12 @@ public class UploadButtonFactory extends ButtonBaseFactory<UploadButtonModel, Bu
                         doRemoteCall(projector, uploadButton.getOnUploadBeginAction());
                     }
                     sourceButton.setDisable(true);
-                    HttpClient httpClient = Client.getService(HttpClient.class);
+                    final HttpClient httpClient = Client.getService(HttpClient.class);
                     httpClient.put(uploadButton.getUploadUrl())
                             .withContent(documentData.getContent())
                             .readString().onError(e -> {
                         sourceButton.setDisable(false);
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        final Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setHeaderText("Das Dokument wurde nicht gespeichert.");
                         alert.setContentText("Die Dokumentenverwaltung konnte das Dokument nicht im System ablegen.");
                         alert.showAndWait();
@@ -76,14 +76,14 @@ public class UploadButtonFactory extends ButtonBaseFactory<UploadButtonModel, Bu
                         }
                     }).execute();
                 }
-            } catch (IOException exception) {
+            } catch (final IOException exception) {
                 exception.printStackTrace();
                 throw new IllegalArgumentException(exception);
             }
         }
     }
 
-    private void doRemoteCall(Projector projector, String remoteAction) {
+    private void doRemoteCall(final Projector projector, final String remoteAction) {
         Objects.requireNonNull(remoteAction);
         projector.getControllerProxy().invoke(remoteAction)
                 .exceptionally(throwable -> UnexpectedErrorDialog.showError(projector.getRoot(), throwable));
