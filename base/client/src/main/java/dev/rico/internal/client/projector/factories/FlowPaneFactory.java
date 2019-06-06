@@ -1,14 +1,11 @@
 package dev.rico.internal.client.projector.factories;
 
+import static dev.rico.client.remoting.FXBinder.bind;
+
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorNodeFactory;
-import dev.rico.internal.projector.ui.flowpane.FlowPaneItemModel;
 import dev.rico.internal.projector.ui.flowpane.FlowPaneModel;
-import dev.rico.internal.projector.ui.tabpane.TabPaneModel;
-import javafx.scene.control.TabPane;
 import javafx.scene.layout.FlowPane;
-
-import static dev.rico.client.remoting.FXBinder.bind;
 
 public class FlowPaneFactory implements ProjectorNodeFactory<FlowPaneModel, FlowPane> {
 
