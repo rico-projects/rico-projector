@@ -10,6 +10,7 @@ import dev.rico.internal.projector.ui.ManagedUiModel;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
+import org.jpedal.parser.shape.N;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,9 +32,9 @@ public class JavaFXProjectorImpl implements Projector {
         this.controllerProxy = controllerProxy;
 
         factories = new HashMap<>();
-//        try {
-            ServiceLoader<ProjectorNodeFactory> factories = ServiceLoader.load(ProjectorNodeFactory.class);
-            for (ProjectorNodeFactory factory : factories) {
+        try {
+            ServiceLoader<ProjectorNodeFactory> serviceLoader = ServiceLoader.load(ProjectorNodeFactory.class);
+            for (ProjectorNodeFactory factory : serviceLoader) {
                 final Class<? extends ItemModel> type = factory.getSupportedType();
                 if (type == null) {
                     throw new IllegalStateException("ProjectorNodeFactory implementation '" + factory.getClass() + "' method getSupportedType() must not return 'null'");
@@ -43,9 +44,9 @@ public class JavaFXProjectorImpl implements Projector {
                 }
                 this.factories.put(type, factory);
             }
-//        } catch (Throwable e) {
-//            e.printStackTrace();
-//        }
+        } catch (final Exception e) {
+            throw new RuntimeException("Error in loading ui component factories", e);
+        }
 
         ManagedUiModel model = controllerProxy.getModel();
         model.rootProperty().onChanged(evt -> updateUiRoot(evt.getNewValue()));
