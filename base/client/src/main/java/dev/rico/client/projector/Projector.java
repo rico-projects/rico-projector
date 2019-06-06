@@ -11,6 +11,8 @@ import java.util.WeakHashMap;
 
 public interface Projector {
 
+    Node getRoot();
+
     <N extends Node> N createNode(ItemModel itemModel);
 
     ControllerProxy<? extends ManagedUiModel> getControllerProxy();
