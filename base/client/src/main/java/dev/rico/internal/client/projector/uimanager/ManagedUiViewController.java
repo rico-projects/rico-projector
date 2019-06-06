@@ -1,9 +1,10 @@
 package dev.rico.internal.client.projector.uimanager;
 
-import dev.rico.internal.client.projector.mixed.ClientContextHolder;
-import dev.rico.internal.client.projector.uimanager.presenter.ViewPresenter;
+import dev.rico.client.projector.PostProcessor;
 import dev.rico.client.remoting.FXBinder;
 import dev.rico.client.remoting.view.AbstractViewController;
+import dev.rico.internal.client.projector.mixed.ClientContextHolder;
+import dev.rico.internal.client.projector.uimanager.presenter.ViewPresenter;
 import dev.rico.internal.projector.ui.ManagedUiModel;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -71,7 +72,7 @@ public class ManagedUiViewController<M extends ManagedUiModel> extends AbstractV
         }
     }
 
-    protected ClientUiManager.PostProcessor newPostProcessor() {
+    protected PostProcessor newPostProcessor() {
         return null;
     }
 

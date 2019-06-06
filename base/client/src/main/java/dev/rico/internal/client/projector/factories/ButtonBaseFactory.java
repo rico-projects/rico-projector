@@ -1,34 +1,26 @@
 package dev.rico.internal.client.projector.factories;
 
-import static dev.rico.client.remoting.FXBinder.bind;
-import static java.util.Objects.requireNonNull;
-
-import java.net.URL;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.WeakHashMap;
-import java.util.function.Consumer;
-
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorNodeFactory;
 import dev.rico.client.remoting.FXBinder;
-import dev.rico.client.remoting.Param;
-import dev.rico.internal.client.projector.uimanager.ClientUiManager;
-import dev.rico.internal.client.projector.uimanager.UnexpectedErrorDialog;
 import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.mixed.CommonUiHelper;
 import dev.rico.internal.projector.ui.ButtonModel;
-import dev.rico.internal.projector.ui.IdentifiableModel;
-import dev.rico.internal.projector.ui.ToggleItemModel;
 import dev.rico.remoting.Property;
 import javafx.beans.property.ObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
+
+import java.net.URL;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.function.Consumer;
+
+import static dev.rico.client.remoting.FXBinder.bind;
+import static java.util.Objects.requireNonNull;
 
 public abstract class ButtonBaseFactory<T extends ButtonModel, S extends ButtonBase> implements ProjectorNodeFactory<T, S>, ActionHandlerFactory {
 
@@ -90,7 +82,7 @@ public abstract class ButtonBaseFactory<T extends ButtonModel, S extends ButtonB
     private void createImage(final String imagePath, final T model, final S node) {
         if (imagePath != null) {
             final String newImagePath = "/image/" + imagePath;
-            final URL resource = ClientUiManager.class.getResource(newImagePath);
+            final URL resource = ButtonBaseFactory.class.getResource(newImagePath);
             requireNonNull(resource, "Could not find classpath resource '" + newImagePath + "'");
             final ImageView graphic = new ImageView(new javafx.scene.image.Image(resource.toExternalForm()));
             graphic.setPreserveRatio(true);

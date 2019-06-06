@@ -2,7 +2,7 @@ package to.remove;
 
 import dev.rico.client.remoting.ControllerProxy;
 import dev.rico.core.functional.Binding;
-import dev.rico.internal.client.projector.uimanager.ClientUiManager;
+import dev.rico.internal.client.projector.uimanager.ObsoleteClientUiManager;
 import dev.rico.internal.projector.ui.ItemModel;
 import dev.rico.internal.projector.ui.ManagedUiModel;
 import dev.rico.internal.projector.ui.menuitem.MenuItemModel;
@@ -32,7 +32,7 @@ import static dev.rico.client.remoting.FXBinder.bind;
 import static dev.rico.client.remoting.FXWrapper.wrapStringProperty;
 import static dev.rico.internal.client.projector.uimanager.TextField.configureTextInputControl;
 
-public class SproutsClientUiManager extends ClientUiManager {
+public class SproutsClientUiManager extends ObsoleteClientUiManager {
     public SproutsClientUiManager(ControllerProxy<? extends ManagedUiModel> controllerProxy) {
         super(controllerProxy);
     }

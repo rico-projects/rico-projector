@@ -7,6 +7,7 @@ import dev.rico.client.remoting.ControllerProxy;
 import dev.rico.internal.projector.ui.IdentifiableModel;
 import dev.rico.internal.projector.ui.ItemModel;
 import dev.rico.internal.projector.ui.ManagedUiModel;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
 
@@ -32,12 +33,41 @@ public class JavaFXProjectorImpl implements Projector {
         factories = new HashMap<>();
         ServiceLoader.load(ProjectorNodeFactory.class).iterator().forEachRemaining(f -> {
             final Class<? extends ItemModel> type = f.getSupportedType();
-            if(factories.containsKey(type)) {
+            if (factories.containsKey(type)) {
                 throw new IllegalStateException("Modeltype " + type + " is already defined by factory");
             }
             factories.put(f.getSupportedType(), f);
         });
 
+        ManagedUiModel model = controllerProxy.getModel();
+        model.rootProperty().onChanged(evt -> updateUiRoot(evt.getNewValue()));
+        updateUiRoot(model.getRoot());
+
+        model.dialogProperty().onChanged(event -> Platform.runLater(() -> {
+//            ItemModel oldDialog = event.getOldValue();
+//            ItemModel newDialog = event.getNewValue();
+//            if (newDialog instanceof CustomDialogModel) {
+//                createCustomDialog((CustomDialogModel) newDialog);
+//            } else if (newDialog instanceof SaveFileDialogModel) {
+//                createSaveFileDialog((SaveFileDialogModel) newDialog);
+//            } else if (newDialog instanceof InfoDialogModel) {
+//                createInfoDialog((InfoDialogModel) newDialog);
+//            } else if (newDialog instanceof ConfirmationDialogModel) {
+//                createConfirmationDialog((ConfirmationDialogModel) newDialog);
+//            } else if (newDialog instanceof UnexpectedErrorDialogModel) {
+//                createUnexpectedErrorDialog((UnexpectedErrorDialogModel) newDialog);
+//            } else if (newDialog instanceof QualifiedErrorDialogModel) {
+//                createQualifiedErrorDialog((QualifiedErrorDialogModel) newDialog);
+//            } else if (newDialog instanceof ShutdownDialogModel
+//                    && !(oldDialog instanceof ShutdownDialogModel)) {
+//                // Die if-Abfrage verhindert endlose Stapel mit ShutDown-Dialogen!
+//                createShutdownDialog((ShutdownDialogModel) newDialog);
+//            }
+        }));
+    }
+
+    private void updateUiRoot(ItemModel itemModel) {
+        root.set(createNode(itemModel));
     }
 
     public Node getRoot() {
@@ -51,7 +81,7 @@ public class JavaFXProjectorImpl implements Projector {
     @Override
     public <N extends Node> N createNode(final ItemModel itemModel) {
         final ProjectorNodeFactory factory = factories.get(itemModel.getClass());
-        if(factory == null) {
+        if (factory == null) {
             throw new IllegalArgumentException("No factory found for " + itemModel.getClass());
         }
         return (N) factory.create(this, itemModel);
