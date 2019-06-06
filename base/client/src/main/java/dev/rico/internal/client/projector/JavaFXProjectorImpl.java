@@ -1,12 +1,17 @@
 package dev.rico.internal.client.projector;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.ServiceLoader;
+import java.util.WeakHashMap;
+
 import dev.rico.client.projector.PostProcessor;
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorDialogHandler;
 import dev.rico.client.projector.spi.ProjectorNodeFactory;
 import dev.rico.client.projector.spi.TypeBasedProvider;
 import dev.rico.client.remoting.ControllerProxy;
-import dev.rico.internal.client.projector.uimanager.ObsoleteClientUiManager;
 import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.IdentifiableModel;
 import dev.rico.internal.projector.ui.ItemModel;
@@ -15,13 +20,6 @@ import dev.rico.internal.projector.ui.dialog.DialogModel;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
-import org.jpedal.parser.shape.S;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.ServiceLoader;
-import java.util.WeakHashMap;
 
 public class JavaFXProjectorImpl implements Projector {
 
@@ -67,7 +65,7 @@ public class JavaFXProjectorImpl implements Projector {
         Assert.requireNonNull(serviceClass, "serviceClass");
         final Map<Class<? extends T>, S> map = new HashMap<>();
         final ServiceLoader<S> serviceLoader = ServiceLoader.load(serviceClass);
-        for (S provider : serviceLoader) {
+        for (final S provider : serviceLoader) {
             final Class<? extends T> type = provider.getSupportedType();
             if (type == null) {
                 throw new IllegalStateException("Supported type of " + serviceClass.getSimpleName() + " implementation '" + provider.getClass() + "' must not be 'null'");
@@ -107,7 +105,7 @@ public class JavaFXProjectorImpl implements Projector {
         return controllerProxy;
     }
 
-    public WeakHashMap<IdentifiableModel, Node> getModelToNodeMap() {
+    public Map<IdentifiableModel, Node> getModelToNodeMap() {
         return modelToNodeMap;
     }
 

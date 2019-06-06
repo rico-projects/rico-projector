@@ -7,23 +7,20 @@ import dev.rico.internal.projector.ui.ItemModel;
 import dev.rico.internal.projector.ui.ManagedUiModel;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
-import to.remove.DolphinEventHandler;
-
-import java.util.function.Function;
 
 public class ClientUiManager {
 
-    private JavaFXProjectorImpl projector;
+    private final JavaFXProjectorImpl projector;
 
-    public ClientUiManager(ControllerProxy<? extends ManagedUiModel> controllerProxy) {
-        this(controllerProxy, null, null, null);
+    public ClientUiManager(final ControllerProxy<? extends ManagedUiModel> controllerProxy) {
+        this(controllerProxy, null);
     }
 
-    public ClientUiManager(ControllerProxy<? extends ManagedUiModel> controllerProxy, DolphinEventHandler handler, PostProcessor postProcessor, Function<String, Node> customComponentSupplier) {
-        projector = new JavaFXProjectorImpl(controllerProxy);
+    public ClientUiManager(final ControllerProxy<? extends ManagedUiModel> controllerProxy, final PostProcessor postProcessor) {
+        projector = new JavaFXProjectorImpl(controllerProxy, postProcessor);
     }
 
-    public Node createNode(ItemModel itemModel) {
+    public Node createNode(final ItemModel itemModel) {
         return projector.createNode(itemModel);
     }
 

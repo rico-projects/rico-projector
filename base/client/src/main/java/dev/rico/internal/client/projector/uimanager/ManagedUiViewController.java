@@ -1,5 +1,7 @@
 package dev.rico.internal.client.projector.uimanager;
 
+import java.net.URL;
+
 import dev.rico.client.projector.PostProcessor;
 import dev.rico.client.remoting.FXBinder;
 import dev.rico.client.remoting.view.AbstractViewController;
@@ -13,14 +15,11 @@ import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Window;
 
-import java.net.URL;
-import java.util.function.Function;
-
 public class ManagedUiViewController<M extends ManagedUiModel> extends AbstractViewController<M> implements ViewPresenter {
     private final BorderPane pane = new BorderPane();
     private ClientUiManager factory;
 
-    public ManagedUiViewController(String controllerName) {
+    public ManagedUiViewController(final String controllerName) {
         super(ClientContextHolder.getContext(), controllerName);
     }
 
@@ -29,10 +28,10 @@ public class ManagedUiViewController<M extends ManagedUiModel> extends AbstractV
         try {
             FXBinder.bind(isWorkingProperty()).to(getModel().isWorkingProperty());
             addCSSIfAvailable(pane);
-            factory = new ClientUiManager(getControllerProxy(), null, newPostProcessor(), newCustomComponentSupplier());
+            factory = new ClientUiManager(getControllerProxy(), newPostProcessor());
             installEventHandler();
             pane.centerProperty().bind(factory.rootProperty());
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
             throw e;
         }
@@ -64,10 +63,10 @@ public class ManagedUiViewController<M extends ManagedUiModel> extends AbstractV
 //        });
     }
 
-    private void addCSSIfAvailable(Parent parent) {
-        URL uri = this.getClass().getResource(this.getStyleSheetName());
+    private void addCSSIfAvailable(final Parent parent) {
+        final URL uri = this.getClass().getResource(this.getStyleSheetName());
         if (uri != null) {
-            String uriToCss = uri.toExternalForm();
+            final String uriToCss = uri.toExternalForm();
             parent.getStylesheets().add(uriToCss);
         }
     }
@@ -76,15 +75,11 @@ public class ManagedUiViewController<M extends ManagedUiModel> extends AbstractV
         return null;
     }
 
-    protected Function<String, Node> newCustomComponentSupplier() {
-        return null;
-    }
-
     private String getStyleSheetName() {
         return this.getResourceCamelOrLowerCase(false, ".css");
     }
 
-    private String getResourceCamelOrLowerCase(boolean mandatory, String ending) {
+    private String getResourceCamelOrLowerCase(final boolean mandatory, final String ending) {
         String name = this.getConventionalName(true, ending);
         URL found = this.getClass().getResource(name);
         if (found != null) {
@@ -94,7 +89,7 @@ public class ManagedUiViewController<M extends ManagedUiModel> extends AbstractV
             name = this.getConventionalName(false, ending);
             found = this.getClass().getResource(name);
             if (mandatory && found == null) {
-                String message = "Cannot load file " + name;
+                final String message = "Cannot load file " + name;
                 System.err.println(message);
                 System.err.println("Stopping initialization phase...");
                 throw new IllegalStateException(message);
@@ -104,12 +99,12 @@ public class ManagedUiViewController<M extends ManagedUiModel> extends AbstractV
         }
     }
 
-    private String getConventionalName(boolean lowercase, String ending) {
+    private String getConventionalName(final boolean lowercase, final String ending) {
         return this.getConventionalName(lowercase) + ending;
     }
 
-    private String getConventionalName(boolean lowercase) {
-        String clazzWithEnding = this.getClass().getSimpleName();
+    private String getConventionalName(final boolean lowercase) {
+        final String clazzWithEnding = this.getClass().getSimpleName();
         String clazz = stripEnding(clazzWithEnding);
         if (lowercase) {
             clazz = clazz.toLowerCase();
@@ -118,22 +113,22 @@ public class ManagedUiViewController<M extends ManagedUiModel> extends AbstractV
         return clazz;
     }
 
-    private static String stripEnding(String clazz) {
+    private static String stripEnding(final String clazz) {
         if (!clazz.endsWith("ViewPresenter")) {
             return clazz;
         } else {
-            int viewIndex = clazz.lastIndexOf("ViewPresenter");
+            final int viewIndex = clazz.lastIndexOf("ViewPresenter");
             return clazz.substring(0, viewIndex);
         }
     }
 
     @Override
-    protected void onInitializationException(Throwable throwable) {
+    protected void onInitializationException(final Throwable throwable) {
         showError(throwable);
     }
 
     @Override
-    protected void onInvocationException(Throwable throwable) {
+    protected void onInvocationException(final Throwable throwable) {
         showError(throwable);
     }
 
@@ -149,9 +144,9 @@ public class ManagedUiViewController<M extends ManagedUiModel> extends AbstractV
         return null;
     }
 
-    protected void showError(Throwable throwable) {
+    protected void showError(final Throwable throwable) {
         Platform.runLater(() -> {
-            UnexpectedErrorDialog unexpectedErrorDialog = new UnexpectedErrorDialog();
+            final UnexpectedErrorDialog unexpectedErrorDialog = new UnexpectedErrorDialog();
             unexpectedErrorDialog.setStackTrace(throwable);
             unexpectedErrorDialog.showAndWait();
         });
@@ -163,7 +158,7 @@ public class ManagedUiViewController<M extends ManagedUiModel> extends AbstractV
 
     @Override
     public SimpleBooleanProperty isWorkingProperty() {
-        SimpleBooleanProperty result = new SimpleBooleanProperty(true);
+        final SimpleBooleanProperty result = new SimpleBooleanProperty(true);
         modelProperty().addListener(observable -> {
             result.set(getModel().getIsWorking());
             getModel().isWorkingProperty().onChanged(evt -> result.setValue(evt.getNewValue()));
