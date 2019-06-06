@@ -1,15 +1,42 @@
 package dev.rico.internal.server.projector;
 
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Function;
+
 import dev.rico.internal.projector.mixed.CommonUiHelper;
-import to.remove.DocumentData;
-import dev.rico.internal.projector.ui.*;
+import dev.rico.internal.projector.ui.BorderPaneModel;
+import dev.rico.internal.projector.ui.ButtonModel;
+import dev.rico.internal.projector.ui.CheckBoxModel;
+import dev.rico.internal.projector.ui.DateTimeFieldModel;
+import dev.rico.internal.projector.ui.HyperlinkModel;
+import dev.rico.internal.projector.ui.IdentifiableModel;
+import dev.rico.internal.projector.ui.ImageViewModel;
+import dev.rico.internal.projector.ui.ItemModel;
+import dev.rico.internal.projector.ui.LabelModel;
+import dev.rico.internal.projector.ui.PasswordFieldModel;
+import dev.rico.internal.projector.ui.RadioButtonModel;
+import dev.rico.internal.projector.ui.ScrollPaneModel;
+import dev.rico.internal.projector.ui.SeparatorModel;
+import dev.rico.internal.projector.ui.TextAreaModel;
+import dev.rico.internal.projector.ui.TextFieldModel;
+import dev.rico.internal.projector.ui.TitledPaneModel;
+import dev.rico.internal.projector.ui.ToggleButtonModel;
+import dev.rico.internal.projector.ui.ToolBarModel;
 import dev.rico.internal.projector.ui.box.HBoxItemModel;
 import dev.rico.internal.projector.ui.box.HBoxModel;
 import dev.rico.internal.projector.ui.box.VBoxItemModel;
 import dev.rico.internal.projector.ui.box.VBoxModel;
 import dev.rico.internal.projector.ui.choicebox.ChoiceBoxItemModel;
 import dev.rico.internal.projector.ui.choicebox.ChoiceBoxModel;
-import dev.rico.internal.projector.ui.dialog.*;
+import dev.rico.internal.projector.ui.dialog.ConfirmationDialogModel;
+import dev.rico.internal.projector.ui.dialog.CustomDialogModel;
+import dev.rico.internal.projector.ui.dialog.InfoDialogModel;
+import dev.rico.internal.projector.ui.dialog.QualifiedErrorDialogModel;
+import dev.rico.internal.projector.ui.dialog.ShutdownDialogModel;
+import dev.rico.internal.projector.ui.dialog.UnexpectedErrorDialogModel;
 import dev.rico.internal.projector.ui.flowpane.FlowPaneItemModel;
 import dev.rico.internal.projector.ui.flowpane.FlowPaneModel;
 import dev.rico.internal.projector.ui.gridpane.GridPaneItemModel;
@@ -19,7 +46,19 @@ import dev.rico.internal.projector.ui.listview.ListViewModel;
 import dev.rico.internal.projector.ui.menuitem.MenuItemModel;
 import dev.rico.internal.projector.ui.splitpane.SplitPaneItemModel;
 import dev.rico.internal.projector.ui.splitpane.SplitPaneModel;
-import dev.rico.internal.projector.ui.table.*;
+import dev.rico.internal.projector.ui.table.TableCheckBoxCellModel;
+import dev.rico.internal.projector.ui.table.TableCheckBoxColumnModel;
+import dev.rico.internal.projector.ui.table.TableChoiceBoxCellModel;
+import dev.rico.internal.projector.ui.table.TableChoiceBoxColumnModel;
+import dev.rico.internal.projector.ui.table.TableColumnModel;
+import dev.rico.internal.projector.ui.table.TableInstantCellModel;
+import dev.rico.internal.projector.ui.table.TableInstantColumnModel;
+import dev.rico.internal.projector.ui.table.TableIntegerCellModel;
+import dev.rico.internal.projector.ui.table.TableIntegerColumnModel;
+import dev.rico.internal.projector.ui.table.TableModel;
+import dev.rico.internal.projector.ui.table.TableRowModel;
+import dev.rico.internal.projector.ui.table.TableStringCellModel;
+import dev.rico.internal.projector.ui.table.TableStringColumnModel;
 import dev.rico.internal.projector.ui.tabpane.TabPaneItemModel;
 import dev.rico.internal.projector.ui.tabpane.TabPaneModel;
 import dev.rico.internal.remoting.MockedProperty;
@@ -29,7 +68,17 @@ import javafx.geometry.Orientation;
 import javafx.scene.layout.Priority;
 import to.remove.DocumentData;
 import to.remove.SaveFileDialogModel;
-import to.remove.ui.*;
+import to.remove.ui.DocumentViewModel;
+import to.remove.ui.FuelFieldModel;
+import to.remove.ui.HiddenSidesPaneModel;
+import to.remove.ui.MapViewModel;
+import to.remove.ui.MessagePlaceholder;
+import to.remove.ui.NotificationPaneModel;
+import to.remove.ui.PaxCodeFieldModel;
+import to.remove.ui.ProgressIndicatorModel;
+import to.remove.ui.SegmentedButtonModel;
+import to.remove.ui.SplitMenuButtonModel;
+import to.remove.ui.UploadButtonModel;
 import to.remove.ui.autocompletion.AutoCompleteItemModel;
 import to.remove.ui.autocompletion.AutoCompleteModel;
 import to.remove.ui.breadcrumbbar.BreadCrumbBarModel;
@@ -48,24 +97,20 @@ import to.remove.ui.propertysheet.PropertySheetItemGroupModel;
 import to.remove.ui.propertysheet.PropertySheetItemModel;
 import to.remove.ui.propertysheet.PropertySheetModel;
 
-import java.time.Instant;
-import java.util.*;
-import java.util.function.Function;
-
 @SuppressWarnings("WeakerAccess")
 public class ServerUiManager extends BaseServerUiManager {
 
 
-    public ServerUiManager(ManagedUiModel model, BeanManager beanManager) {
-        super(model, beanManager);
+    public ServerUiManager(final BeanManager beanManager) {
+        super(beanManager);
     }
 
     public VBoxModel vBox() {
         return create(VBoxModel.class);
     }
 
-    public VBoxModel vBox(VBoxItemModel... childs) {
-        VBoxModel vBox = vBox();
+    public VBoxModel vBox(final VBoxItemModel... childs) {
+        final VBoxModel vBox = vBox();
         vBox.addAll(childs);
         return vBox;
     }
@@ -78,15 +123,15 @@ public class ServerUiManager extends BaseServerUiManager {
         return label(null);
     }
 
-    public LabelModel label(String text) {
-        LabelModel labelModel = create(LabelModel.class);
+    public LabelModel label(final String text) {
+        final LabelModel labelModel = create(LabelModel.class);
         labelModel.setWrapText(true);
         labelModel.setText(text);
         return labelModel;
     }
 
     public FuelFieldModel fuelField() {
-        FuelFieldModel fuelFieldModel = create(FuelFieldModel.class);
+        final FuelFieldModel fuelFieldModel = create(FuelFieldModel.class);
         fuelFieldModel.setPromptText("Min, Max, Remaining");
         return fuelFieldModel;
     }
@@ -99,24 +144,24 @@ public class ServerUiManager extends BaseServerUiManager {
         return menuButton(null);
     }
 
-    public MenuButtonModel menuButton(String caption) {
-        MenuButtonModel button = create(MenuButtonModel.class);
+    public MenuButtonModel menuButton(final String caption) {
+        final MenuButtonModel button = create(MenuButtonModel.class);
         button.setCaption(caption);
         return button;
     }
 
-    public MenuButtonItemModel menuButtonItem(String caption) {
+    public MenuButtonItemModel menuButtonItem(final String caption) {
         return menuButtonItem(caption, (Runnable) null);
     }
 
-    public MenuButtonItemModel menuButtonItem(String caption, String action) {
-        MenuButtonItemModel model = menuButtonItem(caption, (Runnable) null);
+    public MenuButtonItemModel menuButtonItem(final String caption, final String action) {
+        final MenuButtonItemModel model = menuButtonItem(caption, (Runnable) null);
         model.setAction(action);
         return model;
     }
 
-    public MenuButtonItemModel menuButtonItem(String caption, Runnable handler) {
-        MenuButtonItemModel model = create(MenuButtonItemModel.class);
+    public MenuButtonItemModel menuButtonItem(final String caption, final Runnable handler) {
+        final MenuButtonItemModel model = create(MenuButtonItemModel.class);
         model.setCaption(caption);
         maybeInstallActionHandler(model, handler);
         return model;
@@ -124,35 +169,35 @@ public class ServerUiManager extends BaseServerUiManager {
 
     // TODO: Auf neues Action-System umstellen
     @Deprecated
-    public void maybeInstallActionHandler(IdentifiableModel model, Runnable handler) {
+    public void maybeInstallActionHandler(final IdentifiableModel model, final Runnable handler) {
         if (handler != null && model != null) {
             installActionHandler(model, handler);
         }
     }
 
-    public ButtonModel button(Runnable handler) {
+    public ButtonModel button(final Runnable handler) {
         return button(null, handler);
     }
 
-    public ButtonModel button(String caption, Runnable handler) {
-        ButtonModel buttonModel = create(ButtonModel.class);
+    public ButtonModel button(final String caption, final Runnable handler) {
+        final ButtonModel buttonModel = create(ButtonModel.class);
         return configureButton(buttonModel, caption, handler);
     }
 
-    public ButtonModel button(String caption, String action) {
-        ButtonModel button = button(caption, (Runnable) null);
+    public ButtonModel button(final String caption, final String action) {
+        final ButtonModel button = button(caption, (Runnable) null);
         button.setAction(action);
         return button;
     }
 
-    protected ButtonModel configureButton(ButtonModel buttonModel, String caption, Runnable handler) {
+    protected ButtonModel configureButton(final ButtonModel buttonModel, final String caption, final Runnable handler) {
         buttonModel.setCaption(caption);
         maybeInstallActionHandler(buttonModel, handler);
         return buttonModel;
     }
 
-    public TitledPaneModel titledPane(String title) {
-        TitledPaneModel titledPaneModel = create(TitledPaneModel.class);
+    public TitledPaneModel titledPane(final String title) {
+        final TitledPaneModel titledPaneModel = create(TitledPaneModel.class);
         titledPaneModel.setTitle(title);
         return titledPaneModel;
     }
@@ -161,16 +206,16 @@ public class ServerUiManager extends BaseServerUiManager {
         return create(GridPaneModel.class);
     }
 
-    public GridPaneItemModel gridPaneContent(int col, int row, ItemModel itemModel) {
-        GridPaneItemModel content = create(GridPaneItemModel.class);
+    public GridPaneItemModel gridPaneContent(final int col, final int row, final ItemModel itemModel) {
+        final GridPaneItemModel content = create(GridPaneItemModel.class);
         content.setCol(col);
         content.setRow(row);
         content.setItem(itemModel);
         return content;
     }
 
-    public GridPaneItemModel gridPaneContent(int col, int row, int colSpan, int rowSpan, ItemModel itemModel) {
-        GridPaneItemModel content = create(GridPaneItemModel.class);
+    public GridPaneItemModel gridPaneContent(final int col, final int row, final int colSpan, final int rowSpan, final ItemModel itemModel) {
+        final GridPaneItemModel content = create(GridPaneItemModel.class);
         content.setCol(col);
         content.setRow(row);
         content.setColSpan(colSpan);
@@ -183,19 +228,19 @@ public class ServerUiManager extends BaseServerUiManager {
         return checkBox(null, false);
     }
 
-    public CheckBoxModel checkBox(boolean isSelected) {
+    public CheckBoxModel checkBox(final boolean isSelected) {
         return checkBox(null, isSelected);
     }
 
-    public CheckBoxModel checkBox(String caption, boolean isSelected) {
-        CheckBoxModel checkBoxModel = create(CheckBoxModel.class);
+    public CheckBoxModel checkBox(final String caption, final boolean isSelected) {
+        final CheckBoxModel checkBoxModel = create(CheckBoxModel.class);
         checkBoxModel.setCaption(caption);
         checkBoxModel.setSelected(isSelected);
         return checkBoxModel;
     }
 
-    public SplitPaneModel splitPane(Orientation orientation, SplitPaneItemModel... items) {
-        SplitPaneModel model = create(SplitPaneModel.class);
+    public SplitPaneModel splitPane(final Orientation orientation, final SplitPaneItemModel... items) {
+        final SplitPaneModel model = create(SplitPaneModel.class);
         model.setOrientation(orientation);
         model.getItems().addAll(items);
         return model;
@@ -205,12 +250,12 @@ public class ServerUiManager extends BaseServerUiManager {
         return create(PropertySheetModel.class);
     }
 
-    public <T extends PropertySheetItemModel> T propertySheetItem(Class<T> itemClass) {
+    public <T extends PropertySheetItemModel> T propertySheetItem(final Class<T> itemClass) {
         return create(itemClass);
     }
 
-    public PropertySheetItemGroupModel propertySheetItemGroup(String title) {
-        PropertySheetItemGroupModel model = create(PropertySheetItemGroupModel.class);
+    public PropertySheetItemGroupModel propertySheetItemGroup(final String title) {
+        final PropertySheetItemGroupModel model = create(PropertySheetItemGroupModel.class);
         model.setExpanded(true);
         model.setName(title);
         return model;
@@ -220,20 +265,20 @@ public class ServerUiManager extends BaseServerUiManager {
         return create(ToolBarModel.class);
     }
 
-    public ToolBarModel toolBar(ItemModel... models) {
-        ToolBarModel toolBar = toolBar();
+    public ToolBarModel toolBar(final ItemModel... models) {
+        final ToolBarModel toolBar = toolBar();
         toolBar.getItems().addAll(models);
         return toolBar;
     }
 
-    public ToggleButtonModel toggleButton(String caption) {
-        ToggleButtonModel model = toggleButton();
+    public ToggleButtonModel toggleButton(final String caption) {
+        final ToggleButtonModel model = toggleButton();
         model.setCaption(caption);
         return model;
     }
 
-    public ToggleButtonModel toggleButton(String caption, String action) {
-        ToggleButtonModel model = toggleButton(caption);
+    public ToggleButtonModel toggleButton(final String caption, final String action) {
+        final ToggleButtonModel model = toggleButton(caption);
         model.setAction(action);
         return model;
     }
@@ -246,8 +291,8 @@ public class ServerUiManager extends BaseServerUiManager {
         return create(DocumentViewModel.class);
     }
 
-    public SplitPaneItemModel splitPaneItem(ItemModel content, double dividerPosition) {
-        SplitPaneItemModel model = create(SplitPaneItemModel.class);
+    public SplitPaneItemModel splitPaneItem(final ItemModel content, final double dividerPosition) {
+        final SplitPaneItemModel model = create(SplitPaneItemModel.class);
         model.setContent(content);
         model.setDividerPosition(dividerPosition);
         return model;
@@ -261,24 +306,24 @@ public class ServerUiManager extends BaseServerUiManager {
         return create(ProgressIndicatorModel.class);
     }
 
-    public ImageViewModel imageView(String resourcePath) {
-        ImageViewModel model = create(ImageViewModel.class);
+    public ImageViewModel imageView(final String resourcePath) {
+        final ImageViewModel model = create(ImageViewModel.class);
         model.setResourcePath(resourcePath);
         return model;
     }
 
-    public HyperlinkModel hyperlink(String caption) {
+    public HyperlinkModel hyperlink(final String caption) {
         return hyperlink(caption, (Runnable) null);
     }
 
-    public HyperlinkModel hyperlink(String caption, Runnable handler) {
-        HyperlinkModel hyperlinkModel = create(HyperlinkModel.class);
+    public HyperlinkModel hyperlink(final String caption, final Runnable handler) {
+        final HyperlinkModel hyperlinkModel = create(HyperlinkModel.class);
         configureButton(hyperlinkModel, caption, handler);
         return hyperlinkModel;
     }
 
-    public HyperlinkModel hyperlink(String caption, String action) {
-        HyperlinkModel hyperlinkModel = hyperlink(caption, (Runnable) null);
+    public HyperlinkModel hyperlink(final String caption, final String action) {
+        final HyperlinkModel hyperlinkModel = hyperlink(caption, (Runnable) null);
         hyperlinkModel.setAction(action);
         return hyperlinkModel;
     }
@@ -292,7 +337,7 @@ public class ServerUiManager extends BaseServerUiManager {
     }
 
     public AutoCompleteModel airportField() {
-        AutoCompleteModel model = autoCompleteField();
+        final AutoCompleteModel model = autoCompleteField();
         model.setPromptText("ICAO, Name oder Stadt");
         model.setId("airport" + model.getId());
         return model;
@@ -302,27 +347,27 @@ public class ServerUiManager extends BaseServerUiManager {
         return create(AutoCompleteModel.class);
     }
 
-    public AutoCompleteModel handlerField(AutoCompleteModel atAirport, Function<AutoCompleteItemModel, AutoCompleteItemModel> selectionSupplier) {
+    public AutoCompleteModel handlerField(final AutoCompleteModel atAirport, final Function<AutoCompleteItemModel, AutoCompleteItemModel> selectionSupplier) {
         return handlerField(atAirport, selectionSupplier, null);
     }
 
-    public AutoCompleteModel handlerField(AutoCompleteModel atAirport, Function<AutoCompleteItemModel, AutoCompleteItemModel> selectionSupplier, Property<String> captionProperty) {
-        AutoCompleteModel model = autoCompleteField();
+    public AutoCompleteModel handlerField(final AutoCompleteModel atAirport, final Function<AutoCompleteItemModel, AutoCompleteItemModel> selectionSupplier, final Property<String> captionProperty) {
+        final AutoCompleteModel model = autoCompleteField();
         model.setPromptText("Firmenname");
         model.setId("handler" + model.getId());
         configureDependsOn(model, atAirport, selectionSupplier, captionProperty);
         return model;
     }
 
-    private void configureDependsOn(AutoCompleteModel modelThat, AutoCompleteModel dependsOn, Function<AutoCompleteItemModel, AutoCompleteItemModel> selectionSupplier, final Property<String> captionProperty) {
+    private void configureDependsOn(final AutoCompleteModel modelThat, final AutoCompleteModel dependsOn, final Function<AutoCompleteItemModel, AutoCompleteItemModel> selectionSupplier, final Property<String> captionProperty) {
         if (dependsOn == null) {
             return;
         }
         final Property<String> finalCaptionProperty = Optional.ofNullable(captionProperty).orElse(modelThat.promptTextProperty());
-        String originalCaptionText = Optional.ofNullable(finalCaptionProperty.get()).orElse("");
+        final String originalCaptionText = Optional.ofNullable(finalCaptionProperty.get()).orElse("");
         CommonUiHelper.subscribe(dependsOn.selectedProperty(), evt -> {
-            AutoCompleteItemModel newValue = evt.getNewValue();
-            String newId = Optional.ofNullable(newValue).map(AutoCompleteItemModel::getReference).orElse(null);
+            final AutoCompleteItemModel newValue = evt.getNewValue();
+            final String newId = Optional.ofNullable(newValue).map(AutoCompleteItemModel::getReference).orElse(null);
             CommonUiHelper.setProperty(modelThat, "masterId", newId);
             modelThat.setSelected(selectionSupplier.apply(newValue));
             modelThat.setDisable(newId == null);
@@ -334,20 +379,20 @@ public class ServerUiManager extends BaseServerUiManager {
         });
     }
 
-    public AutoCompleteModel hotelField(AutoCompleteModel atAirport, Function<AutoCompleteItemModel, AutoCompleteItemModel> selectionSupplier) {
+    public AutoCompleteModel hotelField(final AutoCompleteModel atAirport, final Function<AutoCompleteItemModel, AutoCompleteItemModel> selectionSupplier) {
         return hotelField(atAirport, selectionSupplier, null);
     }
 
-    public AutoCompleteModel hotelField(AutoCompleteModel atAirport, Function<AutoCompleteItemModel, AutoCompleteItemModel> selectionSupplier, Property<String> captionProperty) {
-        AutoCompleteModel model = autoCompleteField();
+    public AutoCompleteModel hotelField(final AutoCompleteModel atAirport, final Function<AutoCompleteItemModel, AutoCompleteItemModel> selectionSupplier, final Property<String> captionProperty) {
+        final AutoCompleteModel model = autoCompleteField();
         model.setPromptText("Hotelname");
         model.setId("hotel" + model.getId());
         configureDependsOn(model, atAirport, selectionSupplier, captionProperty);
         return model;
     }
 
-    public AutoCompleteItemModel autoCompleteItem(String reference, String caption) {
-        AutoCompleteItemModel model = create(AutoCompleteItemModel.class);
+    public AutoCompleteItemModel autoCompleteItem(final String reference, final String caption) {
+        final AutoCompleteItemModel model = create(AutoCompleteItemModel.class);
         model.setReference(reference);
         model.setCaption(caption);
         return model;
@@ -361,29 +406,29 @@ public class ServerUiManager extends BaseServerUiManager {
         return create(ChoiceBoxModel.class);
     }
 
-    public ScrollPaneModel scrollPane(ItemModel content) {
-        ScrollPaneModel model = create(ScrollPaneModel.class);
+    public ScrollPaneModel scrollPane(final ItemModel content) {
+        final ScrollPaneModel model = create(ScrollPaneModel.class);
         model.setContent(content);
         return model;
     }
 
-    public HBoxItemModel hBoxItem(ItemModel content) {
+    public HBoxItemModel hBoxItem(final ItemModel content) {
         return hBoxItem(content, Priority.NEVER);
     }
 
-    public HBoxItemModel hBoxItem(ItemModel content, Priority hGrow) {
-        HBoxItemModel model = create(HBoxItemModel.class);
+    public HBoxItemModel hBoxItem(final ItemModel content, final Priority hGrow) {
+        final HBoxItemModel model = create(HBoxItemModel.class);
         model.setItem(content);
         model.sethGrow(hGrow);
         return model;
     }
 
-    public VBoxItemModel vBoxItem(ItemModel content) {
+    public VBoxItemModel vBoxItem(final ItemModel content) {
         return vBoxItem(content, Priority.NEVER);
     }
 
-    public VBoxItemModel vBoxItem(ItemModel content, Priority vGrow) {
-        VBoxItemModel model = create(VBoxItemModel.class);
+    public VBoxItemModel vBoxItem(final ItemModel content, final Priority vGrow) {
+        final VBoxItemModel model = create(VBoxItemModel.class);
         model.setItem(content);
         model.setvGrow(vGrow);
         return model;
@@ -397,42 +442,42 @@ public class ServerUiManager extends BaseServerUiManager {
         return create(TableModel.class);
     }
 
-    public TableStringColumnModel tableStringColum(String caption, Double prefWidth) {
+    public TableStringColumnModel tableStringColum(final String caption, final Double prefWidth) {
         return tableStringColum(null, caption, prefWidth);
     }
 
-    public TableStringColumnModel tableStringColum(String reference, String caption, Double prefWidth) {
-        TableStringColumnModel column = create(TableStringColumnModel.class);
+    public TableStringColumnModel tableStringColum(final String reference, final String caption, final Double prefWidth) {
+        final TableStringColumnModel column = create(TableStringColumnModel.class);
         configureTableColumn(reference, column, caption, prefWidth);
         return column;
     }
 
-    protected void configureTableColumn(String reference, TableColumnModel column, String caption, Double prefWidth) {
+    protected void configureTableColumn(final String reference, final TableColumnModel column, final String caption, final Double prefWidth) {
         column.setReference(reference);
         column.setCaption(caption);
         column.setPrefWidth(prefWidth);
     }
 
-    public TableChoiceBoxColumnModel tableChoiceBoxColum(String reference, String caption, Double prefWidth) {
-        TableChoiceBoxColumnModel column = create(TableChoiceBoxColumnModel.class);
+    public TableChoiceBoxColumnModel tableChoiceBoxColum(final String reference, final String caption, final Double prefWidth) {
+        final TableChoiceBoxColumnModel column = create(TableChoiceBoxColumnModel.class);
         configureTableColumn(reference, column, caption, prefWidth);
         return column;
     }
 
-    public TableCheckBoxColumnModel tableCheckBoxColum(String reference, String caption, Double prefWidth) {
-        TableCheckBoxColumnModel column = create(TableCheckBoxColumnModel.class);
+    public TableCheckBoxColumnModel tableCheckBoxColum(final String reference, final String caption, final Double prefWidth) {
+        final TableCheckBoxColumnModel column = create(TableCheckBoxColumnModel.class);
         configureTableColumn(reference, column, caption, prefWidth);
         return column;
     }
 
-    public TableInstantColumnModel tableInstantColum(String caption, Double prefWidth) {
-        TableInstantColumnModel column = create(TableInstantColumnModel.class);
+    public TableInstantColumnModel tableInstantColum(final String caption, final Double prefWidth) {
+        final TableInstantColumnModel column = create(TableInstantColumnModel.class);
         configureTableColumn(null, column, caption, prefWidth);
         return column;
     }
 
-    public TableColumnModel tableNumberColum(String caption, Double prefWidth) {
-        TableIntegerColumnModel column = create(TableIntegerColumnModel.class);
+    public TableColumnModel tableNumberColum(final String caption, final Double prefWidth) {
+        final TableIntegerColumnModel column = create(TableIntegerColumnModel.class);
         configureTableColumn(null, column, caption, prefWidth);
         return column;
     }
@@ -441,14 +486,14 @@ public class ServerUiManager extends BaseServerUiManager {
         return create(BreadCrumbBarModel.class);
     }
 
-    public BreadCrumbItemModel breadCrumbBarItem(String caption, String reference) {
-        BreadCrumbItemModel item = breadCrumbBarItem(caption);
+    public BreadCrumbItemModel breadCrumbBarItem(final String caption, final String reference) {
+        final BreadCrumbItemModel item = breadCrumbBarItem(caption);
         item.setReference(reference);
         return item;
     }
 
-    public BreadCrumbItemModel breadCrumbBarItem(String caption) {
-        BreadCrumbItemModel model = create(BreadCrumbItemModel.class);
+    public BreadCrumbItemModel breadCrumbBarItem(final String caption) {
+        final BreadCrumbItemModel model = create(BreadCrumbItemModel.class);
         model.setCaption(caption);
         return model;
     }
@@ -457,12 +502,12 @@ public class ServerUiManager extends BaseServerUiManager {
         return create(TableRowModel.class);
     }
 
-    public TableStringCellModel tableStringCell(String value) {
+    public TableStringCellModel tableStringCell(final String value) {
         return tableStringCell(null, value);
     }
 
-    public TableStringCellModel tableStringCell(String reference, String value) {
-        TableStringCellModel cellModel = create(TableStringCellModel.class);
+    public TableStringCellModel tableStringCell(final String reference, final String value) {
+        final TableStringCellModel cellModel = create(TableStringCellModel.class);
         cellModel.setReference(reference);
         cellModel.setValue(value);
         return cellModel;
@@ -472,8 +517,8 @@ public class ServerUiManager extends BaseServerUiManager {
         return create(TableStringCellModel.class);
     }
 
-    public TableInstantCellModel tableInstantCell(Instant value) {
-        TableInstantCellModel cellModel = create(TableInstantCellModel.class);
+    public TableInstantCellModel tableInstantCell(final Instant value) {
+        final TableInstantCellModel cellModel = create(TableInstantCellModel.class);
         cellModel.setValue(value);
         return cellModel;
     }
@@ -482,31 +527,31 @@ public class ServerUiManager extends BaseServerUiManager {
         return create(TableInstantCellModel.class);
     }
 
-    public TableChoiceBoxCellModel tableChoiceBoxCell(ChoiceBoxItemModel value) {
+    public TableChoiceBoxCellModel tableChoiceBoxCell(final ChoiceBoxItemModel value) {
         return tableChoiceBoxCell(null, value);
     }
 
-    public TableChoiceBoxCellModel tableChoiceBoxCell(String reference, ChoiceBoxItemModel value) {
-        TableChoiceBoxCellModel cellModel = create(TableChoiceBoxCellModel.class);
+    public TableChoiceBoxCellModel tableChoiceBoxCell(final String reference, final ChoiceBoxItemModel value) {
+        final TableChoiceBoxCellModel cellModel = create(TableChoiceBoxCellModel.class);
         cellModel.setReference(reference);
         cellModel.setValue(value);
         return cellModel;
     }
 
-    public TableCheckBoxCellModel tableCheckBoxCell(Boolean value) {
-        TableCheckBoxCellModel cellModel = create(TableCheckBoxCellModel.class);
+    public TableCheckBoxCellModel tableCheckBoxCell(final Boolean value) {
+        final TableCheckBoxCellModel cellModel = create(TableCheckBoxCellModel.class);
         cellModel.setValue(value);
         return cellModel;
     }
 
-    public TableIntegerCellModel tableIntegerCell(Integer value) {
-        TableIntegerCellModel cellModel = create(TableIntegerCellModel.class);
+    public TableIntegerCellModel tableIntegerCell(final Integer value) {
+        final TableIntegerCellModel cellModel = create(TableIntegerCellModel.class);
         cellModel.setValue(value);
         return cellModel;
     }
 
     public AutoCompleteModel companyField() {
-        AutoCompleteModel field = autoCompleteField();
+        final AutoCompleteModel field = autoCompleteField();
         field.setId("company" + field.getId());
         field.setPromptText("Firma oder Kurzname der Firma");
         return field;
@@ -516,51 +561,51 @@ public class ServerUiManager extends BaseServerUiManager {
         return aircraftField(null);
     }
 
-    public AutoCompleteModel aircraftField(AutoCompleteModel dependsOn) {
-        AutoCompleteModel field = autoCompleteField();
+    public AutoCompleteModel aircraftField(final AutoCompleteModel dependsOn) {
+        final AutoCompleteModel field = autoCompleteField();
         field.setId("aircraft" + field.getId());
         field.setPromptText("Luftfahrzeug bzw. Kennzeichen");
         configureDependsOn(field, dependsOn);
         return field;
     }
 
-    private void configureDependsOn(AutoCompleteModel modelThat, AutoCompleteModel dependsOn) {
+    private void configureDependsOn(final AutoCompleteModel modelThat, final AutoCompleteModel dependsOn) {
         configureDependsOn(modelThat, dependsOn, (dependsOnNewValue) -> null, new MockedProperty<>());
     }
 
-    public AutoCompleteModel personField(String type) {
+    public AutoCompleteModel personField(final String type) {
         return personField(type, null);
     }
 
-    public AutoCompleteModel personField(String type, AutoCompleteModel dependsOn) {
+    public AutoCompleteModel personField(final String type, final AutoCompleteModel dependsOn) {
         Objects.requireNonNull(type);
-        AutoCompleteModel field = autoCompleteField();
+        final AutoCompleteModel field = autoCompleteField();
         field.setId(type + field.getId());
         field.setPromptText("Vorname, Nachname oder Initialien");
         configureDependsOn(field, dependsOn);
         return field;
     }
 
-    public ItemModel separator(Orientation orientation) {
-        SeparatorModel separatorModel = create(SeparatorModel.class);
+    public ItemModel separator(final Orientation orientation) {
+        final SeparatorModel separatorModel = create(SeparatorModel.class);
         separatorModel.setOrientation(orientation);
         return separatorModel;
     }
 
-    public FlowPaneItemModel flowPaneItem(ItemModel content) {
-        FlowPaneItemModel model = create(FlowPaneItemModel.class);
+    public FlowPaneItemModel flowPaneItem(final ItemModel content) {
+        final FlowPaneItemModel model = create(FlowPaneItemModel.class);
         model.setItem(content);
         return model;
     }
 
-    public FlowPaneModel flowPane(Orientation orientation) {
-        FlowPaneModel pane = create(FlowPaneModel.class);
+    public FlowPaneModel flowPane(final Orientation orientation) {
+        final FlowPaneModel pane = create(FlowPaneModel.class);
         pane.setOrientation(orientation);
         return pane;
     }
 
-    public BorderPaneModel borderPane(ItemModel content) {
-        BorderPaneModel borderPane = borderPane();
+    public BorderPaneModel borderPane(final ItemModel content) {
+        final BorderPaneModel borderPane = borderPane();
         borderPane.setCenter(content);
         return borderPane;
     }
@@ -569,16 +614,16 @@ public class ServerUiManager extends BaseServerUiManager {
         return create(BorderPaneModel.class);
     }
 
-    public ButtonModel button(String caption) {
+    public ButtonModel button(final String caption) {
         return button(caption, (Runnable) null);
     }
 
-    public UploadButtonModel uploadButton(String caption, String onUploadBeginAction, String onUploadFinishedAction, String onUploadFailedAction) {
+    public UploadButtonModel uploadButton(final String caption, final String onUploadBeginAction, final String onUploadFinishedAction, final String onUploadFailedAction) {
         return uploadButton(caption, null, onUploadBeginAction, onUploadFinishedAction, onUploadFailedAction);
     }
 
-    public UploadButtonModel uploadButton(String caption, String uploadUrl, String onUploadBeginAction, String onUploadFinishedAction, String onUploadFailedAction) {
-        UploadButtonModel buttonModel = create(UploadButtonModel.class);
+    public UploadButtonModel uploadButton(final String caption, final String uploadUrl, final String onUploadBeginAction, final String onUploadFinishedAction, final String onUploadFailedAction) {
+        final UploadButtonModel buttonModel = create(UploadButtonModel.class);
         buttonModel.setUploadUrl(uploadUrl);
         buttonModel.setOnUploadBeginAction(onUploadBeginAction);
         buttonModel.setOnUploadFinishedAction(onUploadFinishedAction);
@@ -591,9 +636,9 @@ public class ServerUiManager extends BaseServerUiManager {
         return create(CardPaneModel.class);
     }
 
-    public CardPaneItemModel cardPaneItem(ItemModel content) {
+    public CardPaneItemModel cardPaneItem(final ItemModel content) {
         Objects.requireNonNull(content);
-        CardPaneItemModel model = create(CardPaneItemModel.class);
+        final CardPaneItemModel model = create(CardPaneItemModel.class);
         model.setItem(content);
         return model;
     }
@@ -602,8 +647,8 @@ public class ServerUiManager extends BaseServerUiManager {
         return create(HiddenSidesPaneModel.class);
     }
 
-    public ChoiceBoxItemModel choiceBoxItem(String reference, String caption) {
-        ChoiceBoxItemModel model = create(ChoiceBoxItemModel.class);
+    public ChoiceBoxItemModel choiceBoxItem(final String reference, final String caption) {
+        final ChoiceBoxItemModel model = create(ChoiceBoxItemModel.class);
         model.setReference(reference);
         model.setCaption(caption);
         return model;
@@ -617,32 +662,32 @@ public class ServerUiManager extends BaseServerUiManager {
         return create(ListViewItemModel.class);
     }
 
-    public NestedMenuButtonModel nestedMenuButton(String caption) {
-        NestedMenuButtonModel buttonModel = create(NestedMenuButtonModel.class);
+    public NestedMenuButtonModel nestedMenuButton(final String caption) {
+        final NestedMenuButtonModel buttonModel = create(NestedMenuButtonModel.class);
         buttonModel.setCaption(caption);
         return buttonModel;
     }
 
-    public MenuItemModel menuItem(String caption) {
+    public MenuItemModel menuItem(final String caption) {
         return menuItem(caption, null);
     }
 
-    public MenuItemModel menuItem(String caption, String action) {
-        MenuItemModel model = create(MenuItemModel.class);
+    public MenuItemModel menuItem(final String caption, final String action) {
+        final MenuItemModel model = create(MenuItemModel.class);
         model.setCaption(caption);
         model.setAction(action);
         return model;
     }
 
-    public UnexpectedErrorDialogModel unexpectedErrorDialog(ItemModel owner, String exceptionText) {
-        UnexpectedErrorDialogModel dialog = create(UnexpectedErrorDialogModel.class);
+    public UnexpectedErrorDialogModel unexpectedErrorDialog(final ItemModel owner, final String exceptionText) {
+        final UnexpectedErrorDialogModel dialog = create(UnexpectedErrorDialogModel.class);
         dialog.setOwner(owner);
         dialog.setExceptionText(exceptionText);
         return dialog;
     }
 
-    public QualifiedErrorDialogModel qualifiedErrorDialog(ItemModel owner, String headerText, String contentText, String exceptionText) {
-        QualifiedErrorDialogModel dialog = create(QualifiedErrorDialogModel.class);
+    public QualifiedErrorDialogModel qualifiedErrorDialog(final ItemModel owner, final String headerText, final String contentText, final String exceptionText) {
+        final QualifiedErrorDialogModel dialog = create(QualifiedErrorDialogModel.class);
         dialog.setOwner(owner);
         dialog.setContentText(contentText);
         dialog.setHeaderText(headerText);
@@ -650,14 +695,14 @@ public class ServerUiManager extends BaseServerUiManager {
         return dialog;
     }
 
-    public ConfirmationDialogModel confirmationDialog(ItemModel owner) {
-        ConfirmationDialogModel dialog = create(ConfirmationDialogModel.class);
+    public ConfirmationDialogModel confirmationDialog(final ItemModel owner) {
+        final ConfirmationDialogModel dialog = create(ConfirmationDialogModel.class);
         dialog.setOwner(owner);
         return dialog;
     }
 
-    public SaveFileDialogModel saveFileDialog(ItemModel owner, String title, DocumentData saveThis) {
-        SaveFileDialogModel dialog = create(SaveFileDialogModel.class);
+    public SaveFileDialogModel saveFileDialog(final ItemModel owner, final String title, final DocumentData saveThis) {
+        final SaveFileDialogModel dialog = create(SaveFileDialogModel.class);
         dialog.setOwner(owner);
         dialog.setTitle(title);
         dialog.setSaveThis(saveThis);
@@ -684,19 +729,19 @@ public class ServerUiManager extends BaseServerUiManager {
         return create(SplitMenuButtonModel.class);
     }
 
-    public RadioButtonModel radioButton(String caption) {
+    public RadioButtonModel radioButton(final String caption) {
         return radioButton(caption, null);
     }
 
-    public RadioButtonModel radioButton(String caption, String action) {
-        RadioButtonModel model = create(RadioButtonModel.class);
+    public RadioButtonModel radioButton(final String caption, final String action) {
+        final RadioButtonModel model = create(RadioButtonModel.class);
         model.setAction(action);
         model.setCaption(caption);
         return model;
     }
 
-    public InfoDialogModel infoDialog(ItemModel owner) {
-        InfoDialogModel dialog = create(InfoDialogModel.class);
+    public InfoDialogModel infoDialog(final ItemModel owner) {
+        final InfoDialogModel dialog = create(InfoDialogModel.class);
         dialog.setOwner(owner);
         return dialog;
     }
@@ -713,15 +758,15 @@ public class ServerUiManager extends BaseServerUiManager {
         return create(CheckListViewModel.class);
     }
 
-    public ListSelectionViewItemModel listSelectionViewItem(String reference, String caption) {
-        ListSelectionViewItemModel itemModel = create(ListSelectionViewItemModel.class);
+    public ListSelectionViewItemModel listSelectionViewItem(final String reference, final String caption) {
+        final ListSelectionViewItemModel itemModel = create(ListSelectionViewItemModel.class);
         itemModel.setReference(reference);
         itemModel.setCaption(caption);
         return itemModel;
     }
 
-    public CustomDialogModel customDialog(String title) {
-        CustomDialogModel model = create(CustomDialogModel.class);
+    public CustomDialogModel customDialog(final String title) {
+        final CustomDialogModel model = create(CustomDialogModel.class);
         model.setTitle(title);
         return model;
     }
@@ -730,33 +775,33 @@ public class ServerUiManager extends BaseServerUiManager {
         return migPane(null, null, null);
     }
 
-    public MigPaneModel migPane(String layoutConstraints, String columnConstraints, String rowConstraints) {
-        MigPaneModel migPaneModel = create(MigPaneModel.class);
+    public MigPaneModel migPane(final String layoutConstraints, final String columnConstraints, final String rowConstraints) {
+        final MigPaneModel migPaneModel = create(MigPaneModel.class);
         migPaneModel.setLayoutConstraints(layoutConstraints);
         migPaneModel.setColumnConstraints(columnConstraints);
         migPaneModel.setRowConstraints(rowConstraints);
         return migPaneModel;
     }
 
-    public MigPaneItemModel migPaneItem(ItemModel content, String constraints) {
-        MigPaneItemModel model = create(MigPaneItemModel.class);
+    public MigPaneItemModel migPaneItem(final ItemModel content, final String constraints) {
+        final MigPaneItemModel model = create(MigPaneItemModel.class);
         model.setItem(content);
         model.setConstraints(constraints);
         return model;
     }
 
-    public MigPaneItemModel migPaneItem(ItemModel content) {
+    public MigPaneItemModel migPaneItem(final ItemModel content) {
         return migPaneItem(content, null);
     }
 
-    public HBoxModel hBox(ItemModel... items) {
-        HBoxModel hBox = hBox();
+    public HBoxModel hBox(final ItemModel... items) {
+        final HBoxModel hBox = hBox();
         Arrays.stream(items).map(this::hBoxItem).forEach(hBox::add);
         return hBox;
     }
 
-    public VBoxModel vBox(ItemModel... items) {
-        VBoxModel vBox = vBox();
+    public VBoxModel vBox(final ItemModel... items) {
+        final VBoxModel vBox = vBox();
         Arrays.stream(items).map(this::vBoxItem).forEach(vBox::add);
         return vBox;
     }
@@ -769,8 +814,8 @@ public class ServerUiManager extends BaseServerUiManager {
         return create(TabPaneModel.class);
     }
 
-    public TabPaneItemModel tabPaneItem(ItemModel content, String caption) {
-        TabPaneItemModel item = create(TabPaneItemModel.class);
+    public TabPaneItemModel tabPaneItem(final ItemModel content, final String caption) {
+        final TabPaneItemModel item = create(TabPaneItemModel.class);
         item.setContent(content);
         item.setCaption(caption);
         return item;

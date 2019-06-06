@@ -1,67 +1,59 @@
 package dev.rico.internal.server.projector;
 
-import dev.rico.internal.core.Assert;
-import dev.rico.internal.projector.ui.IdentifiableModel;
-import dev.rico.internal.projector.ui.ItemModel;
-import dev.rico.internal.projector.ui.ManagedUiModel;
-import dev.rico.remoting.BeanManager;
-import to.remove.RemotingEvent;
-
 import java.util.Map;
 import java.util.UUID;
 import java.util.WeakHashMap;
 
+import dev.rico.internal.core.Assert;
+import dev.rico.internal.projector.ui.IdentifiableModel;
+import dev.rico.internal.projector.ui.ItemModel;
+import dev.rico.remoting.BeanManager;
+import to.remove.RemotingEvent;
+
 public class BaseServerUiManager {
 
-    private final ManagedUiModel model;
     private final BeanManager beanManager;
     private final WeakHashMap<String, IdentifiableModel> idToItemMap = new WeakHashMap<>();
     private final WeakHashMap<IdentifiableModel, Runnable> modelToEventHandlerMap = new WeakHashMap<>();
 
-    public BaseServerUiManager(ManagedUiModel model, BeanManager beanManager) {
-        this.model = model;
+    public BaseServerUiManager(final BeanManager beanManager) {
         this.beanManager = beanManager;
     }
 
-    public final <T extends IdentifiableModel> T create(Class<T> beanClass) {
+    public final <T extends IdentifiableModel> T create(final Class<T> beanClass) {
         return create(beanClass, UUID.randomUUID().toString());
     }
 
-    public final <T extends ItemModel> T getNodeById(String id) {
+    public final <T extends ItemModel> T getNodeById(final String id) {
         return java.util.Objects.requireNonNull((T) idToItemMap.get(id), "Missing (injected?) node with id: " + id);
     }
 
     // TODO: Sollte irgendwie anders gehen?
-    public final void removeId(String key) {
+    public final void removeId(final String key) {
         idToItemMap.remove(key);
     }
 
     @Deprecated
-    public final <T extends RemotingEvent> T createEvent(Class<T> eventClass) {
+    public final <T extends RemotingEvent> T createEvent(final Class<T> eventClass) {
         return beanManager.create(eventClass);
-    }
-
-    @Deprecated
-    public final <T extends RemotingEvent> void sendEvent(T event) {
-        model.setEvent(event);
     }
 
     // TODO: Auf neues Action-System umstellen
     @Deprecated
-    protected final void installActionHandler(IdentifiableModel model, Runnable handler) {
+    protected final void installActionHandler(final IdentifiableModel model, final Runnable handler) {
         Assert.requireNonNull(model, "model");
         Assert.requireNonNull(handler, "handler");
         modelToEventHandlerMap.put(model, handler);
     }
 
-    protected final void receivedButtonClick(IdentifiableModel button) {
+    protected final void receivedButtonClick(final IdentifiableModel button) {
         if (modelToEventHandlerMap.containsKey(button)) {
             modelToEventHandlerMap.get(button).run();
         }
     }
 
-    private final <T extends IdentifiableModel> T create(Class<T> beanClass, String id) {
-        T model = beanManager.create(beanClass);
+    private final <T extends IdentifiableModel> T create(final Class<T> beanClass, final String id) {
+        final T model = beanManager.create(beanClass);
         model.setId(id);
         if (idToItemMap.containsKey(id)) {
             throw new IllegalArgumentException("Object of class '" + beanClass.getName() + "' with id '" + id + "' is already registered");
@@ -71,12 +63,12 @@ public class BaseServerUiManager {
             if (idToItemMap.containsKey(evt.getNewValue())) {
                 throw new IllegalArgumentException("Object of class '" + beanClass.getName() + "' with id '" + evt.getNewValue() + "' is already registered");
             }
-            String oldId = findInMap(idToItemMap, model);
+            final String oldId = findInMap(idToItemMap, model);
             idToItemMap.put(evt.getNewValue(), model);
             idToItemMap.remove(oldId);
         });
         if (model instanceof ItemModel) {
-            ItemModel itemModel = (ItemModel) model;
+            final ItemModel itemModel = (ItemModel) model;
             itemModel.setDisable(false);
             itemModel.setManaged(true);
             itemModel.setVisible(true);
@@ -84,10 +76,10 @@ public class BaseServerUiManager {
         return model;
     }
 
-    private final <T> String findInMap(Map<String, T> map, T model) {
+    private final <T> String findInMap(final Map<String, T> map, final T model) {
         java.util.Objects.requireNonNull(map);
         java.util.Objects.requireNonNull(model);
-        for (Map.Entry<String, T> entry : map.entrySet()) {
+        for (final Map.Entry<String, T> entry : map.entrySet()) {
             if (entry.getValue() == model) {
                 return entry.getKey();
             }

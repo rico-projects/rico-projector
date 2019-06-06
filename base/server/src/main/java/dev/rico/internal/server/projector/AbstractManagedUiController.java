@@ -1,5 +1,10 @@
 package dev.rico.internal.server.projector;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import javax.annotation.PostConstruct;
+
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import dev.rico.internal.projector.ui.IdentifiableModel;
 import dev.rico.internal.projector.ui.ManagedUiModel;
 import dev.rico.internal.projector.ui.ToggleButtonModel;
@@ -9,11 +14,6 @@ import dev.rico.server.remoting.ClientSessionExecutor;
 import dev.rico.server.remoting.Param;
 import dev.rico.server.remoting.RemotingAction;
 import dev.rico.server.remoting.RemotingContext;
-import org.apache.commons.lang3.exception.ExceptionUtils;
-
-import javax.annotation.PostConstruct;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 
 public abstract class AbstractManagedUiController implements ManagedUiController {
 
@@ -22,29 +22,29 @@ public abstract class AbstractManagedUiController implements ManagedUiController
     private final RemotingContext session;
     private ServerUiManager uiManager;
 
-    public AbstractManagedUiController(BeanManager beanManager, RemotingContext session) {
+    public AbstractManagedUiController(final BeanManager beanManager, final RemotingContext session) {
         this.beanManager = beanManager;
         this.session = session;
         sessionExecutor = session.createSessionExecutor();
     }
 
-    protected <V> V callInUi(Callable<V> callInUiThread) {
+    protected <V> V callInUi(final Callable<V> callInUiThread) {
         try {
             return sessionExecutor.callLaterInClientSession(callInUiThread).get();
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (final InterruptedException | ExecutionException e) {
             throw new IllegalArgumentException(e);
         }
     }
 
-    protected void runInUi(Runnable runInUiThread) {
+    protected void runInUi(final Runnable runInUiThread) {
         try {
             sessionExecutor.runLaterInClientSession(runInUiThread).get();
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (final InterruptedException | ExecutionException e) {
             throw new IllegalArgumentException(e);
         }
     }
 
-    protected void runAndForgetInUi(Runnable runInUiThread) {
+    protected void runAndForgetInUi(final Runnable runInUiThread) {
         sessionExecutor.runLaterInClientSession(runInUiThread).exceptionally(throwable -> {
             throwable.printStackTrace();
             return null;
@@ -55,11 +55,11 @@ public abstract class AbstractManagedUiController implements ManagedUiController
     protected void init() {
         try {
             postConstruct();
-            uiManager = new ServerUiManager(getModel(), beanManager);
+            uiManager = new ServerUiManager(beanManager);
             initModel(getModel());
             getModel().setRoot(buildUi());
             initRootPane();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             showUnexpectedError(e);
         }
     }
@@ -68,7 +68,7 @@ public abstract class AbstractManagedUiController implements ManagedUiController
 
     }
 
-    protected void initModel(ManagedUiModel model) {
+    protected void initModel(final ManagedUiModel model) {
 
     }
 
@@ -77,19 +77,19 @@ public abstract class AbstractManagedUiController implements ManagedUiController
     }
 
     //    TODO: @ActionExceptionHandler
-    protected void showUnexpectedError(Throwable stackTrace) {
+    protected void showUnexpectedError(final Throwable stackTrace) {
         getModel().setIsWorking(false);
         stackTrace.printStackTrace();
-        String exceptionText = ExceptionUtils.getStackTrace(stackTrace);
+        final String exceptionText = ExceptionUtils.getStackTrace(stackTrace);
         getModel().showDialog(ui().unexpectedErrorDialog(getModel().getRoot(), exceptionText));
     }
 
     //    TODO: @ActionExceptionHandler
-    protected void showQualifiedError(String headerText, String contentText, Throwable stackTrace) {
+    protected void showQualifiedError(final String headerText, final String contentText, final Throwable stackTrace) {
         getModel().setIsWorking(false);
         stackTrace.printStackTrace();
-        String exceptionText = ExceptionUtils.getStackTrace(stackTrace);
-        QualifiedErrorDialogModel dialog = ui().qualifiedErrorDialog(getModel().getRoot(), headerText, contentText, exceptionText);
+        final String exceptionText = ExceptionUtils.getStackTrace(stackTrace);
+        final QualifiedErrorDialogModel dialog = ui().qualifiedErrorDialog(getModel().getRoot(), headerText, contentText, exceptionText);
         dialog.setRootCauseText(ExceptionUtils.getRootCauseMessage(stackTrace));
         getModel().showDialog(dialog);
     }
@@ -112,21 +112,21 @@ public abstract class AbstractManagedUiController implements ManagedUiController
     public abstract ManagedUiModel getModel();
 
     @RemotingAction("buttonClick")
-    public void event(@Param("button") IdentifiableModel button) {
+    public void event(@Param("button") final IdentifiableModel button) {
         uiManager.receivedButtonClick(button);
     }
 
 
     @RemotingAction
-    private void onToggleButtonAction(@Param("model") ToggleButtonModel item, @Param("selected") Boolean selected) {
+    private void onToggleButtonAction(@Param("model") final ToggleButtonModel item, @Param("selected") final Boolean selected) {
 
     }
 
     @RemotingAction
-    public void receivedFocus(@Param("id") String id) {
+    public void receivedFocus(@Param("id") final String id) {
         processReceivedFocus(id);
     }
 
-    protected void processReceivedFocus(String fieldId) {
+    protected void processReceivedFocus(final String fieldId) {
     }
 }
