@@ -34,7 +34,7 @@ abstract class ButtonBaseFactory<T extends ButtonModel, S extends ButtonBase> im
         return node;
     }
 
-    private void configureButton(final T model, final S node) {
+    void configureButton(final T model, final S node) {
         bind(node.textProperty()).to(model.captionProperty());
         CommonUiHelper.subscribeWithOptional(model.tooltipProperty(), tooltipOptional -> createTooltip(tooltipOptional, node));
         CommonUiHelper.subscribeWithOptional(model.imageProperty(), optionalImagePath -> createImage(optionalImagePath, model, node));
