@@ -2,6 +2,8 @@ package dev.rico.internal.client.projector.uimanager;
 
 import java.net.URL;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import dev.rico.client.projector.PostProcessor;
 import dev.rico.client.remoting.FXBinder;
 import dev.rico.client.remoting.view.AbstractViewController;
@@ -16,6 +18,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Window;
 
 public class ManagedUiViewController<M extends ManagedUiModel> extends AbstractViewController<M> implements ViewPresenter {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ManagedUiViewController.class);
+
     private final BorderPane pane = new BorderPane();
     private ClientUiManager factory;
 
@@ -85,13 +90,13 @@ public class ManagedUiViewController<M extends ManagedUiModel> extends AbstractV
         if (found != null) {
             return name;
         } else {
-            System.err.println("File: " + name + " not found, attempting with camel case");
+            LOGGER.error("File: {} not found, attempting with camel case", name);
             name = this.getConventionalName(false, ending);
             found = this.getClass().getResource(name);
             if (mandatory && found == null) {
                 final String message = "Cannot load file " + name;
-                System.err.println(message);
-                System.err.println("Stopping initialization phase...");
+                LOGGER.error(message);
+                LOGGER.error("Stopping initialization phase...");
                 throw new IllegalStateException(message);
             } else {
                 return name;
