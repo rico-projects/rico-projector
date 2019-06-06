@@ -1,5 +1,8 @@
 package dev.rico.internal.client.projector.factories;
 
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+
 import dev.rico.client.projector.Projector;
 import dev.rico.client.remoting.ControllerProxy;
 import dev.rico.client.remoting.Param;
@@ -13,9 +16,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 
-import java.util.WeakHashMap;
-import java.util.concurrent.CompletableFuture;
-
 public interface ActionHandlerFactory {
 
     default EventHandler<ActionEvent> createOnActionHandler(final String type, final IdentifiableModel identifiableModel, final Projector projector) {
@@ -24,7 +24,7 @@ public interface ActionHandlerFactory {
             final ControllerProxy<? extends ManagedUiModel> controllerProxy = projector.getControllerProxy();
             Assert.requireNonNull(controllerProxy, "controllerProxy");
 
-            final WeakHashMap<IdentifiableModel, Node> modelToNodeMap = projector.getModelToNodeMap();
+            final Map<IdentifiableModel, Node> modelToNodeMap = projector.getModelToNodeMap();
             Assert.requireNonNull(modelToNodeMap, "modelToNodeMap");
 
             event.consume();

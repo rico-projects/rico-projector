@@ -1,6 +1,6 @@
 package dev.rico.client.projector;
 
-import java.util.WeakHashMap;
+import java.util.Map;
 
 import dev.rico.client.remoting.ControllerProxy;
 import dev.rico.internal.projector.ui.IdentifiableModel;
@@ -17,7 +17,7 @@ public interface Projector {
     ControllerProxy<? extends ManagedUiModel> getControllerProxy();
 
     @Deprecated
-    WeakHashMap<IdentifiableModel, Node> getModelToNodeMap();
+    Map<IdentifiableModel, Node> getModelToNodeMap();
 
     @Deprecated
     PostProcessor getPostProcessor();
