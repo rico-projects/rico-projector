@@ -17,6 +17,7 @@ public class PasswordFieldFactory implements ProjectorNodeFactory<PasswordFieldM
     public PasswordField create(final Projector projector, final PasswordFieldModel model) {
         Assert.requireNonNull(projector, "projector");
         Assert.requireNonNull(model, "model");
+
         final PasswordField result = new PasswordField();
         bind(result.prefColumnCountProperty()).to(model.prefColumnCountProperty());
         configureTextInputControl(projector.getControllerProxy(), model, result);

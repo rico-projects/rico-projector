@@ -4,6 +4,7 @@ import static dev.rico.client.remoting.FXBinder.bind;
 
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorNodeFactory;
+import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.flowpane.FlowPaneModel;
 import javafx.scene.layout.FlowPane;
 
@@ -11,7 +12,10 @@ public class FlowPaneFactory implements ProjectorNodeFactory<FlowPaneModel, Flow
 
     @Override
     public FlowPane create(final Projector projector, final FlowPaneModel model) {
-        FlowPane pane = new FlowPane();
+        Assert.requireNonNull(projector, "projector");
+        Assert.requireNonNull(model, "model");
+
+        final FlowPane pane = new FlowPane();
         bind(pane.vgapProperty()).to(model.vGapProperty());
         bind(pane.hgapProperty()).to(model.hGapProperty());
         bind(pane.orientationProperty()).to(model.orientationProperty());
