@@ -17,7 +17,7 @@ public class ToggleButtonFactory implements ProjectorNodeFactory<ToggleButtonMod
     public ToggleButton create(final Projector projector, final ToggleButtonModel model) {
         Assert.requireNonNull(projector, "projector");
         Assert.requireNonNull(model, "model");
-        
+
         final ToggleButton button = new ToggleButton();
         bind(button.graphicProperty()).to(model.graphicProperty(), projector::createNode);
         bind(button.selectedProperty()).bidirectionalTo(model.selectedProperty());

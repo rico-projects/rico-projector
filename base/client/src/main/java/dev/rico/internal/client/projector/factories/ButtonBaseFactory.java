@@ -26,13 +26,11 @@ import javafx.scene.control.ButtonBase;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 
-abstract class ButtonBaseFactory<T extends ButtonModel, S extends ButtonBase> implements ProjectorNodeFactory<T, S> {
-
-    private final WeakHashMap<IdentifiableModel, Node> modelToNodeMap = new WeakHashMap<>();
+abstract class ButtonBaseFactory<T extends ButtonModel, S extends ButtonBase> implements ProjectorNodeFactory<T, S>, ActionHandlerFactory {
 
     S createButtonBase(final Projector projector, final T model, final S node) {
         configureButton(model, node);
-        installMonitoredAction(node, createOnActionHandler(projector, "buttonClick", model));
+        installMonitoredAction(node, createOnActionHandler("buttonClick", model, projector));
         return node;
     }
 
@@ -61,25 +59,6 @@ abstract class ButtonBaseFactory<T extends ButtonModel, S extends ButtonBase> im
                 handlers.add(newValue);
             }
         });
-    }
-
-    private EventHandler<ActionEvent> createOnActionHandler(final Projector projector, final String type, final IdentifiableModel identifiableModel) {
-        return event -> {
-            event.consume();
-            if (identifiableModel instanceof ButtonModel && ((ButtonModel) identifiableModel).getAction() != null) {
-                final String action = ((ButtonModel) identifiableModel).getAction();
-                projector.getControllerProxy().invoke(action).exceptionally(throwable -> UnexpectedErrorDialog
-                        .showError(modelToNodeMap.get(identifiableModel), throwable));
-                projector.getControllerProxy().invoke(type, new Param("button", identifiableModel)).exceptionally(throwable -> UnexpectedErrorDialog.showError(modelToNodeMap.get(identifiableModel), throwable));
-            } else if (identifiableModel instanceof ToggleItemModel
-                    && ((ToggleItemModel) identifiableModel).getAction() != null) {
-                final String action = ((ToggleItemModel) identifiableModel).getAction();
-                projector.getControllerProxy().invoke(action).exceptionally(throwable -> UnexpectedErrorDialog.showError(modelToNodeMap.get(identifiableModel), throwable));
-                projector.getControllerProxy().invoke(type, new Param("button", identifiableModel)).exceptionally(throwable -> UnexpectedErrorDialog.showError(modelToNodeMap.get(identifiableModel), throwable));
-            } else {
-                projector.getControllerProxy().invoke(type, new Param("button", identifiableModel)).exceptionally(throwable -> UnexpectedErrorDialog.showError(modelToNodeMap.get(identifiableModel), throwable));
-            }
-        };
     }
 
     private void createTooltip(final Optional<String> tooltipOptional, final S node) {
