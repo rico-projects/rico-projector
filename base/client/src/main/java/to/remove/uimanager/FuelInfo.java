@@ -10,6 +10,15 @@ import java.util.regex.Pattern;
 @ForRemoval
 public class FuelInfo {
     private final SpecialValues specialValue;
+
+    public Integer getValue() {
+        return value;
+    }
+
+    public WeightUnit getUnit() {
+        return unit;
+    }
+
     private final Integer value;
     private final WeightUnit unit;
 

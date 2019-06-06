@@ -9,6 +9,26 @@ import java.util.regex.Pattern;
 
 @ForRemoval
 public class PaxInfo {
+   public int getStandardCount() {
+      return standardCount;
+   }
+
+   public int getMalesCount() {
+      return malesCount;
+   }
+
+   public int getFemalesCount() {
+      return femalesCount;
+   }
+
+   public int getChildrenCount() {
+      return childrenCount;
+   }
+
+   public int getInfantsCount() {
+      return infantsCount;
+   }
+
    private final int standardCount;
    private final int malesCount;
    private final int femalesCount;
