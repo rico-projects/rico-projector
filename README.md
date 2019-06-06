@@ -1,4 +1,4 @@
-# Rico Projector [![Build Status](https://travis-ci.org/rico-projects/rico-projector.svg?branch=master)](https://travis-ci.org/rico-project/rico-projector)
+# Rico Projector [![Build Status](https://travis-ci.org/rico-projects/rico-projector.svg?branch=master)](https://travis-ci.org/rico-projects/rico-projector)
 
 The *Rico Projector* provides everything you need to build UIs using the projector pattern on top of *Rico Remoting*.
 
