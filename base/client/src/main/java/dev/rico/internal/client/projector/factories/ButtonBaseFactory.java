@@ -26,7 +26,7 @@ import javafx.scene.control.ButtonBase;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 
-abstract class ButtonBaseFactory<T extends ButtonModel, S extends ButtonBase> implements ProjectorNodeFactory<T, S>, ActionHandlerFactory {
+public abstract class ButtonBaseFactory<T extends ButtonModel, S extends ButtonBase> implements ProjectorNodeFactory<T, S>, ActionHandlerFactory {
 
     S createButtonBase(final Projector projector, final T model, final S node) {
         configureButton(model, node);
@@ -34,7 +34,7 @@ abstract class ButtonBaseFactory<T extends ButtonModel, S extends ButtonBase> im
         return node;
     }
 
-    void configureButton(final T model, final S node) {
+    protected void configureButton(final T model, final S node) {
         bind(node.textProperty()).to(model.captionProperty());
         CommonUiHelper.subscribeWithOptional(model.tooltipProperty(), tooltipOptional -> createTooltip(tooltipOptional, node));
         CommonUiHelper.subscribeWithOptional(model.imageProperty(), optionalImagePath -> createImage(optionalImagePath, model, node));
