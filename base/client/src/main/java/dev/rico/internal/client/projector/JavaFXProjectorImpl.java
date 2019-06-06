@@ -2,11 +2,13 @@ package dev.rico.internal.client.projector;
 
 import dev.rico.client.projector.PostProcessor;
 import dev.rico.client.projector.Projector;
+import dev.rico.client.projector.spi.ProjectorDialogHandler;
 import dev.rico.client.projector.spi.ProjectorNodeFactory;
 import dev.rico.client.remoting.ControllerProxy;
 import dev.rico.internal.projector.ui.IdentifiableModel;
 import dev.rico.internal.projector.ui.ItemModel;
 import dev.rico.internal.projector.ui.ManagedUiModel;
+import dev.rico.internal.projector.ui.dialog.DialogModel;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
@@ -22,6 +24,8 @@ public class JavaFXProjectorImpl implements Projector {
     private final ControllerProxy<? extends ManagedUiModel> controllerProxy;
 
     private final Map<Class<? extends ItemModel>, ProjectorNodeFactory> factories;
+
+    private final Map<Class<? extends DialogModel>, ProjectorDialogHandler> dialogHandlers;
 
     //TODO: REFACTOR
     private final WeakHashMap<IdentifiableModel, Node> modelToNodeMap = new WeakHashMap<>();
@@ -48,30 +52,33 @@ public class JavaFXProjectorImpl implements Projector {
             throw new RuntimeException("Error in loading ui component factories", e);
         }
 
+        dialogHandlers = new HashMap<>();
+        try {
+            ServiceLoader<ProjectorDialogHandler> serviceLoader = ServiceLoader.load(ProjectorDialogHandler.class);
+            for (ProjectorDialogHandler handler : serviceLoader) {
+                final Class<? extends DialogModel> type = handler.getSupportedType();
+                if (type == null) {
+                    throw new IllegalStateException("ProjectorDialogHandler implementation '" + handler.getClass() + "' method getSupportedType() must not return 'null'");
+                }
+                if (this.dialogHandlers.containsKey(type)) {
+                    throw new IllegalStateException("ProjectorDialogHandler implementation '" + handler.getClass() + "' for '" + type + "' is already defined by handler");
+                }
+                this.dialogHandlers.put(type, handler);
+            }
+        } catch (final Exception e) {
+            throw new RuntimeException("Error in loading ui component factories", e);
+        }
+
         ManagedUiModel model = controllerProxy.getModel();
         model.rootProperty().onChanged(evt -> updateUiRoot(evt.getNewValue()));
         updateUiRoot(model.getRoot());
 
         model.dialogProperty().onChanged(event -> Platform.runLater(() -> {
-//            ItemModel oldDialog = event.getOldValue();
-//            ItemModel newDialog = event.getNewValue();
-//            if (newDialog instanceof CustomDialogModel) {
-//                createCustomDialog((CustomDialogModel) newDialog);
-//            } else if (newDialog instanceof SaveFileDialogModel) {
-//                createSaveFileDialog((SaveFileDialogModel) newDialog);
-//            } else if (newDialog instanceof InfoDialogModel) {
-//                createInfoDialog((InfoDialogModel) newDialog);
-//            } else if (newDialog instanceof ConfirmationDialogModel) {
-//                createConfirmationDialog((ConfirmationDialogModel) newDialog);
-//            } else if (newDialog instanceof UnexpectedErrorDialogModel) {
-//                createUnexpectedErrorDialog((UnexpectedErrorDialogModel) newDialog);
-//            } else if (newDialog instanceof QualifiedErrorDialogModel) {
-//                createQualifiedErrorDialog((QualifiedErrorDialogModel) newDialog);
-//            } else if (newDialog instanceof ShutdownDialogModel
-//                    && !(oldDialog instanceof ShutdownDialogModel)) {
-//                // Die if-Abfrage verhindert endlose Stapel mit ShutDown-Dialogen!
-//                createShutdownDialog((ShutdownDialogModel) newDialog);
-//            }
+            DialogModel newDialog = event.getNewValue();
+            if(newDialog != null) {
+                final ProjectorDialogHandler projectorDialogHandler = dialogHandlers.get(newDialog.getClass());
+                projectorDialogHandler.show(this, newDialog);
+            }
         }));
     }
 
