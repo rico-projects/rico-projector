@@ -1,4 +1,4 @@
-package dev.rico.internal.client.projector.uimanager;
+package to.remove;
 
 import com.google.common.base.Strings;
 import dev.rico.client.Client;
@@ -11,7 +11,9 @@ import dev.rico.core.http.HttpClient;
 import dev.rico.core.http.RequestMethod;
 import dev.rico.internal.client.projector.mixed.Configuration;
 import dev.rico.internal.client.projector.mixed.FormatterFactory;
-import dev.rico.internal.client.projector.mixed.ListCellSkin;
+import dev.rico.internal.client.projector.uimanager.*;
+import dev.rico.internal.client.projector.uimanager.TextArea;
+import dev.rico.internal.client.projector.uimanager.TextField;
 import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.mixed.CommonUiHelper;
 import dev.rico.internal.projector.ui.*;
@@ -64,12 +66,11 @@ import org.controlsfx.control.SegmentedButton;
 import org.controlsfx.control.decoration.Decorator;
 import org.controlsfx.control.decoration.StyleClassDecoration;
 import org.tbee.javafx.scene.layout.MigPane;
-import to.remove.*;
 import to.remove.ui.*;
 import to.remove.ui.menubutton.MenuButtonItemModel;
 import to.remove.ui.migpane.MigPaneModel;
 import to.remove.ui.propertysheet.PropertySheetModel;
-import to.remove.ui.table.TableInstantColumnModel;
+import dev.rico.internal.projector.ui.table.TableInstantColumnModel;
 import to.remove.uimanager.DateTimeField;
 import to.remove.uimanager.PropertySheet;
 

@@ -1,8 +1,8 @@
-package dev.rico.internal.client.projector.factories;
+package to.remove.factories;
 
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorNodeFactory;
-import dev.rico.internal.client.projector.mixed.ListCellSkin;
+import to.remove.ListCellSkin;
 import dev.rico.internal.client.projector.uimanager.ClientUiHelper;
 import dev.rico.internal.client.projector.uimanager.UnexpectedErrorDialog;
 import dev.rico.internal.core.Assert;

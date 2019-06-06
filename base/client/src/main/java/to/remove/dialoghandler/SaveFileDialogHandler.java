@@ -1,16 +1,16 @@
-package dev.rico.internal.client.projector.dialoghandler;
+package to.remove.dialoghandler;
 
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorDialogHandler;
-import dev.rico.internal.projector.ui.dialog.SaveFileDialogModel;
-import dev.rico.internal.projector.ui.dialog.UnexpectedErrorDialogModel;
+import dev.rico.internal.client.projector.dialoghandler.DialogConfiguration;
+import to.remove.SaveFileDialogModel;
 import javafx.stage.FileChooser;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 
-public class SaveFileDialogHandler implements ProjectorDialogHandler<SaveFileDialogModel>, DialogConfiguration  {
+public class SaveFileDialogHandler implements ProjectorDialogHandler<SaveFileDialogModel>, DialogConfiguration {
 
     @Override
     public void show(final Projector projector, final SaveFileDialogModel model) {

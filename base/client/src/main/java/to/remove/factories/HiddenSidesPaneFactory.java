@@ -1,18 +1,18 @@
-package dev.rico.internal.client.projector.factories;
+package to.remove.factories;
 
-import static dev.rico.client.remoting.FXBinder.bind;
-
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
-import org.controlsfx.control.HiddenSidesPane;
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorNodeFactory;
 import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.ItemModel;
 import dev.rico.remoting.ValueChangeEvent;
 import javafx.scene.Node;
+import org.controlsfx.control.HiddenSidesPane;
 import to.remove.ui.HiddenSidesPaneModel;
+
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
+import static dev.rico.client.remoting.FXBinder.bind;
 
 public class HiddenSidesPaneFactory implements ProjectorNodeFactory<HiddenSidesPaneModel, HiddenSidesPane> {
 

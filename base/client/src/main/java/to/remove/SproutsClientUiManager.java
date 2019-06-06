@@ -3,7 +3,6 @@ package to.remove;
 import dev.rico.client.projector.PostProcessor;
 import dev.rico.client.remoting.ControllerProxy;
 import dev.rico.core.functional.Binding;
-import dev.rico.internal.client.projector.uimanager.ObsoleteClientUiManager;
 import dev.rico.internal.projector.ui.ItemModel;
 import dev.rico.internal.projector.ui.ManagedUiModel;
 import dev.rico.internal.projector.ui.menuitem.MenuItemModel;

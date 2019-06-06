@@ -1,11 +1,10 @@
-package dev.rico.internal.client.projector.mixed;
+package to.remove;
 
-import dev.rico.internal.projector.ui.listview.ListViewModel;
 import dev.rico.client.remoting.ControllerProxy;
+import dev.rico.internal.projector.ui.listview.ListViewModel;
 import javafx.beans.property.BooleanProperty;
 import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
-import to.remove.EditableListCell;
 
 import java.util.List;
 

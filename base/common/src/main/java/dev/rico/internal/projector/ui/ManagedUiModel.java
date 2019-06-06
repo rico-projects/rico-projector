@@ -1,7 +1,6 @@
 package dev.rico.internal.projector.ui;
 
 
-import to.remove.RemotingEvent;
 import dev.rico.internal.projector.ui.dialog.DialogModel;
 import dev.rico.remoting.ObservableList;
 import dev.rico.remoting.Property;
@@ -14,7 +13,6 @@ public class ManagedUiModel {
     private Property<DialogModel> dialog;
     private Property<ItemModel> focusedItem;
     private Property<Boolean> isWorking;
-    private Property<RemotingEvent> event;
     private ObservableList<IdentifiableModel> retainedModels;
     private Property<Integer> badgeCount;
 
@@ -40,18 +38,6 @@ public class ManagedUiModel {
 
     public Property<ItemModel> focusedItemProperty() {
         return focusedItem;
-    }
-
-    public RemotingEvent getEvent() {
-        return event.get();
-    }
-
-    public void setEvent(RemotingEvent event) {
-        this.event.set(event);
-    }
-
-    public Property<RemotingEvent> eventProperty() {
-        return event;
     }
 
     public Boolean getIsWorking() {

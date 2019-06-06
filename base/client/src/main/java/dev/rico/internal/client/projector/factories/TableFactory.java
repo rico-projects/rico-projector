@@ -33,7 +33,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
-import to.remove.ui.table.TableInstantColumnModel;
+import dev.rico.internal.projector.ui.table.TableInstantColumnModel;
 
 public class TableFactory implements ProjectorNodeFactory<TableModel, TableView> {
 

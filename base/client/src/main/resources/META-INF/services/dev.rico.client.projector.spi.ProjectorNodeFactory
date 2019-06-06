@@ -4,12 +4,12 @@ dev.rico.internal.client.projector.factories.ChoiceBoxFactory
 dev.rico.internal.client.projector.factories.FlowPaneFactory
 dev.rico.internal.client.projector.factories.GridPaneFactory
 dev.rico.internal.client.projector.factories.HBoxFactory
-dev.rico.internal.client.projector.factories.HiddenSidesPaneFactory
+to.remove.factories.HiddenSidesPaneFactory
 dev.rico.internal.client.projector.factories.HyperlinkFactory
 dev.rico.internal.client.projector.factories.ImageViewFactory
 dev.rico.internal.client.projector.factories.LabelFactory
-dev.rico.internal.client.projector.factories.ListViewFactory
-dev.rico.internal.client.projector.factories.MessagePlaceholderFactory
+to.remove.factories.ListViewFactory
+to.remove.factories.MessagePlaceholderFactory
 dev.rico.internal.client.projector.factories.PasswordFieldFactory
 dev.rico.internal.client.projector.factories.RadioButtonFactory
 dev.rico.internal.client.projector.factories.ScrollPaneFactory
@@ -21,7 +21,7 @@ dev.rico.internal.client.projector.factories.TextAreaFactory
 dev.rico.internal.client.projector.factories.TextFieldFactory
 dev.rico.internal.client.projector.factories.ToggleButtonFactory
 dev.rico.internal.client.projector.factories.ToolBarFactory
-dev.rico.internal.client.projector.factories.UploadButtonFactory
+to.remove.factories.UploadButtonFactory
 dev.rico.internal.client.projector.factories.VBoxFactory
 dev.rico.internal.client.projector.factories.BorderPaneFactory
 to.remove.factories.CardPaneFactory

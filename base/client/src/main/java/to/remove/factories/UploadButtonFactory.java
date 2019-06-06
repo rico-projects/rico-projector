@@ -1,8 +1,9 @@
-package dev.rico.internal.client.projector.factories;
+package to.remove.factories;
 
 import dev.rico.client.Client;
 import dev.rico.client.projector.Projector;
 import dev.rico.core.http.HttpClient;
+import dev.rico.internal.client.projector.factories.ButtonBaseFactory;
 import dev.rico.internal.client.projector.uimanager.UnexpectedErrorDialog;
 import dev.rico.internal.core.Assert;
 import javafx.event.ActionEvent;

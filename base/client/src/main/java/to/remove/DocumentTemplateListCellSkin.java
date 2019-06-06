@@ -1,6 +1,5 @@
 package to.remove;
 
-import dev.rico.internal.client.projector.mixed.ListCellSkinBase;
 import dev.rico.internal.projector.ForRemoval;
 import dev.rico.internal.projector.ui.listview.ListViewItemModel;
 import com.github.rodionmoiseev.c10n.C10N;

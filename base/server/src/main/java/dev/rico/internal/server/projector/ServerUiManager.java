@@ -4,6 +4,7 @@ import dev.rico.internal.projector.mixed.CommonUiHelper;
 import to.remove.DocumentData;
 import to.remove.RemotingEvent;
 import dev.rico.internal.projector.ui.*;
+import to.remove.SaveFileDialogModel;
 import to.remove.ui.*;
 import to.remove.ui.autocompletion.AutoCompleteItemModel;
 import to.remove.ui.autocompletion.AutoCompleteModel;
@@ -46,8 +47,8 @@ import dev.rico.remoting.BeanManager;
 import dev.rico.remoting.Property;
 import javafx.geometry.Orientation;
 import javafx.scene.layout.Priority;
-import to.remove.ui.table.TableInstantCellModel;
-import to.remove.ui.table.TableInstantColumnModel;
+import dev.rico.internal.projector.ui.table.TableInstantCellModel;
+import dev.rico.internal.projector.ui.table.TableInstantColumnModel;
 
 import java.time.Instant;
 import java.util.*;

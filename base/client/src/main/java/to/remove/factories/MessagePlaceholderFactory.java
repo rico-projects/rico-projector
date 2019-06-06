@@ -1,11 +1,9 @@
-package dev.rico.internal.client.projector.factories;
+package to.remove.factories;
 
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorNodeFactory;
-import dev.rico.internal.projector.ui.PasswordFieldModel;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.paint.Color;
 import to.remove.ui.MessagePlaceholder;
 
