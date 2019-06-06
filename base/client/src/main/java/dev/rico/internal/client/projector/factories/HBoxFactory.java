@@ -2,6 +2,7 @@ package dev.rico.internal.client.projector.factories;
 
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorNodeFactory;
+import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.box.HBoxModel;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
@@ -12,6 +13,9 @@ public class HBoxFactory implements ProjectorNodeFactory<HBoxModel, HBox> {
 
     @Override
     public HBox create(final Projector projector, final HBoxModel model) {
+        Assert.requireNonNull(projector, "projector");
+        Assert.requireNonNull(model, "model");
+
         HBox hBox = new HBox();
         bind(hBox.spacingProperty()).to(model.spacingProperty(), value -> getValue(value, 0));
         bind(hBox.alignmentProperty()).to(model.alignmentProperty());
