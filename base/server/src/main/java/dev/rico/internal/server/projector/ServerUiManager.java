@@ -2,7 +2,6 @@ package dev.rico.internal.server.projector;
 
 import dev.rico.internal.projector.mixed.CommonUiHelper;
 import to.remove.DocumentData;
-import to.remove.RemotingEvent;
 import dev.rico.internal.projector.ui.*;
 import to.remove.ui.*;
 import to.remove.ui.autocompletion.AutoCompleteItemModel;
@@ -54,19 +53,12 @@ import java.util.*;
 import java.util.function.Function;
 
 @SuppressWarnings("WeakerAccess")
-public class ServerUiManager {
+public class ServerUiManager extends BaseServerUiManager {
 
-    private final ManagedUiModel model;
-    private final BeanManager beanManager;
-    private final WeakHashMap<String, IdentifiableModel> idToItemMap = new WeakHashMap<>();
-    private final WeakHashMap<IdentifiableModel, Runnable> modelToEventHandlerMap = new WeakHashMap<>();
 
     public ServerUiManager(ManagedUiModel model, BeanManager beanManager) {
-        this.model = model;
-        this.beanManager = beanManager;
+        super(model, beanManager);
     }
-
-
 
     public VBoxModel vBox() {
         return create(VBoxModel.class);
@@ -76,45 +68,6 @@ public class ServerUiManager {
         VBoxModel vBox = vBox();
         vBox.addAll(childs);
         return vBox;
-    }
-
-    public <T extends IdentifiableModel> T create(Class<T> beanClass) {
-        return create(beanClass, UUID.randomUUID().toString());
-    }
-
-    private <T extends IdentifiableModel> T create(Class<T> beanClass, String id) {
-        T model = beanManager.create(beanClass);
-        model.setId(id);
-        if (idToItemMap.containsKey(id)) {
-            throw new IllegalArgumentException("Object of class '" + beanClass.getName() + "' with id '" + id + "' is already registered");
-        }
-        idToItemMap.put(id, model);
-        model.idProperty().onChanged(evt -> {
-            if (idToItemMap.containsKey(evt.getNewValue())) {
-                throw new IllegalArgumentException("Object of class '" + beanClass.getName() + "' with id '" + evt.getNewValue() + "' is already registered");
-            }
-            String oldId = findInMap(idToItemMap, model);
-            idToItemMap.put(evt.getNewValue(), model);
-            idToItemMap.remove(oldId);
-        });
-        if (model instanceof ItemModel) {
-            ItemModel itemModel = (ItemModel) model;
-            itemModel.setDisable(false);
-            itemModel.setManaged(true);
-            itemModel.setVisible(true);
-        }
-        return model;
-    }
-
-    private <T> String findInMap(Map<String, T> map, T model) {
-        java.util.Objects.requireNonNull(map);
-        java.util.Objects.requireNonNull(model);
-        for (Map.Entry<String, T> entry : map.entrySet()) {
-            if (entry.getValue() == model) {
-                return entry.getKey();
-            }
-        }
-        throw new IllegalArgumentException("Could not find '" + model + "' in map");
     }
 
     public HBoxModel hBox() {
@@ -173,7 +126,7 @@ public class ServerUiManager {
     @Deprecated
     public void maybeInstallActionHandler(IdentifiableModel model, Runnable handler) {
         if (handler != null && model != null) {
-            modelToEventHandlerMap.put(model, handler);
+            installActionHandler(model, handler);
         }
     }
 
@@ -241,26 +194,6 @@ public class ServerUiManager {
         return checkBoxModel;
     }
 
-    public <T extends ItemModel> T getNodeById(String id) {
-        return java.util.Objects.requireNonNull((T) idToItemMap.get(id), "Missing (injected?) node with id: " + id);
-    }
-
-    public void receivedButtonClick(IdentifiableModel button) {
-        if (modelToEventHandlerMap.containsKey(button)) {
-            modelToEventHandlerMap.get(button).run();
-        }
-    }
-
-    @Deprecated
-    public <T extends RemotingEvent> T createEvent(Class<T> eventClass) {
-        return beanManager.create(eventClass);
-    }
-
-    @Deprecated
-    public <T extends RemotingEvent> void sendEvent(T event) {
-        model.setEvent(event);
-    }
-
     public SplitPaneModel splitPane(Orientation orientation, SplitPaneItemModel... items) {
         SplitPaneModel model = create(SplitPaneModel.class);
         model.setOrientation(orientation);
@@ -286,7 +219,6 @@ public class ServerUiManager {
     public ToolBarModel toolBar() {
         return create(ToolBarModel.class);
     }
-
 
     public ToolBarModel toolBar(ItemModel... models) {
         ToolBarModel toolBar = toolBar();
@@ -505,7 +437,6 @@ public class ServerUiManager {
         return column;
     }
 
-
     public TableColumnModel tableNumberColum(String caption, Double prefWidth) {
         TableIntegerColumnModel column = create(TableIntegerColumnModel.class);
         configureTableColumn(null, column, caption, prefWidth);
@@ -616,8 +547,6 @@ public class ServerUiManager {
         return field;
     }
 
-
-
     public ItemModel separator(Orientation orientation) {
         SeparatorModel separatorModel = create(SeparatorModel.class);
         separatorModel.setOrientation(orientation);
@@ -662,11 +591,6 @@ public class ServerUiManager {
         buttonModel.setOnUploadFailedAction(onUploadFailedAction);
         configureButton(buttonModel, caption, null);
         return buttonModel;
-    }
-
-    // TODO: Sollte irgendwie anders gehen?
-    public void removeId(String key) {
-        idToItemMap.remove(key);
     }
 
     public CardPaneModel cardPane() {
