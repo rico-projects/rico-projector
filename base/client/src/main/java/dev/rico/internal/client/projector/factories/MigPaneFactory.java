@@ -2,7 +2,6 @@ package dev.rico.internal.client.projector.factories;
 
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorNodeFactory;
-import dev.rico.internal.projector.ui.IdentifiableModel;
 import javafx.scene.Node;
 import org.tbee.javafx.scene.layout.MigPane;
 import to.remove.ui.migpane.MigPaneModel;
