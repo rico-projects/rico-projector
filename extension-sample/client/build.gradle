@@ -1,4 +1,4 @@
 dependencies {
-    compile project(':rico-projector-common')
     compile project(':rico-projector-extension-sample-common')
+    compile project(':rico-projector-client')
 }
