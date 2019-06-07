@@ -4,7 +4,6 @@ package dev.rico.projector.extension;
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorNodeFactory;
 import dev.rico.client.remoting.FXBinder;
-import dev.rico.internal.client.projector.factories.util.ItemModelBindings;
 import dev.rico.internal.core.Assert;
 import javafx.scene.control.Slider;
 

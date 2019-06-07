@@ -19,10 +19,6 @@ public class SliderModel extends ItemModel {
         return min;
     }
 
-    public void setMin(final double min) {
-        minProperty().set(min);
-    }
-
     public SliderModel withMin(final double min) {
         setMin(min);
         return this;
@@ -32,12 +28,12 @@ public class SliderModel extends ItemModel {
         return Optional.ofNullable(minProperty().get()).orElse(-1d);
     }
 
-    public Property<Double> maxProperty() {
-        return max;
+    public void setMin(final double min) {
+        minProperty().set(min);
     }
 
-    public void setMax(final double max) {
-        maxProperty().set(max);
+    public Property<Double> maxProperty() {
+        return max;
     }
 
     public SliderModel withMax(final double max) {
@@ -49,12 +45,12 @@ public class SliderModel extends ItemModel {
         return Optional.ofNullable(maxProperty().get()).orElse(-1d);
     }
 
-    public Property<Double> valueProperty() {
-        return value;
+    public void setMax(final double max) {
+        maxProperty().set(max);
     }
 
-    public void setValue(final double value) {
-        valueProperty().set(value);
+    public Property<Double> valueProperty() {
+        return value;
     }
 
     public SliderModel withValue(final double value) {
@@ -64,5 +60,9 @@ public class SliderModel extends ItemModel {
 
     public double getValue() {
         return Optional.ofNullable(valueProperty().get()).orElse(-1d);
+    }
+
+    public void setValue(final double value) {
+        valueProperty().set(value);
     }
 }
