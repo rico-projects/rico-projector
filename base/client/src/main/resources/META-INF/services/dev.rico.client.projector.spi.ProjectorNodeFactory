@@ -41,3 +41,4 @@ to.remove.factories.SegmentedButtonFactory
 to.remove.factories.SplitMenuButtonFactory
 to.remove.factories.MainTabAreaFactory
 to.remove.factories.HBoxFillComponentFactory
+to.remove.factories.ClientPropertiesTableFactory
