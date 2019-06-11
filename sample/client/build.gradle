@@ -1,5 +1,5 @@
 dependencies {
-    implementation project(':rico-projector-common-sample')
+    implementation project(':rico-projector-sample-common')
     implementation project(':rico-projector-client')
     implementation project(':rico-projector-extension-sample-client')
 }
