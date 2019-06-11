@@ -1,6 +1,6 @@
 dependencies {
     compile project(':rico-projector-common')
 
-    compile 'dev.rico:rico-remoting-server:1.0.0'
+    compile "dev.rico:rico-remoting-server:$ricoVersion"
     compile 'org.apache.commons:commons-lang3:3.7'
 }

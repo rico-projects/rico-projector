@@ -1,5 +1,5 @@
 dependencies {
     implementation project(':rico-projector-common-sample')
     compile project(':rico-projector-server')
-    implementation 'dev.rico:rico-remoting-server-spring:1.0.0'
+    implementation "dev.rico:rico-remoting-server-spring:$ricoVersion"
 }
