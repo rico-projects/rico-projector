@@ -1,14 +1,13 @@
 package dev.rico.internal.server.projector;
 
-import java.util.Map;
-import java.util.UUID;
-import java.util.WeakHashMap;
-
 import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.IdentifiableModel;
 import dev.rico.internal.projector.ui.ItemModel;
 import dev.rico.remoting.BeanManager;
-import to.remove.RemotingEvent;
+
+import java.util.Map;
+import java.util.UUID;
+import java.util.WeakHashMap;
 
 public class BaseServerUiManager {
 
@@ -31,11 +30,6 @@ public class BaseServerUiManager {
     // TODO: Sollte irgendwie anders gehen?
     public final void removeId(final String key) {
         idToItemMap.remove(key);
-    }
-
-    @Deprecated
-    public final <T extends RemotingEvent> T createEvent(final Class<T> eventClass) {
-        return beanManager.create(eventClass);
     }
 
     // TODO: Auf neues Action-System umstellen

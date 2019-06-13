@@ -1,9 +1,10 @@
 package dev.rico.internal.server.projector;
 
-import dev.rico.internal.projector.ui.*;
-import to.remove.ui.PaxCodeFieldModel;
-import to.remove.ui.autocompletion.AutoCompleteItemModel;
-import to.remove.ui.autocompletion.AutoCompleteModel;
+import dev.rico.internal.core.Assert;
+import dev.rico.internal.projector.ui.DateTimeFieldModel;
+import dev.rico.internal.projector.ui.ItemModel;
+import dev.rico.internal.projector.ui.TextFieldModel;
+import dev.rico.internal.projector.ui.WithPromptText;
 import dev.rico.internal.projector.ui.box.HBoxItemModel;
 import dev.rico.internal.projector.ui.box.HBoxModel;
 import dev.rico.internal.projector.ui.choicebox.ChoiceBoxItemModel;
@@ -11,7 +12,6 @@ import dev.rico.internal.projector.ui.choicebox.ChoiceBoxModel;
 import dev.rico.internal.projector.ui.gridpane.GridPaneItemModel;
 import dev.rico.internal.projector.ui.table.TableModel;
 import dev.rico.internal.projector.ui.table.TableRowModel;
-import dev.rico.internal.core.Assert;
 import javafx.geometry.HPos;
 import javafx.scene.layout.Priority;
 
@@ -29,23 +29,11 @@ public class ServerUiHelper {
                 .orElse(null);
     }
 
-    public static String get(PaxCodeFieldModel model) {
-        return Optional.ofNullable(model)
-                .map(TextFieldModel::getText)
-                .orElse(null);
-    }
-
     public static String get(TextFieldModel textFieldModel) {
         return Optional.ofNullable(textFieldModel)
                 .map(TextFieldModel::getText)
                 .orElse(null);
     }
-
-    public static Optional<AutoCompleteItemModel> getLastValidOptional(AutoCompleteModel autoCompleteModel1, AutoCompleteModel autoCompleteModel2) {
-        return Optional.ofNullable(
-                Optional.ofNullable(autoCompleteModel2.getSelected()).orElse(autoCompleteModel1.getSelected()));
-    }
-
 
     public static HBoxModel wrapInHorizontalBox(ServerUiManager ui, ItemModel... items) {
         Assert.requireNonNull(items, "items");
@@ -133,11 +121,6 @@ public class ServerUiHelper {
 
     public static void selectFirstItem(ChoiceBoxModel box) {
         box.setSelected(box.getItems().stream().findAny().orElse(null));
-    }
-
-    public static void addAndSet(AutoCompleteModel autoCompleteModel, AutoCompleteItemModel autoCompleteItem) {
-        autoCompleteModel.getItems().add(autoCompleteItem);
-        autoCompleteModel.setSelected(autoCompleteItem);
     }
 
     public static Optional<TableRowModel> findRowInTable(TableModel table, String reference) {
