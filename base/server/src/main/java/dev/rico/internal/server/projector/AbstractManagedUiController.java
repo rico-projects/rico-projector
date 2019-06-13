@@ -1,10 +1,5 @@
 package dev.rico.internal.server.projector;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import javax.annotation.PostConstruct;
-
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import dev.rico.internal.projector.ui.IdentifiableModel;
 import dev.rico.internal.projector.ui.ManagedUiModel;
 import dev.rico.internal.projector.ui.ToggleButtonModel;
@@ -14,6 +9,11 @@ import dev.rico.server.remoting.ClientSessionExecutor;
 import dev.rico.server.remoting.Param;
 import dev.rico.server.remoting.RemotingAction;
 import dev.rico.server.remoting.RemotingContext;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+
+import javax.annotation.PostConstruct;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 
 public abstract class AbstractManagedUiController implements ManagedUiController {
 
@@ -55,13 +55,17 @@ public abstract class AbstractManagedUiController implements ManagedUiController
     protected void init() {
         try {
             postConstruct();
-            uiManager = new ServerUiManager(beanManager);
+            uiManager = createUiManager();
             initModel(getModel());
             getModel().setRoot(buildUi());
             initRootPane();
         } catch (final Exception e) {
             showUnexpectedError(e);
         }
+    }
+
+    protected ServerUiManager createUiManager() {
+        return new ServerUiManager(beanManager);
     }
 
     protected void postConstruct() {

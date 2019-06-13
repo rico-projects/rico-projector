@@ -126,5 +126,4 @@ public class ServerUiHelper {
     public static Optional<TableRowModel> findRowInTable(TableModel table, String reference) {
         return table.getRows().stream().filter(tableRowModel -> tableRowModel.getReference().equals(reference)).findAny();
     }
-
 }
