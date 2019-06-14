@@ -15,7 +15,11 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.ServiceLoader;
+import java.util.WeakHashMap;
 
 public class JavaFXProjectorImpl implements Projector {
 
