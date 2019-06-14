@@ -1,6 +1,5 @@
 
 dependencies {
-    compile 'dev.rico:rico-remoting-common:1.0.0'
+    compile "dev.rico:rico-remoting-common:$ricoVersion"
     implementation 'org.apache.commons:commons-io:1.3.2'
-//    implementation 'eu.medsea.mimeutil:mime-util:2.1.3'
 }
