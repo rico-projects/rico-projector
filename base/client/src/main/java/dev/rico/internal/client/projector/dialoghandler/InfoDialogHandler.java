@@ -3,7 +3,6 @@ package dev.rico.internal.client.projector.dialoghandler;
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorDialogHandler;
 import dev.rico.internal.projector.ui.dialog.InfoDialogModel;
-import dev.rico.internal.projector.ui.dialog.UnexpectedErrorDialogModel;
 import javafx.scene.control.Alert;
 
 public class InfoDialogHandler implements ProjectorDialogHandler<InfoDialogModel>, DialogConfiguration  {
