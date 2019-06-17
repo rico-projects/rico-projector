@@ -1,11 +1,5 @@
 package dev.rico.internal.client.projector;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.ServiceLoader;
-import java.util.WeakHashMap;
-
 import dev.rico.client.projector.PostProcessor;
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorDialogHandler;
@@ -20,6 +14,8 @@ import dev.rico.internal.projector.ui.dialog.DialogModel;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
+
+import java.util.*;
 
 public class JavaFXProjectorImpl implements Projector {
 
@@ -54,7 +50,7 @@ public class JavaFXProjectorImpl implements Projector {
 
         model.dialogProperty().onChanged(event -> Platform.runLater(() -> {
             final DialogModel newDialog = event.getNewValue();
-            if(newDialog != null) {
+            if (newDialog != null) {
                 final ProjectorDialogHandler projectorDialogHandler = dialogHandlers.get(newDialog.getClass());
                 projectorDialogHandler.show(this, newDialog);
             }
@@ -97,7 +93,17 @@ public class JavaFXProjectorImpl implements Projector {
         if (factory == null) {
             throw new IllegalArgumentException("No factory found for " + itemModel.getClass());
         }
-        return (N) factory.create(this, itemModel);
+        N node = (N) factory.create(this, itemModel);
+        postProcess(node, itemModel);
+        return node;
+    }
+
+    private void postProcess(Node node, ItemModel itemModel) {
+        itemModel.idProperty().onChanged(evt -> {
+            String newId = evt.getNewValue();
+            postProcessor.postProcess(newId, itemModel, node);
+        });
+        postProcessor.postProcess(itemModel.getId(), itemModel, node);
     }
 
     @Override
