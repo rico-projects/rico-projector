@@ -1,11 +1,5 @@
 package dev.rico.internal.client.projector;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.ServiceLoader;
-import java.util.WeakHashMap;
-
 import dev.rico.client.projector.PostProcessor;
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorDialogHandler;
@@ -20,6 +14,8 @@ import dev.rico.internal.projector.ui.dialog.DialogModel;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
+
+import java.util.*;
 
 public class JavaFXProjectorImpl implements Projector {
 
@@ -93,6 +89,7 @@ public class JavaFXProjectorImpl implements Projector {
 
     @Override
     public <N extends Node> N createNode(final ItemModel itemModel) {
+        if (itemModel == null) return null;
         final ProjectorNodeFactory factory = factories.get(itemModel.getClass());
         if (factory == null) {
             throw new IllegalArgumentException("No factory found for " + itemModel.getClass());
