@@ -65,33 +65,19 @@ public class ServerUiManager extends BaseServerUiManager {
     }
 
 
-
-    // TODO: Auf neues Action-System umstellen
-    @Deprecated
-    public void maybeInstallActionHandler(final IdentifiableModel model, final Runnable handler) {
-        if (handler != null && model != null) {
-            installActionHandler(model, handler);
-        }
-    }
-
-    public ButtonModel button(final Runnable handler) {
-        return button(null, handler);
-    }
-
-    public ButtonModel button(final String caption, final Runnable handler) {
+    public ButtonModel button(final String caption) {
         final ButtonModel buttonModel = create(ButtonModel.class);
-        return configureButton(buttonModel, caption, handler);
+        return configureButton(buttonModel, caption);
     }
 
     public ButtonModel button(final String caption, final String action) {
-        final ButtonModel button = button(caption, (Runnable) null);
+        final ButtonModel button = button(caption);
         button.setAction(action);
         return button;
     }
 
-    protected ButtonModel configureButton(final ButtonModel buttonModel, final String caption, final Runnable handler) {
+    protected ButtonModel configureButton(final ButtonModel buttonModel, final String caption) {
         buttonModel.setCaption(caption);
-        maybeInstallActionHandler(buttonModel, handler);
         return buttonModel;
     }
 
@@ -189,17 +175,13 @@ public class ServerUiManager extends BaseServerUiManager {
     }
 
     public HyperlinkModel hyperlink(final String caption) {
-        return hyperlink(caption, (Runnable) null);
-    }
-
-    public HyperlinkModel hyperlink(final String caption, final Runnable handler) {
         final HyperlinkModel hyperlinkModel = create(HyperlinkModel.class);
-        configureButton(hyperlinkModel, caption, handler);
+        configureButton(hyperlinkModel, caption);
         return hyperlinkModel;
     }
 
     public HyperlinkModel hyperlink(final String caption, final String action) {
-        final HyperlinkModel hyperlinkModel = hyperlink(caption, (Runnable) null);
+        final HyperlinkModel hyperlinkModel = hyperlink(caption);
         hyperlinkModel.setAction(action);
         return hyperlinkModel;
     }
@@ -363,10 +345,6 @@ public class ServerUiManager extends BaseServerUiManager {
 
     public BorderPaneModel borderPane() {
         return create(BorderPaneModel.class);
-    }
-
-    public ButtonModel button(final String caption) {
-        return button(caption, (Runnable) null);
     }
 
     public ChoiceBoxItemModel choiceBoxItem(final String reference, final String caption) {

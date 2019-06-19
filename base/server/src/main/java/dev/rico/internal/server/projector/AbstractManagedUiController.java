@@ -1,8 +1,6 @@
 package dev.rico.internal.server.projector;
 
-import dev.rico.internal.projector.ui.IdentifiableModel;
 import dev.rico.internal.projector.ui.ManagedUiModel;
-import dev.rico.internal.projector.ui.ToggleButtonModel;
 import dev.rico.internal.projector.ui.dialog.QualifiedErrorDialogModel;
 import dev.rico.remoting.BeanManager;
 import dev.rico.server.remoting.ClientSessionExecutor;
@@ -114,17 +112,6 @@ public abstract class AbstractManagedUiController implements ManagedUiController
     }
 
     public abstract ManagedUiModel getModel();
-
-    @RemotingAction("buttonClick")
-    public void event(@Param("button") final IdentifiableModel button) {
-        uiManager.receivedButtonClick(button);
-    }
-
-
-    @RemotingAction
-    private void onToggleButtonAction(@Param("model") final ToggleButtonModel item, @Param("selected") final Boolean selected) {
-
-    }
 
     @RemotingAction
     public void receivedFocus(@Param("id") final String id) {
