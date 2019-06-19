@@ -4,7 +4,6 @@ import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorDialogHandler;
 import dev.rico.internal.client.projector.uimanager.QualifiedErrorDialog;
 import dev.rico.internal.projector.ui.dialog.QualifiedErrorDialogModel;
-import dev.rico.internal.projector.ui.dialog.UnexpectedErrorDialogModel;
 
 import static dev.rico.client.remoting.FXBinder.bind;
 

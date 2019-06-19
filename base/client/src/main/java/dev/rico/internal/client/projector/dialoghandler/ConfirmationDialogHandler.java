@@ -4,7 +4,6 @@ import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorDialogHandler;
 import dev.rico.internal.client.projector.uimanager.UnexpectedErrorDialog;
 import dev.rico.internal.projector.ui.dialog.ConfirmationDialogModel;
-import dev.rico.internal.projector.ui.dialog.UnexpectedErrorDialogModel;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;

@@ -1,0 +1,6 @@
+dev.rico.internal.client.projector.dialoghandler.ConfirmationDialogHandler
+dev.rico.internal.client.projector.dialoghandler.CustomDialogHandler
+dev.rico.internal.client.projector.dialoghandler.InfoDialogHandler
+dev.rico.internal.client.projector.dialoghandler.QualifiedErrorDialogHandler
+dev.rico.internal.client.projector.dialoghandler.ShutdownDialogHandler
+dev.rico.internal.client.projector.dialoghandler.UnexpectedErrorDialogHandler
