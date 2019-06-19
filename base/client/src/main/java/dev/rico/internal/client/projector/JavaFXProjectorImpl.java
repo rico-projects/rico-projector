@@ -1,11 +1,5 @@
 package dev.rico.internal.client.projector;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.ServiceLoader;
-import java.util.WeakHashMap;
-
 import dev.rico.client.projector.PostProcessor;
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorDialogHandler;
@@ -20,6 +14,12 @@ import dev.rico.internal.projector.ui.dialog.DialogModel;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.ServiceLoader;
+import java.util.WeakHashMap;
 
 public class JavaFXProjectorImpl implements Projector {
 
@@ -54,9 +54,13 @@ public class JavaFXProjectorImpl implements Projector {
 
         model.dialogProperty().onChanged(event -> Platform.runLater(() -> {
             final DialogModel newDialog = event.getNewValue();
-            if(newDialog != null) {
+            if (newDialog != null) {
                 final ProjectorDialogHandler projectorDialogHandler = dialogHandlers.get(newDialog.getClass());
-                projectorDialogHandler.show(this, newDialog);
+                if (projectorDialogHandler == null) {
+                    throw new IllegalStateException("No handler found for dialog type:" + newDialog.getClass());
+                } else {
+                    projectorDialogHandler.show(this, newDialog);
+                }
             }
         }));
     }
