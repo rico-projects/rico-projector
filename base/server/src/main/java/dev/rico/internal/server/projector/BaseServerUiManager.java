@@ -1,6 +1,5 @@
 package dev.rico.internal.server.projector;
 
-import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.IdentifiableModel;
 import dev.rico.internal.projector.ui.ItemModel;
 import dev.rico.remoting.BeanManager;
@@ -13,7 +12,6 @@ public class BaseServerUiManager {
 
     private final BeanManager beanManager;
     private final WeakHashMap<String, IdentifiableModel> idToItemMap = new WeakHashMap<>();
-    private final WeakHashMap<IdentifiableModel, Runnable> modelToEventHandlerMap = new WeakHashMap<>();
 
     public BaseServerUiManager(final BeanManager beanManager) {
         this.beanManager = beanManager;
@@ -30,20 +28,6 @@ public class BaseServerUiManager {
     // TODO: Sollte irgendwie anders gehen?
     public final void removeId(final String key) {
         idToItemMap.remove(key);
-    }
-
-    // TODO: Auf neues Action-System umstellen
-    @Deprecated
-    protected final void installActionHandler(final IdentifiableModel model, final Runnable handler) {
-        Assert.requireNonNull(model, "model");
-        Assert.requireNonNull(handler, "handler");
-        modelToEventHandlerMap.put(model, handler);
-    }
-
-    protected final void receivedButtonClick(final IdentifiableModel button) {
-        if (modelToEventHandlerMap.containsKey(button)) {
-            modelToEventHandlerMap.get(button).run();
-        }
     }
 
     private final <T extends IdentifiableModel> T create(final Class<T> beanClass, final String id) {
