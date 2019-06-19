@@ -52,7 +52,11 @@ public class JavaFXProjectorImpl implements Projector {
             final DialogModel newDialog = event.getNewValue();
             if (newDialog != null) {
                 final ProjectorDialogHandler projectorDialogHandler = dialogHandlers.get(newDialog.getClass());
-                projectorDialogHandler.show(this, newDialog);
+                if (projectorDialogHandler == null) {
+                    throw new IllegalStateException("No handler found for dialog type:" + newDialog.getClass());
+                } else {
+                    projectorDialogHandler.show(this, newDialog);
+                }
             }
         }));
     }
