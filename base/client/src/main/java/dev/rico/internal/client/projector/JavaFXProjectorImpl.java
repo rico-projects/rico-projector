@@ -93,6 +93,7 @@ public class JavaFXProjectorImpl implements Projector {
 
     @Override
     public <N extends Node> N createNode(final ItemModel itemModel) {
+        if (itemModel == null) return null;
         final ProjectorNodeFactory factory = factories.get(itemModel.getClass());
         if (factory == null) {
             throw new IllegalArgumentException("No factory found for " + itemModel.getClass());
