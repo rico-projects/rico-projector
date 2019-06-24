@@ -6,6 +6,7 @@ import dev.rico.internal.projector.ui.LabelModel;
 import dev.rico.internal.projector.ui.ManagedUiModel;
 import dev.rico.internal.projector.ui.TextAreaModel;
 import dev.rico.internal.projector.ui.box.HBoxModel;
+import dev.rico.internal.projector.ui.box.VBoxModel;
 import dev.rico.internal.projector.ui.dialog.InfoDialogModel;
 import dev.rico.internal.server.projector.AbstractManagedUiController;
 import dev.rico.projector.extension.SliderModel;
@@ -42,7 +43,7 @@ public class SampleController extends AbstractManagedUiController {
         final SliderModel slider = ui().create(SliderModel.class).withMin(10).withMax(20).withValue(12);
         slider.valueProperty().onChanged(e -> System.out.println("SLIDER -> " + slider.getValue()));
 
-        final HBoxModel borderPane = ui().hBox(label, center, button, button2, slider);
+        final VBoxModel borderPane = ui().vBox(label, center, button, button2, slider);
 
         return borderPane;
     }
