@@ -4,9 +4,9 @@ include 'rico-projector-common'
 include 'rico-projector-client'
 include 'rico-projector-server'
 
-include 'rico-projector-common-sample'
-include 'rico-projector-client-sample'
-include 'rico-projector-server-sample'
+include 'rico-projector-sample-common'
+include 'rico-projector-sample-client'
+include 'rico-projector-sample-server'
 
 include 'rico-projector-extension-sample-common'
 include 'rico-projector-extension-sample-client'
@@ -16,9 +16,9 @@ project(':rico-projector-common').projectDir=file('base/common')
 project(':rico-projector-client').projectDir=file('base/client')
 project(':rico-projector-server').projectDir=file('base/server')
 
-project(':rico-projector-common-sample').projectDir=file('sample/common')
-project(':rico-projector-client-sample').projectDir=file('sample/client')
-project(':rico-projector-server-sample').projectDir=file('sample/server')
+project(':rico-projector-sample-common').projectDir=file('sample/common')
+project(':rico-projector-sample-client').projectDir=file('sample/client')
+project(':rico-projector-sample-server').projectDir=file('sample/server')
 
 project(':rico-projector-extension-sample-common').projectDir=file('extension-sample/common')
 project(':rico-projector-extension-sample-client').projectDir=file('extension-sample/client')
