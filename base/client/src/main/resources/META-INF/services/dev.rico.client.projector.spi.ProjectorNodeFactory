@@ -20,3 +20,4 @@ dev.rico.internal.client.projector.factories.ToggleButtonFactory
 dev.rico.internal.client.projector.factories.ToolBarFactory
 dev.rico.internal.client.projector.factories.VBoxFactory
 dev.rico.internal.client.projector.factories.BorderPaneFactory
+dev.rico.internal.client.projector.factories.TitledPaneFactory

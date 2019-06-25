@@ -6,8 +6,6 @@ import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.RadioButtonModel;
 import javafx.scene.control.RadioButton;
 
-import java.util.WeakHashMap;
-
 import static dev.rico.client.remoting.FXBinder.bind;
 
 public class RadioButtonFactory implements ProjectorNodeFactory<RadioButtonModel, RadioButton>, ActionHandlerFactory {
@@ -20,7 +18,9 @@ public class RadioButtonFactory implements ProjectorNodeFactory<RadioButtonModel
         final RadioButton button = new RadioButton();
         bind(button.selectedProperty()).bidirectionalTo(model.selectedProperty());
         bind(button.textProperty()).to(model.captionProperty());
-        button.setOnAction(createOnActionHandler("buttonClick", model, projector));
+        if (model.getAction() != null) {
+            button.setOnAction(createOnActionHandler(model.getAction(), button, projector));
+        }
         return button;
     }
 
