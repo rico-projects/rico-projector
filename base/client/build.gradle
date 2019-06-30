@@ -1,20 +1,10 @@
 dependencies {
     compile project(':rico-projector-common')
 
-    implementation 'com.github.rodionmoiseev.c10n:c10n-core:1.2'
-    implementation 'org.apache.commons:commons-text:1.1'
-    implementation 'com.miglayout:miglayout-javafx:5.1'
-    implementation 'org.apache.httpcomponents:httpclient:4.2.1'
-    implementation 'commons-io:commons-io:2.5'
-    implementation 'org.jpedal:OpenViewerFX:7.12.28'
-    implementation 'com.panemu:tiwulfx:2.0'
-    implementation 'org.jfxtras:jfxtras-labs:8.0-r5'
-    implementation 'com.jfoenix:jfoenix:1.2.0'
     implementation 'org.apache.logging.log4j:log4j-api:2.11.2'
     implementation 'org.apache.logging.log4j:log4j-core:2.11.2'
     implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.11.2'
-    implementation 'org.fxmisc.easybind:easybind:1.0.3'
-    implementation 'com.calendarfx:view:8.5.0'
+    implementation 'org.controlsfx:controlsfx:8.40.15'
     implementation 'com.google.guava:guava:22.0'
     testCompile 'junit:junit:4.12'
     compile "dev.rico:rico-remoting-client:$ricoVersion"
