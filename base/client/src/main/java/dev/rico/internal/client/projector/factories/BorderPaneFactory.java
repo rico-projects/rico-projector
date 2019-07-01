@@ -2,6 +2,7 @@ package dev.rico.internal.client.projector.factories;
 
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorNodeFactory;
+import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.BorderPaneModel;
 import dev.rico.internal.projector.ui.ItemModel;
 import javafx.scene.Node;
@@ -10,14 +11,16 @@ import javafx.util.Callback;
 
 public class BorderPaneFactory implements ProjectorNodeFactory<BorderPaneModel, BorderPane> {
     @Override
-    public BorderPane create(Projector projector, BorderPaneModel itemModel) {
-        Callback<ItemModel, Node> convert = param -> {
+    public BorderPane create(final Projector projector, final BorderPaneModel itemModel) {
+        Assert.requireNonNull(projector, "projector");
+        Assert.requireNonNull(itemModel, "itemModel");
+        final Callback<ItemModel, Node> convert = param -> {
             if (param == null) {
                 return null;
             }
             return projector.createNode(param);
         };
-        BorderPane pane = new BorderPane();
+        final BorderPane pane = new BorderPane();
 
         pane.setTop(convert.call(itemModel.getTop()));
         pane.setLeft(convert.call(itemModel.getLeft()));

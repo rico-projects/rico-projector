@@ -7,12 +7,16 @@ import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.ImageViewModel;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 
 import static dev.rico.client.remoting.FXBinder.bind;
 
 public class ImageViewFactory implements ProjectorNodeFactory<ImageViewModel, ImageView> {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ImageViewFactory.class);
 
     @Override
     public ImageView create(final Projector projector, final ImageViewModel model) {
@@ -34,9 +38,9 @@ public class ImageViewFactory implements ProjectorNodeFactory<ImageViewModel, Im
         if (v == null) {
             return null;
         } else {
-            URL resource = Image.class.getResource(v.substring("classpath:".length()));
+            final URL resource = Image.class.getResource(v.substring("classpath:".length()));
             if (resource == null) {
-                System.out.println("Image " + v + "' not found!");
+                LOG.warn("Image '{}' not found!", v);
                 return null;
             }
             return new Image(resource.toExternalForm());

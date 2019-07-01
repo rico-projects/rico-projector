@@ -24,6 +24,10 @@ import static java.util.Objects.requireNonNull;
 
 public abstract class ButtonBaseFactory<T extends ButtonModel, S extends ButtonBase> implements ProjectorNodeFactory<T, S>, ActionHandlerFactory {
 
+    private static <T> void subscribe(final Property<T> property, final Consumer<T> consumer) {
+        CommonUiHelper.subscribe(property, evt -> consumer.accept(evt.getNewValue()));
+    }
+
     protected S createButtonBase(final Projector projector, final T model, final S node) {
         configureButton(model, node);
         installMonitoredAction(node, createOnActionHandler("buttonClick", model, projector));
@@ -38,11 +42,6 @@ public abstract class ButtonBaseFactory<T extends ButtonModel, S extends ButtonB
         subscribe(model.tooltipProperty(), tooltipOptional -> createTooltip(tooltipOptional, node));
         subscribe(model.imageProperty(), optionalImagePath -> createImage(optionalImagePath, model, node));
     }
-
-    private static <T> void subscribe(Property<T> property, Consumer<T> consumer) {
-        CommonUiHelper.subscribe(property, evt -> consumer.accept(evt.getNewValue()));
-    }
-
 
     private void installMonitoredAction(final S node, final EventHandler<ActionEvent> onActionHandler) {
         Assert.requireNonNull(node, "node");

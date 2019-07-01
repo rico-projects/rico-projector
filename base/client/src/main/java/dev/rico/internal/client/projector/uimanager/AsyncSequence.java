@@ -9,30 +9,34 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+//TODO: This class is not used. Can we delete it?
 public class AsyncSequence {
+
     private static ArrayBlockingQueue<CompletableFuture<Object>> queue;
+
     private static Runnable job;
 
     public static <T> void doAsync(final Supplier<T> asyncJob, final Consumer<T> onSuccess, final Consumer<Exception> onError) {
+
         try {
             getQueue().put(CompletableFuture.supplyAsync(asyncJob::get,
-                  Client.getService(BackgroundExecutor.class)));
-        } catch (InterruptedException ignored) {
+                    Client.getService(BackgroundExecutor.class)));
+        } catch (final InterruptedException ignored) {
         }
 
         if (job == null) {
             job = () -> {
-                CompletableFuture<T> peek = (CompletableFuture<T>) getQueue().peek();
+                final CompletableFuture<T> peek = (CompletableFuture<T>) getQueue().peek();
                 if (peek != null && peek.isDone()) {
                     try {
-                        T documentData = (T) getQueue().take().get();
+                        final T documentData = (T) getQueue().take().get();
                         Client.getService(UiExecutor.class).execute(() -> {
                             onSuccess.accept(documentData);
                             if (job != null) {
                                 Client.getService(UiExecutor.class).execute(job);
                             }
                         });
-                    } catch (Exception e) {
+                    } catch (final Exception e) {
                         e.printStackTrace();
                     }
                 } else if (peek != null && job != null) {

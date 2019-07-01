@@ -5,12 +5,13 @@ import dev.rico.client.projector.spi.ProjectorDialogHandler;
 import dev.rico.internal.projector.ui.dialog.ShutdownDialogModel;
 import javafx.scene.control.Alert;
 
-public class ShutdownDialogHandler implements ProjectorDialogHandler<ShutdownDialogModel>, DialogConfiguration  {
+//TODO: How should we handle this one?
+public class ShutdownDialogHandler implements ProjectorDialogHandler<ShutdownDialogModel>, DialogConfiguration {
 
     @Override
     public void show(final Projector projector, final ShutdownDialogModel model) {
         projector.getRoot().getScene().getWindow().hide();
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        final Alert alert = new Alert(Alert.AlertType.INFORMATION);
         if (model.getOwner() != null) {
             alert.initOwner(projector.getModelToNodeMap().get(model.getOwner()).getScene().getWindow());
         }

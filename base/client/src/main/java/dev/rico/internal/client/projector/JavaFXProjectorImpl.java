@@ -12,10 +12,15 @@ import dev.rico.internal.projector.ui.ItemModel;
 import dev.rico.internal.projector.ui.ManagedUiModel;
 import dev.rico.internal.projector.ui.dialog.DialogModel;
 import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.ServiceLoader;
+import java.util.WeakHashMap;
 
 public class JavaFXProjectorImpl implements Projector {
 
@@ -30,7 +35,7 @@ public class JavaFXProjectorImpl implements Projector {
     //TODO: REFACTOR
     private final WeakHashMap<IdentifiableModel, Node> modelToNodeMap = new WeakHashMap<>();
 
-    private final SimpleObjectProperty<Node> root = new SimpleObjectProperty<>();
+    private final ObjectProperty<Node> root = new SimpleObjectProperty<>();
 
     public JavaFXProjectorImpl(final ControllerProxy<? extends ManagedUiModel> controllerProxy, final PostProcessor postProcessor) {
         this.controllerProxy = Assert.requireNonNull(controllerProxy, "controllerProxy");
@@ -83,29 +88,32 @@ public class JavaFXProjectorImpl implements Projector {
         root.set(createNode(itemModel));
     }
 
+    @Override
     public Node getRoot() {
         return root.get();
     }
 
-    public SimpleObjectProperty<Node> rootProperty() {
+    public ObjectProperty<Node> rootProperty() {
         return root;
     }
 
     @Override
     public <N extends Node> N createNode(final ItemModel itemModel) {
+        //TODO: Discussion if this really makes sense...
         if (itemModel == null) return null;
         final ProjectorNodeFactory factory = factories.get(itemModel.getClass());
         if (factory == null) {
             throw new IllegalArgumentException("No factory found for " + itemModel.getClass());
         }
-        N node = (N) factory.create(this, itemModel);
+        final N node = (N) factory.create(this, itemModel);
         postProcess(node, itemModel);
         return node;
     }
 
-    private void postProcess(Node node, ItemModel itemModel) {
+    private void postProcess(final Node node, final ItemModel itemModel) {
+        Assert.requireNonNull(itemModel, "itemModel");
         itemModel.idProperty().onChanged(evt -> {
-            String newId = evt.getNewValue();
+            final String newId = evt.getNewValue();
             postProcessor.postProcess(newId, itemModel, node);
         });
         postProcessor.postProcess(itemModel.getId(), itemModel, node);
@@ -116,6 +124,7 @@ public class JavaFXProjectorImpl implements Projector {
         return controllerProxy;
     }
 
+    @Override
     public Map<IdentifiableModel, Node> getModelToNodeMap() {
         return modelToNodeMap;
     }
