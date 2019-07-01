@@ -1,25 +1,22 @@
 package dev.rico.internal.projector.ui;
 
 
+import dev.rico.projector.model.WithText;
 import dev.rico.remoting.Property;
 import dev.rico.remoting.RemotingBean;
 import javafx.geometry.Pos;
 import javafx.scene.text.TextAlignment;
 
 @RemotingBean
-public class LabelModel extends ItemModel {
+public class LabelModel extends ItemModel<LabelModel> implements WithText<LabelModel> {
+
     private Property<String> text;
+
     private Property<Pos> alignment;
+
     private Property<Boolean> wrapText;
+
     private Property<TextAlignment> textAlignment;
-
-    public String getText() {
-        return text.get();
-    }
-
-    public void setText(String text) {
-        this.text.set(text);
-    }
 
     public Property<String> textProperty() {
         return text;

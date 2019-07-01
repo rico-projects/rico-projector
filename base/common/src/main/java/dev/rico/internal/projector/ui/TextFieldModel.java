@@ -1,11 +1,12 @@
 package dev.rico.internal.projector.ui;
 
 
+import dev.rico.projector.model.WithText;
 import dev.rico.remoting.Property;
 import dev.rico.remoting.RemotingBean;
 
 @RemotingBean
-public class TextFieldModel extends ItemModel implements WithPromptText {
+public class TextFieldModel extends ItemModel implements WithPromptText, WithText<TextFieldModel> {
     private Property<String> action;
     private Property<Integer> actionDelay;
     private Property<String> text;
@@ -23,14 +24,6 @@ public class TextFieldModel extends ItemModel implements WithPromptText {
 
     public Property<String> promptTextProperty() {
         return promptText;
-    }
-
-    public String getText() {
-        return text.get();
-    }
-
-    public void setText(String text) {
-        this.text.set(text);
     }
 
     public Property<String> textProperty() {
