@@ -15,9 +15,7 @@ public class TabPaneFactory implements ProjectorNodeFactory<TabPaneModel, TabPan
     public TabPane create(final Projector projector, final TabPaneModel model) {
         Assert.requireNonNull(projector, "projector");
         Assert.requireNonNull(model, "model");
-
         final TabPane tabPane = new TabPane();
-        // TODO: Tab-Inhalt und Tab-Text sind leider nicht an das jeweilige Model gebunden, sondern nur an den Item
         FXBinder.bind(tabPane.getTabs()).to(model.getItems(), m -> {
             final Tab tab = new Tab(m.getCaption(), projector.createNode(m.getContent()));
             tab.setClosable(false);
