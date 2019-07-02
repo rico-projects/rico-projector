@@ -11,7 +11,6 @@ import javafx.scene.layout.Priority;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-// TODO: Ähnelt sehr dem dev.rico.internal.client.projector.uimanager.UnexpectedErrorDialog
 public class QualifiedErrorDialog extends Alert {
 
    private final TextArea textArea;

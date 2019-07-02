@@ -175,7 +175,6 @@ public class IndexedJavaFXListBinder<S> /*implements JavaFXListBinder<S>*/ {
             onChange = true;
             try {
                 while (change.next()) {
-                    // TODO: Replace with subList() operation once implemented
                     final int index = change.getFrom();
                     if (change.wasRemoved() || change.wasReplaced()) {
                         for (int i = 0; i < change.getRemovedSize(); i++) {

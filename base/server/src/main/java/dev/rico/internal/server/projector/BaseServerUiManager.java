@@ -25,11 +25,6 @@ public class BaseServerUiManager {
         return java.util.Objects.requireNonNull((T) idToItemMap.get(id), "Missing (injected?) node with id: " + id);
     }
 
-    // TODO: Sollte irgendwie anders gehen?
-    public final void removeId(final String key) {
-        idToItemMap.remove(key);
-    }
-
     private final <T extends IdentifiableModel> T create(final Class<T> beanClass, final String id) {
         final T model = beanManager.create(beanClass);
         model.setId(id);
