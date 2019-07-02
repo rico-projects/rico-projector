@@ -16,6 +16,7 @@ import java.util.concurrent.CompletableFuture;
 public interface ActionHandlerFactory {
 
     default EventHandler<ActionEvent> createOnActionHandler(final String type, final IdentifiableModel identifiableModel, final Projector projector) {
+        Assert.requireNonNull(projector, "projector");
         final Map<IdentifiableModel, Node> modelToNodeMap = projector.getModelToNodeMap();
         Assert.requireNonNull(modelToNodeMap, "modelToNodeMap");
         return createOnActionHandler(type, modelToNodeMap.get(identifiableModel), projector);

@@ -9,8 +9,8 @@ import static dev.rico.client.remoting.FXBinder.bind;
 
 public class TitledPaneFactory implements ProjectorNodeFactory<TitledPaneModel, TitledPane> {
     @Override
-    public TitledPane create(Projector projector, TitledPaneModel model) {
-        TitledPane titledPane = new TitledPane();
+    public TitledPane create(final Projector projector, final TitledPaneModel model) {
+        final TitledPane titledPane = new TitledPane();
         bind(titledPane.textProperty()).to(model.titleProperty());
         bind(titledPane.contentProperty()).to(model.contentProperty(), projector::createNode);
         return titledPane;
