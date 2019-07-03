@@ -24,7 +24,7 @@ public class UnexpectedErrorDialog extends Alert {
     public UnexpectedErrorDialog() {
         super(AlertType.ERROR);
 
-        final Label label = new Label("Exception stacktrace:");
+        final Label label = new Label(ErrorMessageHandler.getInstance().getStacktraceMessage());
 
         textArea = new TextArea();
         textArea.setEditable(false);
@@ -40,7 +40,7 @@ public class UnexpectedErrorDialog extends Alert {
         expContent.add(label, 0, 0);
         expContent.add(textArea, 0, 1);
 
-        shutDownButton = new ButtonType("Quit application");
+        shutDownButton = new ButtonType(ErrorMessageHandler.getInstance().getQuiteApplicationText());
 
         getDialogPane().setExpandableContent(expContent);
 
@@ -86,13 +86,13 @@ public class UnexpectedErrorDialog extends Alert {
 
     private void configureAsLethal() {
         getButtonTypes().remove(shutDownButton);
-        setTitle("Unexpected error");
-        setHeaderText("The application reported an unexpected error at runtime!");
+        setTitle(ErrorMessageHandler.getInstance().getErrorTitle());
+        setHeaderText(ErrorMessageHandler.getInstance().getErrorMessage());
     }
 
     private void configureAsRecoverable() {
         getButtonTypes().add(0, shutDownButton);
-        setTitle("Unexpected error");
-        setHeaderText("The application reported an unexpected error at runtime!");
+        setTitle(ErrorMessageHandler.getInstance().getErrorTitle());
+        setHeaderText(ErrorMessageHandler.getInstance().getErrorMessage());
     }
 }
