@@ -42,8 +42,6 @@ public class CommonUiHelper {
    public static void setProperty(IdentifiableModel model, String property, String value) {
       java.util.Objects.requireNonNull(model);
       java.util.Objects.requireNonNull(property);
-      // TODO: Besser die folgende Zeile verwenden, dafür muss DP aber erweitert werden :-(
-//        model.getProperties().removeIf(s -> s.startsWith(property + "="));
       for (String keyAndValue : model.getProperties()) {
          if (keyAndValue.startsWith(property + "=")) {
             model.getProperties().remove(keyAndValue);

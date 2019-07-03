@@ -4,7 +4,6 @@ import com.google.common.base.Strings;
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorNodeFactory;
 import dev.rico.client.remoting.ControllerProxy;
-import dev.rico.client.remoting.Param;
 import dev.rico.internal.client.projector.uimanager.UnexpectedErrorDialog;
 import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.ManagedUiModel;
@@ -31,11 +30,7 @@ public class ToggleButtonFactory implements ProjectorNodeFactory<ToggleButtonMod
         bind(button.textProperty()).to(model.captionProperty());
         button.setOnAction(event -> {
             event.consume();
-            if (Strings.isNullOrEmpty(model.getAction())) {
-                final CompletableFuture<Void> actionInvocation = controllerProxy.invoke("onToggleButtonAction", new Param("model", model), new Param("selected", button.isSelected()));
-                Assert.requireNonNull(actionInvocation, "actionInvocation");
-                actionInvocation.exceptionally(throwable -> UnexpectedErrorDialog.showError(button, throwable));
-            } else {
+            if (!Strings.isNullOrEmpty(model.getAction())) {
                 final CompletableFuture<Void> actionInvocation = controllerProxy.invoke(model.getAction());
                 Assert.requireNonNull(actionInvocation, "actionInvocation");
                 actionInvocation.exceptionally(throwable -> UnexpectedErrorDialog.showError(button, throwable));

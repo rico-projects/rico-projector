@@ -32,7 +32,6 @@ public class JavaFXProjectorImpl implements Projector {
 
     private final Map<Class<? extends DialogModel>, ProjectorDialogHandler> dialogHandlers;
 
-    //TODO: REFACTOR
     private final WeakHashMap<IdentifiableModel, Node> modelToNodeMap = new WeakHashMap<>();
 
     private final ObjectProperty<Node> root = new SimpleObjectProperty<>();

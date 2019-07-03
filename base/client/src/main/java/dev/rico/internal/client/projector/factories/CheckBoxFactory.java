@@ -18,7 +18,9 @@ public class CheckBoxFactory implements ProjectorNodeFactory<CheckBoxModel, Chec
         final CheckBox checkBox = new CheckBox();
         bind(checkBox.selectedProperty()).bidirectionalTo(model.selectedProperty());
         bind(checkBox.textProperty()).to(model.captionProperty());
-        checkBox.setOnAction(createOnActionHandler("buttonClick", model, projector));
+        if (model.getAction() != null) {
+            checkBox.setOnAction(createOnActionHandler(model.getAction(), checkBox, projector));
+        }
         return checkBox;
     }
 

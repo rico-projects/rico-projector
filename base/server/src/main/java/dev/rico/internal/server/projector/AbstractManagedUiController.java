@@ -78,7 +78,6 @@ public abstract class AbstractManagedUiController implements ManagedUiController
 
     }
 
-    //    TODO: @ActionExceptionHandler
     protected void showUnexpectedError(final Throwable stackTrace) {
         getModel().setIsWorking(false);
         stackTrace.printStackTrace();
@@ -86,7 +85,6 @@ public abstract class AbstractManagedUiController implements ManagedUiController
         getModel().showDialog(ui().unexpectedErrorDialog(getModel().getRoot(), exceptionText));
     }
 
-    //    TODO: @ActionExceptionHandler
     protected void showQualifiedError(final String headerText, final String contentText, final Throwable stackTrace) {
         getModel().setIsWorking(false);
         stackTrace.printStackTrace();
