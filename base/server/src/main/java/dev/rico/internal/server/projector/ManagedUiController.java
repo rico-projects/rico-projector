@@ -7,6 +7,7 @@ import dev.rico.remoting.BeanManager;
 import dev.rico.server.remoting.RemotingContext;
 
 public interface ManagedUiController {
+
     ItemModel buildUi();
 
     ServerUiManager ui();
@@ -17,7 +18,8 @@ public interface ManagedUiController {
 
     ManagedUiModel getModel();
 
-    default <T extends IdentifiableModel> Retained<T> retain(T model) {
+    default <T extends IdentifiableModel> Retained<T> retain(final T model) {
         return new Keeper<>(this, model);
     }
+
 }
