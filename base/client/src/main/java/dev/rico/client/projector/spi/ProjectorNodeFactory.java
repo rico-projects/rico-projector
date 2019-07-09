@@ -5,6 +5,8 @@ import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.IdentifiableModel;
 import javafx.scene.Node;
 
+import java.util.function.Supplier;
+
 public interface ProjectorNodeFactory<M extends IdentifiableModel, N extends Node> extends TypeBasedProvider<M> {
 
     N create(Projector projector, M model);
@@ -16,5 +18,10 @@ public interface ProjectorNodeFactory<M extends IdentifiableModel, N extends Nod
         } else {
             return value;
         }
+    }
+
+    default <S> S getValue(S fromBinding, Supplier<S> fallbackGetter) {
+        Assert.requireNonNull(fallbackGetter, "fallbackGetter");
+        return fromBinding == null ? fallbackGetter.get() : fromBinding;
     }
 }
