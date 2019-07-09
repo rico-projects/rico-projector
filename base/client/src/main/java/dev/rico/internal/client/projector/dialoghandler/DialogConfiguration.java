@@ -18,9 +18,4 @@ public interface DialogConfiguration {
         alert.setTitle(model.getTitle());
         return nodeOptional;
     }
-
-    default Optional<Window> findWindowOptional(Projector projector, DialogModel newDialog) {
-        Optional<Node> nodeOptional = Optional.ofNullable(newDialog.getOwner()).map(projector.getModelToNodeMap()::get);
-        return nodeOptional.flatMap(node -> Optional.of(node).map(Node::getScene).map(Scene::getWindow));
-    }
 }
