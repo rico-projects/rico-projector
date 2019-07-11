@@ -28,7 +28,7 @@ public class GridPaneFactory implements ProjectorNodeFactory<GridPaneModel, Grid
         return gridPane;
     }
 
-    private ColumnConstraints bindConstraint(GridPaneColumnConstraintsModel model) {
+    private ColumnConstraints bindConstraint(final GridPaneColumnConstraintsModel model) {
         ColumnConstraints constraints = new ColumnConstraints();
         Optional.ofNullable(model.getFillWidth()).ifPresent(constraints::setFillWidth);
         Optional.ofNullable(model.getHalignment()).ifPresent(constraints::setHalignment);
