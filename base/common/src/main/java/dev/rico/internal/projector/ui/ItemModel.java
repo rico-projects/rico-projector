@@ -13,6 +13,8 @@ public class ItemModel<M extends ItemModel> extends IdentifiableModel {
     private Property<Double> maxHeight;
     private Property<Double> prefWidth;
     private Property<Double> prefHeight;
+    private Property<Double> minWidth;
+    private Property<Double> minHeight;
     private Property<String> style;
     private Property<ItemModel> messageDisplay;
     private ObservableList<String> styleClass;
@@ -121,6 +123,30 @@ public class ItemModel<M extends ItemModel> extends IdentifiableModel {
 
     public Property<Double> maxWidthProperty() {
         return maxWidth;
+    }
+
+    public Double getMinWidth() {
+        return minWidth.get();
+    }
+
+    public void setMinWidth(Double minWidth) {
+        this.minWidth.set(minWidth);
+    }
+
+    public Property<Double> minWidthProperty() {
+        return minWidth;
+    }
+
+    public Double getMinHeight() {
+        return minHeight.get();
+    }
+
+    public void setMinHeight(Double minHeight) {
+        this.minHeight.set(minHeight);
+    }
+
+    public Property<Double> minHeightProperty() {
+        return minHeight;
     }
 
     public Double getMaxHeight() {

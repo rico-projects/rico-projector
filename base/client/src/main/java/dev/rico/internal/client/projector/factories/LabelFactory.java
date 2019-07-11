@@ -1,12 +1,12 @@
 package dev.rico.internal.client.projector.factories;
 
-import static dev.rico.client.remoting.FXBinder.bind;
-
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorNodeFactory;
 import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.LabelModel;
 import javafx.scene.control.Label;
+
+import static dev.rico.client.remoting.FXBinder.bind;
 
 public class LabelFactory implements ProjectorNodeFactory<LabelModel, Label> {
 
@@ -16,9 +16,9 @@ public class LabelFactory implements ProjectorNodeFactory<LabelModel, Label> {
 
         final Label label = new Label(model.getText());
         bind(label.textProperty()).to(model.textProperty());
-        bind(label.wrapTextProperty()).to(model.wrapTextProperty(), value -> getValue(value, true));
-        bind(label.alignmentProperty()).to(model.alignmentProperty());
-        bind(label.textAlignmentProperty()).to(model.textAlignmentProperty());
+        bind(label.wrapTextProperty()).to(model.wrapTextProperty(), value -> getValue(value, label::isWrapText));
+        bind(label.alignmentProperty()).to(model.alignmentProperty(), value -> getValue(value, label::getAlignment));
+        bind(label.textAlignmentProperty()).to(model.textAlignmentProperty(), value -> getValue(value, label::getTextAlignment));
         return label;
     }
 

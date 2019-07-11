@@ -9,6 +9,7 @@ import dev.rico.remoting.RemotingBean;
 @RemotingBean
 public class GridPaneModel extends ItemListContainerModel<GridPaneItemModel> {
     private ObservableList<GridPaneItemModel> items;
+    private ObservableList<GridPaneColumnConstraintsModel> columnConstraints;
     private Property<Double> hGap;
     private Property<Double> vGap;
 
@@ -39,5 +40,9 @@ public class GridPaneModel extends ItemListContainerModel<GridPaneItemModel> {
     @Override
     public ObservableList<GridPaneItemModel> getItems() {
         return items;
+    }
+
+    public ObservableList<GridPaneColumnConstraintsModel> getColumnConstraints() {
+        return columnConstraints;
     }
 }

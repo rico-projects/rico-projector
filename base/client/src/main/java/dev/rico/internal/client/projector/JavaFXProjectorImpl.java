@@ -14,8 +14,12 @@ import dev.rico.internal.projector.ui.dialog.DialogModel;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
+import javafx.scene.layout.Region;
 
 import java.util.*;
+import java.util.function.Supplier;
+
+import static dev.rico.client.remoting.FXBinder.bind;
 
 public class JavaFXProjectorImpl implements Projector {
 
@@ -98,8 +102,31 @@ public class JavaFXProjectorImpl implements Projector {
             throw new IllegalArgumentException("No factory found for " + itemModel.getClass());
         }
         N node = (N) factory.create(this, itemModel);
+        bindDefaultProperties(node, itemModel);
         postProcess(node, itemModel);
         return node;
+    }
+
+    private <N extends Node> void bindDefaultProperties(final N node, final ItemModel<?> model) {
+        if (node instanceof Region) {
+            final Region region = (Region) node;
+            bind(region.minWidthProperty()).to(model.minWidthProperty(), value -> fallback(value, region::getMinWidth));
+            bind(region.minHeightProperty()).to(model.minHeightProperty(), value -> fallback(value, region::getMinHeight));
+            bind(region.maxWidthProperty()).to(model.maxWidthProperty(), value -> fallback(value, region::getMaxWidth));
+            bind(region.maxHeightProperty()).to(model.maxHeightProperty(), value -> fallback(value, region::getMaxHeight));
+            bind(region.prefWidthProperty()).to(model.prefWidthProperty(), value -> fallback(value, region::getPrefWidth));
+            bind(region.prefHeightProperty()).to(model.prefHeightProperty(), value -> fallback(value, region::getPrefHeight));
+        }
+        bind(node.disableProperty()).to(model.disableProperty(), value -> fallback(value, node::isDisable));
+        bind(node.visibleProperty()).to(model.visibleProperty(), value -> fallback(value, node::isVisible));
+        bind(node.managedProperty()).to(model.managedProperty(), value -> fallback(value, node::isManaged));
+        model.getStyleClass().addAll(node.getStyleClass());
+        bind(node.styleProperty()).to(model.styleProperty());
+        bind(node.getStyleClass()).bidirectionalTo(model.getStyleClass());
+    }
+
+    private <T> T fallback(final T fromBinding, final Supplier<T> fallbackGetter) {
+        return fromBinding == null ? fallbackGetter.get() : fromBinding;
     }
 
     private void postProcess(Node node, ItemModel itemModel) {

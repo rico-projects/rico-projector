@@ -6,7 +6,7 @@ import dev.rico.remoting.Property;
 import dev.rico.remoting.RemotingBean;
 
 @RemotingBean
-public class DialogModel extends ItemModel {
+public class DialogModel extends ItemModel<DialogModel> {
    private Property<ItemModel> owner;
    private Property<String> title;
 
