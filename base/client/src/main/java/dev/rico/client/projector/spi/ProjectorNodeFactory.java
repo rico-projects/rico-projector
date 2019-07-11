@@ -20,7 +20,7 @@ public interface ProjectorNodeFactory<M extends IdentifiableModel, N extends Nod
         }
     }
 
-    default <S> S getValue(S fromBinding, Supplier<S> fallbackGetter) {
+    default <S> S getValue(final S fromBinding, final Supplier<S> fallbackGetter) {
         Assert.requireNonNull(fallbackGetter, "fallbackGetter");
         return fromBinding == null ? fallbackGetter.get() : fromBinding;
     }
