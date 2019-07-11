@@ -107,7 +107,7 @@ public class JavaFXProjectorImpl implements Projector {
         return node;
     }
 
-    private <N extends Node> void bindDefaultProperties(N node, ItemModel<?> model) {
+    private <N extends Node> void bindDefaultProperties(final N node, final ItemModel<?> model) {
         if (node instanceof Region) {
             Region region = (Region) node;
             bind(region.minWidthProperty()).to(model.minWidthProperty(), value -> fallback(value, region::getMinWidth));
