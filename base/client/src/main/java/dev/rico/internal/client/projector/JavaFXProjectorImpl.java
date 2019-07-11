@@ -125,7 +125,7 @@ public class JavaFXProjectorImpl implements Projector {
         bind(node.getStyleClass()).bidirectionalTo(model.getStyleClass());
     }
 
-    private <T> T fallback(T fromBinding, Supplier<T> fallbackGetter) {
+    private <T> T fallback(final T fromBinding, final Supplier<T> fallbackGetter) {
         return fromBinding == null ? fallbackGetter.get() : fromBinding;
     }
 
