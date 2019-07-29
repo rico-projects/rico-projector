@@ -5,7 +5,7 @@ import dev.rico.client.remoting.ControllerProxy;
 import dev.rico.internal.client.projector.JavaFXProjectorImpl;
 import dev.rico.internal.projector.ui.ItemModel;
 import dev.rico.internal.projector.ui.ManagedUiModel;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.scene.Node;
 
 public class ClientUiManager {
@@ -24,7 +24,7 @@ public class ClientUiManager {
         return projector.createNode(itemModel);
     }
 
-    public SimpleObjectProperty<Node> rootProperty() {
+    public ObjectProperty<Node> rootProperty() {
         return projector.rootProperty();
     }
 }

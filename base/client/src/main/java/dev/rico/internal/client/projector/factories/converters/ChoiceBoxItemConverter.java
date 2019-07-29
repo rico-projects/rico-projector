@@ -16,7 +16,10 @@ public class ChoiceBoxItemConverter extends StringConverter<Object> {
     public String toString(final Object object) {
         if (object == null)
             return null;
-        return ((ChoiceBoxItemModel) object).getCaption();
+        if (object instanceof ChoiceBoxItemModel) {
+            return ((ChoiceBoxItemModel) object).getCaption();
+        }
+        throw new IllegalArgumentException("No " + ChoiceBoxItemModel.class.getSimpleName());
     }
 
     @Override
