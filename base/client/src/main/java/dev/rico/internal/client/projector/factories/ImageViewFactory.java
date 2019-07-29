@@ -25,7 +25,7 @@ public class ImageViewFactory implements ProjectorNodeFactory<ImageViewModel, Im
 
         final ImageView imageView = new ImageView();
 
-        final Converter<String, Image> imageConverter = v -> getImageForPath(v);
+        final Converter<String, Image> imageConverter = this::getImageForPath;
         bind(imageView.imageProperty()).to(model.resourcePathProperty(), imageConverter);
         bind(imageView.preserveRatioProperty()).to(model.preserveRatioProperty(), value -> getValue(value, true));
         bind(imageView.fitWidthProperty()).to(model.fitWidthProperty());

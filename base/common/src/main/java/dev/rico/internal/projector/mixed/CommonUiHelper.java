@@ -42,12 +42,7 @@ public class CommonUiHelper {
    public static void setProperty(IdentifiableModel model, String property, String value) {
       java.util.Objects.requireNonNull(model);
       java.util.Objects.requireNonNull(property);
-      for (String keyAndValue : model.getProperties()) {
-         if (keyAndValue.startsWith(property + "=")) {
-            model.getProperties().remove(keyAndValue);
-            break;
-         }
-      }
+        model.getProperties().removeIf(s -> s.startsWith(property + "="));
       if (value != null) {
          model.getProperties().add(property + "=" + value);
       }
