@@ -116,7 +116,6 @@ public class ManagedUiViewController<M extends ManagedUiModel> extends AbstractV
         return pane;
     }
 
-    //TODO: Can we remove that method?
     protected Window getDialogOwner() {
         if (getRootNode() != null && getRootNode().getScene() != null && getRootNode().getScene().getWindow() != null) {
             return getRootNode().getScene().getWindow();
