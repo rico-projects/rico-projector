@@ -1,12 +1,13 @@
 package dev.rico.internal.server.projector;
 
-import dev.rico.internal.projector.ui.IdentifiableModel;
-import dev.rico.internal.projector.ui.ItemModel;
-import dev.rico.remoting.BeanManager;
-
 import java.util.Map;
 import java.util.UUID;
 import java.util.WeakHashMap;
+
+import dev.rico.internal.core.Assert;
+import dev.rico.internal.projector.ui.IdentifiableModel;
+import dev.rico.internal.projector.ui.ItemModel;
+import dev.rico.remoting.BeanManager;
 
 public class BaseServerUiManager {
 
@@ -14,7 +15,7 @@ public class BaseServerUiManager {
     private final WeakHashMap<String, IdentifiableModel> idToItemMap = new WeakHashMap<>();
 
     public BaseServerUiManager(final BeanManager beanManager) {
-        this.beanManager = beanManager;
+        this.beanManager = Assert.requireNonNull(beanManager, "beanManager");
     }
 
     public final <T extends IdentifiableModel> T create(final Class<T> beanClass) {
@@ -22,10 +23,10 @@ public class BaseServerUiManager {
     }
 
     public final <T extends ItemModel> T getNodeById(final String id) {
-        return java.util.Objects.requireNonNull((T) idToItemMap.get(id), "Missing (injected?) node with id: " + id);
+        return Assert.requireNonNull((T) idToItemMap.get(id), "Missing (injected?) node with id: " + id);
     }
 
-    private final <T extends IdentifiableModel> T create(final Class<T> beanClass, final String id) {
+    private <T extends IdentifiableModel> T create(final Class<T> beanClass, final String id) {
         final T model = beanManager.create(beanClass);
         model.setId(id);
         if (idToItemMap.containsKey(id)) {
@@ -49,9 +50,10 @@ public class BaseServerUiManager {
         return model;
     }
 
-    private final <T> String findInMap(final Map<String, T> map, final T model) {
-        java.util.Objects.requireNonNull(map);
-        java.util.Objects.requireNonNull(model);
+    private <T> String findInMap(final Map<String, T> map, final T model) {
+        Assert.requireNonNull(map, "map");
+        Assert.requireNonNull(model, "model");
+
         for (final Map.Entry<String, T> entry : map.entrySet()) {
             if (entry.getValue() == model) {
                 return entry.getKey();

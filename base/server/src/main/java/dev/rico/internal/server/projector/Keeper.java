@@ -1,17 +1,15 @@
 package dev.rico.internal.server.projector;
 
+import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.IdentifiableModel;
-
-import java.util.Objects;
 
 class Keeper<T extends IdentifiableModel> implements Retained<T> {
     private final ManagedUiController managedUiController;
     private final T keepThis;
 
-    Keeper(ManagedUiController managedUiController, T keepThis) {
-        this.keepThis = Objects.requireNonNull(keepThis);
-        this.managedUiController = Objects.requireNonNull(managedUiController);
-//        managedUiController.getModel().getRetainedModels().add(keepThis);
+    Keeper(final ManagedUiController managedUiController, final T keepThis) {
+        this.keepThis = Assert.requireNonNull(keepThis, "keepThis");
+        this.managedUiController = Assert.requireNonNull(managedUiController, "managedUiController");
     }
 
     Keeper() {

@@ -1,29 +1,34 @@
 package dev.rico.internal.server.projector;
 
-import dev.rico.internal.projector.ui.ItemModel;
-import dev.rico.internal.projector.ui.ManagedUiModel;
-import dev.rico.remoting.BeanManager;
-import dev.rico.server.remoting.RemotingContext;
-
-import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import dev.rico.internal.core.Assert;
+import dev.rico.internal.projector.ui.ItemModel;
+import dev.rico.internal.projector.ui.ManagedUiModel;
+import dev.rico.remoting.BeanManager;
+import dev.rico.server.remoting.RemotingContext;
+
 public abstract class DelegatingManagedUiController implements ManagedUiController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DelegatingManagedUiController.class);
+
     private ManagedUiController delegate;
     private Retained<ItemModel> thisUi;
 
-    public DelegatingManagedUiController(ManagedUiController delegate) {
-        this.delegate = Objects.requireNonNull(delegate);
+    public DelegatingManagedUiController(final ManagedUiController delegate) {
+        this.delegate = Assert.requireNonNull(delegate, "delegate");
     }
 
     protected DelegatingManagedUiController() {
     }
 
-    public void setDelegate(ManagedUiController delegate) {
-        this.delegate = Objects.requireNonNull(delegate);
+    public void setDelegate(final ManagedUiController delegate) {
+        this.delegate = Assert.requireNonNull(delegate, "delegate");
     }
 
     public ItemModel getUi() {
@@ -53,7 +58,11 @@ public abstract class DelegatingManagedUiController implements ManagedUiControll
         return delegate.getModel();
     }
 
-    protected <T> void doInParallel(Supplier<T> backgroundJob, Consumer<T> refreshJob, Consumer<Exception> errorJob) {
+    protected <T> void doInParallel(final Supplier<T> backgroundJob, final Consumer<T> refreshJob, final Consumer<Exception> errorJob) {
+        Assert.requireNonNull(backgroundJob, "backgroundJob");
+        Assert.requireNonNull(refreshJob, "refreshJob");
+        Assert.requireNonNull(errorJob, "errorJob");
+
         new Thread(() -> {
             try {
                 T obj = backgroundJob.get();
@@ -77,25 +86,27 @@ public abstract class DelegatingManagedUiController implements ManagedUiControll
         ).start();
     }
 
-    protected <V> V callInUi(Callable<V> callInUiThread) {
+    protected <V> V callInUi(final Callable<V> callInUiThread) {
         try {
             return getSession().createSessionExecutor().callLaterInClientSession(callInUiThread).get();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new IllegalArgumentException(e);
+        } catch (final InterruptedException | ExecutionException exception) {
+            Thread.currentThread().interrupt();
+            throw new IllegalArgumentException(exception);
         }
     }
 
-    protected void runInUi(Runnable runInUiThread) {
+    protected void runInUi(final Runnable runInUiThread) {
         try {
             getSession().createSessionExecutor().runLaterInClientSession(runInUiThread).get();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new IllegalArgumentException(e);
+        } catch (final InterruptedException | ExecutionException exception) {
+            Thread.currentThread().interrupt();
+            throw new IllegalArgumentException(exception);
         }
     }
 
-    protected void runAndForgetInUi(Runnable runInUiThread) {
+    protected void runAndForgetInUi(final Runnable runInUiThread) {
         getSession().createSessionExecutor().runLaterInClientSession(runInUiThread).exceptionally(throwable -> {
-            throwable.printStackTrace();
+            LOGGER.error("Error during execution", throwable);
             return null;
         });
     }
