@@ -139,4 +139,10 @@ subprojects { proj ->
             enabled = isBaseProject
         }
     }
+
+    license {
+        mapping {
+            xml = 'XML_STYLE'
+        }
+    }
 }
