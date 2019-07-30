@@ -1,3 +1,9 @@
+config {
+    info {
+        name        = 'Rico Projector Common'
+        description = 'Rico Projector Common'
+    }
+}
 
 dependencies {
     compile "dev.rico:rico-remoting-common:$ricoVersion"

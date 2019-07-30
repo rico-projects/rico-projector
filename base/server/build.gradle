@@ -1,3 +1,10 @@
+config {
+    info {
+        name        = 'Rico Projector Server'
+        description = 'Rico Projector Server'
+    }
+}
+
 dependencies {
     compile project(':rico-projector-common')
 
