@@ -1,3 +1,20 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright 2019 The original authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package dev.rico.internal.client.projector.dialoghandler;
 
 import dev.rico.client.projector.Projector;
@@ -5,6 +22,7 @@ import dev.rico.client.projector.spi.ProjectorDialogHandler;
 import dev.rico.client.remoting.FXBinder;
 import dev.rico.internal.client.projector.uimanager.ActionEventEventHandler;
 import dev.rico.internal.client.projector.uimanager.UnexpectedErrorDialog;
+import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.dialog.CustomDialogModel;
 import impl.org.controlsfx.skin.DecorationPane;
 import javafx.event.ActionEvent;
@@ -17,39 +35,25 @@ import javafx.stage.Window;
 
 import java.util.Optional;
 
-public class CustomDialogHandler implements ProjectorDialogHandler<CustomDialogModel>, DialogConfiguration  {
+public class CustomDialogHandler implements ProjectorDialogHandler<CustomDialogModel>, DialogConfiguration {
 
     @Override
     public void show(final Projector projector, final CustomDialogModel model) {
-        Dialog<Boolean> dialog = new Dialog<>();
-//        dialog.setDialogPane(new DialogPane() {
-//            @Override
-//            protected Node createButton(ButtonType buttonType) {
-//                final Button button = new Button(buttonType.getText());
-//                final ButtonBar.ButtonData buttonData = buttonType.getButtonData();
-//                ButtonBar.setButtonData(button, buttonData);
-//                button.setDefaultButton(buttonType != null && buttonData.isDefaultButton());
-//                button.setCancelButton(buttonType != null && buttonData.isCancelButton());
-//                button.addEventHandler(ActionEvent.ACTION, ae -> {
-//                    if (ae.isConsumed()) return;
-//                    if (dialog != null) {
-//                        dialog.impl_setResultAndClose(buttonType, true);
-//                    }
-//                });
-//            }
-//        });
+        Assert.requireNonNull(projector, "projector");
+        Assert.requireNonNull(model, "model");
+        final Dialog<Boolean> dialog = new Dialog<>();
         dialog.setResizable(true);
-        Optional<Node> nodeOptional = Optional.ofNullable(model.getOwner()).map(projector.getModelToNodeMap()::get);
-        Optional<Window> windowOptional = nodeOptional.flatMap(node -> Optional.of(node).map(Node::getScene).map(Scene::getWindow));
+        final Optional<Node> nodeOptional = Optional.ofNullable(model.getOwner()).map(projector.getModelToNodeMap()::get);
+        final Optional<Window> windowOptional = nodeOptional.flatMap(node -> Optional.of(node).map(Node::getScene).map(Scene::getWindow));
         windowOptional.ifPresent(dialog::initOwner);
         dialog.setTitle(model.getTitle());
         dialog.setHeaderText(model.getHeaderText());
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-        Node content = projector.createNode(model.getContent());
-        DecorationPane decorationPane = new DecorationPane();
+        final Node content = projector.createNode(model.getContent());
+        final DecorationPane decorationPane = new DecorationPane();
         decorationPane.setRoot(content);
         dialog.getDialogPane().setContent(decorationPane);
-        Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+        final Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
         FXBinder.bind(okButton.disableProperty()).to(model.okayEnabledProperty(), aBoolean -> aBoolean != null && !aBoolean);
         dialog.setResultConverter(dialogButton -> dialogButton == ButtonType.OK);
         if (model.getCheckAction() != null) {

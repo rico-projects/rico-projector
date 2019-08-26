@@ -1,19 +1,148 @@
-subprojects { proj ->
-    apply plugin: 'java'
-    apply plugin: 'maven-publish'
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright 2019 The original authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+plugins {
+    id 'org.kordamp.gradle.project' version '0.24.0'
+}
 
-    group = 'dev.rico'
+if (!project.hasProperty('bintrayUsername'))  ext.bintrayUsername  = '**undefined**'
+if (!project.hasProperty('bintrayApiKey'))    ext.bintrayApiKey    = '**undefined**'
+if (!project.hasProperty('sonatypeUsername')) ext.sonatypeUsername = '**undefined**'
+if (!project.hasProperty('sonatypePassword')) ext.sonatypePassword = '**undefined**'
+
+config {
+    release = (rootProject.findProperty('release') ?: false).toBoolean()
+
+    info {
+        name          = 'Rico Projector'
+        description   = 'Rico Projector'
+        vendor        = 'Karakun'
+        inceptionYear = '2019'
+        tags          = ['karakun', 'rico', 'projector']
+
+        links {
+            website      = 'https://github.com/rico-projects/rico-projector'
+            issueTracker = 'https://github.com/rico-projects/rico-projector/issues'
+            scm          = 'https://github.com/rico-projects/rico-projector.git'
+        }
+
+        implementation { enabled = false }
+
+        credentials {
+            sonatype {
+                username = project.sonatypeUsername
+                password = project.sonatypePassword
+            }
+        }
+
+        people {
+            person {
+                id    = 'hendrikebbers'
+                name  = 'Hendrik Ebbers'
+                roles = ['developer']
+            }
+            person {
+                id    = 'joha78'
+                name  = 'Joerg Haelker'
+                roles = ['developer']
+            }
+            person {
+                id    = 'giftkugel'
+                name  = 'Simon Skoczylas'
+                roles = ['developer']
+            }
+            person {
+                id    = 'madmas'
+                name  = 'Markus Schlichting'
+                roles = ['developer']
+            }
+        }
+
+        repositories {
+            repositories {
+                repository {
+                    name = 'stagingRelease'
+                    url  = "${project.rootProject.buildDir}/repo/staging/release"
+                }
+                repository {
+                    name = 'stagingSnapshot'
+                    url  = "${project.rootProject.buildDir}/repo/staging/snapshot"
+                }
+            }
+        }
+    }
+
+    licensing {
+        licenses {
+            license {
+                id = 'Apache-2.0'
+            }
+        }
+    }
+
+    javadoc {
+        excludes = ['**/*.html', 'META-INF/**']
+    }
+
+    publishing {
+        releasesRepository  = 'stagingRelease'
+        snapshotsRepository = 'stagingSnapshot'
+    }
+
+    bintray {
+        enabled      = false
+        repo         = 'Rico'
+        userOrg      = 'karakun'
+        name         = rootProject.name
+        credentials {
+            username = project.bintrayUsername
+            password = project.bintrayApiKey
+        }
+    }
+}
+
+subprojects { proj ->
+    boolean isBaseProject = proj.projectDir.parentFile.name.contains('base')
+
+    apply plugin: 'java'
+
+    normalization {
+        runtimeClasspath {
+            ignore('/META-INF/MANIFEST.MF')
+        }
+    }
 
     repositories {
         jcenter()
     }
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                from components.java
-            }
+
+    config {
+        publishing {
+            enabled = isBaseProject
+        }
+
+        bintray {
+            enabled = isBaseProject
+        }
+    }
+
+    license {
+        mapping {
+            xml = 'XML_STYLE'
         }
     }
 }

@@ -1,12 +1,30 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright 2019 The original authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package dev.rico.internal.server.projector;
-
-import dev.rico.internal.projector.ui.IdentifiableModel;
-import dev.rico.internal.projector.ui.ItemModel;
-import dev.rico.remoting.BeanManager;
 
 import java.util.Map;
 import java.util.UUID;
 import java.util.WeakHashMap;
+
+import dev.rico.internal.core.Assert;
+import dev.rico.internal.projector.ui.IdentifiableModel;
+import dev.rico.internal.projector.ui.ItemModel;
+import dev.rico.remoting.BeanManager;
 
 public class BaseServerUiManager {
 
@@ -14,7 +32,7 @@ public class BaseServerUiManager {
     private final WeakHashMap<String, IdentifiableModel> idToItemMap = new WeakHashMap<>();
 
     public BaseServerUiManager(final BeanManager beanManager) {
-        this.beanManager = beanManager;
+        this.beanManager = Assert.requireNonNull(beanManager, "beanManager");
     }
 
     public final <T extends IdentifiableModel> T create(final Class<T> beanClass) {
@@ -22,10 +40,10 @@ public class BaseServerUiManager {
     }
 
     public final <T extends ItemModel> T getNodeById(final String id) {
-        return java.util.Objects.requireNonNull((T) idToItemMap.get(id), "Missing (injected?) node with id: " + id);
+        return Assert.requireNonNull((T) idToItemMap.get(id), "Missing (injected?) node with id: " + id);
     }
 
-    private final <T extends IdentifiableModel> T create(final Class<T> beanClass, final String id) {
+    private <T extends IdentifiableModel> T create(final Class<T> beanClass, final String id) {
         final T model = beanManager.create(beanClass);
         model.setId(id);
         if (idToItemMap.containsKey(id)) {
@@ -49,9 +67,10 @@ public class BaseServerUiManager {
         return model;
     }
 
-    private final <T> String findInMap(final Map<String, T> map, final T model) {
-        java.util.Objects.requireNonNull(map);
-        java.util.Objects.requireNonNull(model);
+    private <T> String findInMap(final Map<String, T> map, final T model) {
+        Assert.requireNonNull(map, "map");
+        Assert.requireNonNull(model, "model");
+
         for (final Map.Entry<String, T> entry : map.entrySet()) {
             if (entry.getValue() == model) {
                 return entry.getKey();

@@ -1,13 +1,55 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright 2019 The original authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package dev.rico.internal.server.projector;
 
-import dev.rico.internal.projector.ui.*;
+import java.time.Instant;
+import java.util.Arrays;
+
+import dev.rico.internal.core.Assert;
+import dev.rico.internal.projector.ui.BorderPaneModel;
+import dev.rico.internal.projector.ui.ButtonModel;
+import dev.rico.internal.projector.ui.CheckBoxModel;
+import dev.rico.internal.projector.ui.DateTimeFieldModel;
+import dev.rico.internal.projector.ui.HyperlinkModel;
+import dev.rico.internal.projector.ui.ImageViewModel;
+import dev.rico.internal.projector.ui.ItemModel;
+import dev.rico.internal.projector.ui.LabelModel;
+import dev.rico.internal.projector.ui.PasswordFieldModel;
+import dev.rico.internal.projector.ui.RadioButtonModel;
+import dev.rico.internal.projector.ui.ScrollPaneModel;
+import dev.rico.internal.projector.ui.SeparatorModel;
+import dev.rico.internal.projector.ui.TextAreaModel;
+import dev.rico.internal.projector.ui.TextFieldModel;
+import dev.rico.internal.projector.ui.TitledPaneModel;
+import dev.rico.internal.projector.ui.ToggleButtonModel;
+import dev.rico.internal.projector.ui.ToolBarModel;
 import dev.rico.internal.projector.ui.box.HBoxItemModel;
 import dev.rico.internal.projector.ui.box.HBoxModel;
 import dev.rico.internal.projector.ui.box.VBoxItemModel;
 import dev.rico.internal.projector.ui.box.VBoxModel;
 import dev.rico.internal.projector.ui.choicebox.ChoiceBoxItemModel;
 import dev.rico.internal.projector.ui.choicebox.ChoiceBoxModel;
-import dev.rico.internal.projector.ui.dialog.*;
+import dev.rico.internal.projector.ui.dialog.ConfirmationDialogModel;
+import dev.rico.internal.projector.ui.dialog.CustomDialogModel;
+import dev.rico.internal.projector.ui.dialog.InfoDialogModel;
+import dev.rico.internal.projector.ui.dialog.QualifiedErrorDialogModel;
+import dev.rico.internal.projector.ui.dialog.ShutdownDialogModel;
+import dev.rico.internal.projector.ui.dialog.UnexpectedErrorDialogModel;
 import dev.rico.internal.projector.ui.flowpane.FlowPaneItemModel;
 import dev.rico.internal.projector.ui.flowpane.FlowPaneModel;
 import dev.rico.internal.projector.ui.gridpane.GridPaneItemModel;
@@ -17,15 +59,24 @@ import dev.rico.internal.projector.ui.listview.ListViewModel;
 import dev.rico.internal.projector.ui.menuitem.MenuItemModel;
 import dev.rico.internal.projector.ui.splitpane.SplitPaneItemModel;
 import dev.rico.internal.projector.ui.splitpane.SplitPaneModel;
-import dev.rico.internal.projector.ui.table.*;
+import dev.rico.internal.projector.ui.table.TableCheckBoxCellModel;
+import dev.rico.internal.projector.ui.table.TableCheckBoxColumnModel;
+import dev.rico.internal.projector.ui.table.TableChoiceBoxCellModel;
+import dev.rico.internal.projector.ui.table.TableChoiceBoxColumnModel;
+import dev.rico.internal.projector.ui.table.TableColumnModel;
+import dev.rico.internal.projector.ui.table.TableInstantCellModel;
+import dev.rico.internal.projector.ui.table.TableInstantColumnModel;
+import dev.rico.internal.projector.ui.table.TableIntegerCellModel;
+import dev.rico.internal.projector.ui.table.TableIntegerColumnModel;
+import dev.rico.internal.projector.ui.table.TableModel;
+import dev.rico.internal.projector.ui.table.TableRowModel;
+import dev.rico.internal.projector.ui.table.TableStringCellModel;
+import dev.rico.internal.projector.ui.table.TableStringColumnModel;
 import dev.rico.internal.projector.ui.tabpane.TabPaneItemModel;
 import dev.rico.internal.projector.ui.tabpane.TabPaneModel;
 import dev.rico.remoting.BeanManager;
 import javafx.geometry.Orientation;
 import javafx.scene.layout.Priority;
-
-import java.time.Instant;
-import java.util.Arrays;
 
 @SuppressWarnings("WeakerAccess")
 public class ServerUiManager extends BaseServerUiManager {
@@ -39,9 +90,9 @@ public class ServerUiManager extends BaseServerUiManager {
         return create(VBoxModel.class);
     }
 
-    public VBoxModel vBox(final VBoxItemModel... childs) {
+    public VBoxModel vBox(final VBoxItemModel... children) {
         final VBoxModel vBox = vBox();
-        vBox.addAll(childs);
+        vBox.addAll(children);
         return vBox;
     }
 
@@ -74,11 +125,6 @@ public class ServerUiManager extends BaseServerUiManager {
         final ButtonModel button = button(caption);
         button.setAction(action);
         return button;
-    }
-
-    protected ButtonModel configureButton(final ButtonModel buttonModel, final String caption) {
-        buttonModel.setCaption(caption);
-        return buttonModel;
     }
 
     public TitledPaneModel titledPane(final String title) {
@@ -234,12 +280,6 @@ public class ServerUiManager extends BaseServerUiManager {
         final TableStringColumnModel column = create(TableStringColumnModel.class);
         configureTableColumn(reference, column, caption, prefWidth);
         return column;
-    }
-
-    protected void configureTableColumn(final String reference, final TableColumnModel column, final String caption, final Double prefWidth) {
-        column.setReference(reference);
-        column.setCaption(caption);
-        column.setPrefWidth(prefWidth);
     }
 
     public TableChoiceBoxColumnModel tableChoiceBoxColum(final String reference, final String caption, final Double prefWidth) {
@@ -451,5 +491,20 @@ public class ServerUiManager extends BaseServerUiManager {
         item.setContent(content);
         item.setCaption(caption);
         return item;
+    }
+
+    protected ButtonModel configureButton(final ButtonModel buttonModel, final String caption) {
+        Assert.requireNonNull(buttonModel, "buttonModel");
+
+        buttonModel.setCaption(caption);
+        return buttonModel;
+    }
+
+    protected void configureTableColumn(final String reference, final TableColumnModel column, final String caption, final Double prefWidth) {
+        Assert.requireNonNull(column, "column");
+
+        column.setReference(reference);
+        column.setCaption(caption);
+        column.setPrefWidth(prefWidth);
     }
 }
