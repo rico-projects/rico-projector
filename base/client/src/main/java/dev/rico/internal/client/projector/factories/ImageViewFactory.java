@@ -34,7 +34,7 @@ public class ImageViewFactory implements ProjectorNodeFactory<ImageViewModel, Im
         if (v == null) {
             return null;
         } else {
-            URL resource = Image.class.getResource(v.substring("classpath:".length()));
+            URL resource = Thread.currentThread().getContextClassLoader().getResource(v.substring("classpath:".length()));
             if (resource == null) {
                 System.out.println("Image " + v + "' not found!");
                 return null;
