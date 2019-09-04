@@ -19,16 +19,14 @@ package dev.rico.internal.client.projector.factories;
 
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorNodeFactory;
+import dev.rico.internal.client.projector.uimanager.TextInputControlConfigurator;
 import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.PasswordFieldModel;
-import dev.rico.internal.projector.ui.flowpane.FlowPaneModel;
 import javafx.scene.control.PasswordField;
-import javafx.scene.layout.FlowPane;
 
 import static dev.rico.client.remoting.FXBinder.bind;
-import static dev.rico.internal.client.projector.uimanager.TextField.configureTextInputControl;
 
-public class PasswordFieldFactory implements ProjectorNodeFactory<PasswordFieldModel, PasswordField> {
+public class PasswordFieldFactory implements ProjectorNodeFactory<PasswordFieldModel, PasswordField>, TextInputControlConfigurator {
 
     @Override
     public PasswordField create(final Projector projector, final PasswordFieldModel model) {

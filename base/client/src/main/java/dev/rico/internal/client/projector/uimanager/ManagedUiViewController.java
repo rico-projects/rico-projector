@@ -40,7 +40,7 @@ public class ManagedUiViewController<M extends ManagedUiModel> extends AbstractV
 
     private final BorderPane pane = new BorderPane();
 
-    private ClientUiManager factory;
+    private ClientUiManager uiManager;
 
     public ManagedUiViewController(final String controllerName) {
         super(ClientContextHolder.getContext(), controllerName);
@@ -60,11 +60,15 @@ public class ManagedUiViewController<M extends ManagedUiModel> extends AbstractV
         try {
             FXBinder.bind(isWorkingProperty()).to(getModel().isWorkingProperty());
             addCSSIfAvailable(pane);
-            factory = new ClientUiManager(getControllerProxy(), newPostProcessor());
-            pane.centerProperty().bind(factory.rootProperty());
+            uiManager = newClientUiManager();
+            pane.centerProperty().bind(uiManager.rootProperty());
         } catch (final Exception e) {
             throw e;
         }
+    }
+
+    protected ClientUiManager newClientUiManager() {
+        return new ClientUiManager(getControllerProxy(), newPostProcessor());
     }
 
     private void addCSSIfAvailable(final Parent parent) {
@@ -76,7 +80,7 @@ public class ManagedUiViewController<M extends ManagedUiModel> extends AbstractV
     }
 
     protected PostProcessor newPostProcessor() {
-        return (id, model, node) -> {
+        return (projector, id, model, node) -> {
         };
     }
 

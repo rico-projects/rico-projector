@@ -17,10 +17,6 @@
  */
 package dev.rico.internal.client.projector.factories;
 
-import static dev.rico.client.remoting.FXBinder.bind;
-
-import java.time.Instant;
-
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorNodeFactory;
 import dev.rico.client.remoting.FXBinder;
@@ -34,12 +30,7 @@ import dev.rico.internal.client.projector.uimanager.IndexedJavaFXListBinder;
 import dev.rico.internal.client.projector.uimanager.UnexpectedErrorDialog;
 import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.IdentifiableModel;
-import dev.rico.internal.projector.ui.table.TableCheckBoxColumnModel;
-import dev.rico.internal.projector.ui.table.TableChoiceBoxColumnModel;
-import dev.rico.internal.projector.ui.table.TableColumnModel;
-import dev.rico.internal.projector.ui.table.TableModel;
-import dev.rico.internal.projector.ui.table.TableRowModel;
-import dev.rico.internal.projector.ui.table.TableStringColumnModel;
+import dev.rico.internal.projector.ui.table.*;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
@@ -50,7 +41,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
-import dev.rico.internal.projector.ui.table.TableInstantColumnModel;
+import javafx.util.Callback;
+import javafx.util.converter.IntegerStringConverter;
+
+import java.time.Instant;
+
+import static dev.rico.client.remoting.FXBinder.bind;
 
 public class TableFactory implements ProjectorNodeFactory<TableModel, TableView> {
 
@@ -90,7 +86,20 @@ public class TableFactory implements ProjectorNodeFactory<TableModel, TableView>
 
         tableColumn.setCellValueFactory(param -> FXWrapper.wrapObjectProperty(
                 param.getValue().getCells().get(conversionInfo.getIndex()).valueProperty()));
-        if (conversionInfo.getInput() instanceof TableInstantColumnModel) {
+        if (conversionInfo.getInput() instanceof TableIntegerColumnModel) {
+            ((TableColumn) tableColumn).setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+            tableColumn.setOnEditCommit(event -> onCommit("onTableIntegerCommit", projector, table, event, conversionInfo));
+        } else if (conversionInfo.getInput() instanceof TableDoubleColumnModel) {
+            bind(tableColumn.cellFactoryProperty()).to(conversionInfo.getInput().cellFactoryClassProperty(), className -> {
+                if (className == null) return null;
+                try {
+                    return (Callback) Class.forName(className).getConstructor().newInstance();
+                } catch (Exception e) {
+                    throw new IllegalArgumentException(e);
+                }
+            });
+            tableColumn.setOnEditCommit(event -> onCommit("onTableDoubleCommit", projector, table, event, conversionInfo));
+        } else if (conversionInfo.getInput() instanceof TableInstantColumnModel) {
             final TableInstantColumnModel columnModel = (TableInstantColumnModel) conversionInfo.getInput();
             tableColumn.setCellFactory(column -> new TableCell<TableRowModel, Object>() {
                 protected void updateItem(final Object item, final boolean empty) {

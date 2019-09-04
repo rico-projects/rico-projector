@@ -29,12 +29,12 @@ public class ClientUiManager {
 
     private final JavaFXProjectorImpl projector;
 
-    public ClientUiManager(final ControllerProxy<? extends ManagedUiModel> controllerProxy) {
-        this(controllerProxy, null);
+    public ClientUiManager(final ControllerProxy<? extends ManagedUiModel> controllerProxy, final PostProcessor postProcessor) {
+        projector = newProjector(controllerProxy, postProcessor);
     }
 
-    public ClientUiManager(final ControllerProxy<? extends ManagedUiModel> controllerProxy, final PostProcessor postProcessor) {
-        projector = new JavaFXProjectorImpl(controllerProxy, postProcessor);
+    protected JavaFXProjectorImpl newProjector(ControllerProxy<? extends ManagedUiModel> controllerProxy, PostProcessor postProcessor) {
+        return new JavaFXProjectorImpl(controllerProxy, postProcessor);
     }
 
     public Node createNode(final ItemModel itemModel) {

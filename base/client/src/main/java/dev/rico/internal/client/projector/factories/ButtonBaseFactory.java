@@ -43,7 +43,7 @@ public abstract class ButtonBaseFactory<T extends ButtonModel, S extends ButtonB
     protected S createButtonBase(final Projector projector, final T model, final S node) {
         configureButton(model, node);
         if (model.getAction() != null) {
-            node.setOnAction(createOnActionHandler(model.getAction(), node, projector));
+            node.setOnAction(createOnActionHandler(projector, model.getAction(), node));
         }
         return node;
     }

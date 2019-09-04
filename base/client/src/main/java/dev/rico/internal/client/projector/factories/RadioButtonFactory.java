@@ -36,7 +36,7 @@ public class RadioButtonFactory implements ProjectorNodeFactory<RadioButtonModel
         bind(button.selectedProperty()).bidirectionalTo(model.selectedProperty());
         bind(button.textProperty()).to(model.captionProperty());
         if (model.getAction() != null) {
-            button.setOnAction(createOnActionHandler(model.getAction(), button, projector));
+            button.setOnAction(createOnActionHandler(projector, model.getAction(), button));
         }
         return button;
     }

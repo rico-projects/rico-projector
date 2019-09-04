@@ -17,15 +17,7 @@
  */
 package dev.rico.internal.server.projector;
 
-import static java.time.LocalDateTime.of;
-
-import java.time.Instant;
-import java.time.ZoneOffset;
-import java.util.Arrays;
-import java.util.Optional;
-
 import dev.rico.internal.core.Assert;
-import dev.rico.internal.projector.ui.DateTimeFieldModel;
 import dev.rico.internal.projector.ui.ItemModel;
 import dev.rico.internal.projector.ui.TextFieldModel;
 import dev.rico.internal.projector.ui.WithPromptText;
@@ -39,13 +31,10 @@ import dev.rico.internal.projector.ui.table.TableRowModel;
 import javafx.geometry.HPos;
 import javafx.scene.layout.Priority;
 
-public class ServerUiHelper {
+import java.util.Arrays;
+import java.util.Optional;
 
-    public static Instant get(final DateTimeFieldModel startTime) {
-        return Optional.ofNullable(startTime)
-                .map(dateTimeFieldModel -> dateTimeFieldModel.getDate() != null && dateTimeFieldModel.getTime() != null ? of(dateTimeFieldModel.getDate(), dateTimeFieldModel.getTime()).toInstant(ZoneOffset.UTC) : null)
-                .orElse(null);
-    }
+public class ServerUiHelper {
 
     public static String get(final TextFieldModel textFieldModel) {
         return Optional.ofNullable(textFieldModel)

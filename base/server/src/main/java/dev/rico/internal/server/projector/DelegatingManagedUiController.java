@@ -17,18 +17,18 @@
  */
 package dev.rico.internal.server.projector;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.ItemModel;
 import dev.rico.internal.projector.ui.ManagedUiModel;
 import dev.rico.remoting.BeanManager;
 import dev.rico.server.remoting.RemotingContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public abstract class DelegatingManagedUiController implements ManagedUiController {
 
@@ -46,6 +46,10 @@ public abstract class DelegatingManagedUiController implements ManagedUiControll
 
     public void setDelegate(final ManagedUiController delegate) {
         this.delegate = Assert.requireNonNull(delegate, "delegate");
+    }
+
+    public ManagedUiController getDelegate() {
+        return delegate;
     }
 
     public ItemModel getUi() {

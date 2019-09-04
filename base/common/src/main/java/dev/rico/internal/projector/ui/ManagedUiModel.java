@@ -28,7 +28,6 @@ public class ManagedUiModel {
 
     private Property<ItemModel> root;
     private Property<DialogModel> dialog;
-    private Property<ItemModel> focusedItem;
     private Property<Boolean> isWorking;
     private ObservableList<IdentifiableModel> retainedModels;
     private Property<Integer> badgeCount;
@@ -43,18 +42,6 @@ public class ManagedUiModel {
 
     public Property<ItemModel> rootProperty() {
         return root;
-    }
-
-    public ItemModel getFocusedItem() {
-        return focusedItem.get();
-    }
-
-    public void setFocusedItem(ItemModel focusedItem) {
-        this.focusedItem.set(focusedItem);
-    }
-
-    public Property<ItemModel> focusedItemProperty() {
-        return focusedItem;
     }
 
     public Boolean getIsWorking() {

@@ -33,9 +33,7 @@ public interface Projector {
 
     ControllerProxy<? extends ManagedUiModel> getControllerProxy();
 
-    @Deprecated
     Map<IdentifiableModel, Node> getModelToNodeMap();
 
-    @Deprecated
     PostProcessor getPostProcessor();
 }
