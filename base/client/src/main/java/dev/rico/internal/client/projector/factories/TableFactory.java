@@ -83,6 +83,7 @@ public class TableFactory implements ProjectorNodeFactory<TableModel, TableView>
         bind(tableColumn.textProperty()).to(conversionInfo.getInput().captionProperty());
         bind(tableColumn.prefWidthProperty()).to(conversionInfo.getInput().prefWidthProperty(), value -> getValue(value, 80));
         bind(tableColumn.editableProperty()).to(conversionInfo.getInput().editableProperty(), value -> getValue(value, true));
+        bind(tableColumn.visibleProperty()).to(conversionInfo.getInput().visibleProperty(), value -> getValue(value, true));
 
         tableColumn.setCellValueFactory(param -> FXWrapper.wrapObjectProperty(
                 param.getValue().getCells().get(conversionInfo.getIndex()).valueProperty()));
