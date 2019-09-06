@@ -45,7 +45,7 @@ public class JavaFXProjectorImpl implements Projector {
 
     private final ControllerProxy<? extends ManagedUiModel> controllerProxy;
 
-    private final List<PostProcessor> postProcessors = new LinkedList<>();
+    private final List<PostProcessor> postProcessors;
 
     private final Map<Class<? extends ItemModel>, ProjectorNodeFactory> factories;
 
@@ -55,8 +55,9 @@ public class JavaFXProjectorImpl implements Projector {
 
     private final ObjectProperty<Node> root = new SimpleObjectProperty<>();
 
-    public JavaFXProjectorImpl(final ControllerProxy<? extends ManagedUiModel> controllerProxy) {
+    public JavaFXProjectorImpl(final ControllerProxy<? extends ManagedUiModel> controllerProxy, List<PostProcessor> postProcessors) {
         this.controllerProxy = Assert.requireNonNull(controllerProxy, "controllerProxy");
+        this.postProcessors = postProcessors;
 
         try {
             factories = loadServiceProviders(ProjectorNodeFactory.class);

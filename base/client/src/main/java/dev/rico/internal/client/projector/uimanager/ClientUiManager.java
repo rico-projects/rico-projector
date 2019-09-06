@@ -31,12 +31,12 @@ public class ClientUiManager {
 
     private final JavaFXProjectorImpl projector;
 
-    public ClientUiManager(final ControllerProxy<? extends ManagedUiModel> controllerProxy) {
-        projector = newProjector(controllerProxy);
+    public ClientUiManager(final ControllerProxy<? extends ManagedUiModel> controllerProxy, List<PostProcessor> postProcessors) {
+        projector = newProjector(controllerProxy, postProcessors);
     }
 
-    protected JavaFXProjectorImpl newProjector(ControllerProxy<? extends ManagedUiModel> controllerProxy) {
-        return new JavaFXProjectorImpl(controllerProxy);
+    protected JavaFXProjectorImpl newProjector(ControllerProxy<? extends ManagedUiModel> controllerProxy, List<PostProcessor> postProcessors) {
+        return new JavaFXProjectorImpl(controllerProxy, postProcessors);
     }
 
     public Node createNode(final ItemModel itemModel) {
@@ -45,9 +45,5 @@ public class ClientUiManager {
 
     public ObjectProperty<Node> rootProperty() {
         return projector.rootProperty();
-    }
-
-    public List<PostProcessor> getPostProcessors(){
-        return projector.getPostProcessors();
     }
 }

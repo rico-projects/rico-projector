@@ -33,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ManagedUiViewController<M extends ManagedUiModel> extends AbstractViewController<M> implements ViewPresenter {
@@ -40,6 +41,7 @@ public class ManagedUiViewController<M extends ManagedUiModel> extends AbstractV
     private static final Logger LOGGER = LoggerFactory.getLogger(ManagedUiViewController.class);
 
     private final BorderPane pane = new BorderPane();
+    private final List<PostProcessor> postProcessors = new LinkedList<>();
 
     private ClientUiManager uiManager;
 
@@ -69,11 +71,7 @@ public class ManagedUiViewController<M extends ManagedUiModel> extends AbstractV
     }
 
     protected ClientUiManager newClientUiManager() {
-        return new ClientUiManager(getControllerProxy());
-    }
-
-    public List<PostProcessor> getPostProcessors(){
-        return uiManager.getPostProcessors();
+        return new ClientUiManager(getControllerProxy(), postProcessors);
     }
 
     private void addCSSIfAvailable(final Parent parent) {
@@ -165,5 +163,9 @@ public class ManagedUiViewController<M extends ManagedUiModel> extends AbstractV
             getModel().isWorkingProperty().onChanged(evt -> result.setValue(evt.getNewValue()));
         });
         return result;
+    }
+
+    public List<PostProcessor> getPostProcessors() {
+        return postProcessors;
     }
 }
