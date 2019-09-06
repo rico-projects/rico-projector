@@ -25,16 +25,18 @@ import dev.rico.internal.projector.ui.ManagedUiModel;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.Node;
 
+import java.util.List;
+
 public class ClientUiManager {
 
     private final JavaFXProjectorImpl projector;
 
-    public ClientUiManager(final ControllerProxy<? extends ManagedUiModel> controllerProxy, final PostProcessor postProcessor) {
-        projector = newProjector(controllerProxy, postProcessor);
+    public ClientUiManager(final ControllerProxy<? extends ManagedUiModel> controllerProxy) {
+        projector = newProjector(controllerProxy);
     }
 
-    protected JavaFXProjectorImpl newProjector(ControllerProxy<? extends ManagedUiModel> controllerProxy, PostProcessor postProcessor) {
-        return new JavaFXProjectorImpl(controllerProxy, postProcessor);
+    protected JavaFXProjectorImpl newProjector(ControllerProxy<? extends ManagedUiModel> controllerProxy) {
+        return new JavaFXProjectorImpl(controllerProxy);
     }
 
     public Node createNode(final ItemModel itemModel) {
@@ -43,5 +45,9 @@ public class ClientUiManager {
 
     public ObjectProperty<Node> rootProperty() {
         return projector.rootProperty();
+    }
+
+    public List<PostProcessor> getPostProcessors(){
+        return projector.getPostProcessors();
     }
 }

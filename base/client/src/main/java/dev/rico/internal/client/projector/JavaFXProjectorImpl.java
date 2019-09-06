@@ -27,18 +27,16 @@ import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.IdentifiableModel;
 import dev.rico.internal.projector.ui.ItemModel;
 import dev.rico.internal.projector.ui.ManagedUiModel;
+import dev.rico.internal.projector.ui.WithPadding;
 import dev.rico.internal.projector.ui.dialog.DialogModel;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.layout.Region;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.ServiceLoader;
-import java.util.WeakHashMap;
+import java.util.*;
 import java.util.function.Supplier;
 
 import static dev.rico.client.remoting.FXBinder.bind;
@@ -47,7 +45,7 @@ public class JavaFXProjectorImpl implements Projector {
 
     private final ControllerProxy<? extends ManagedUiModel> controllerProxy;
 
-    private final PostProcessor postProcessor;
+    private final List<PostProcessor> postProcessors = new LinkedList<>();
 
     private final Map<Class<? extends ItemModel>, ProjectorNodeFactory> factories;
 
@@ -57,9 +55,8 @@ public class JavaFXProjectorImpl implements Projector {
 
     private final ObjectProperty<Node> root = new SimpleObjectProperty<>();
 
-    public JavaFXProjectorImpl(final ControllerProxy<? extends ManagedUiModel> controllerProxy, final PostProcessor postProcessor) {
+    public JavaFXProjectorImpl(final ControllerProxy<? extends ManagedUiModel> controllerProxy) {
         this.controllerProxy = Assert.requireNonNull(controllerProxy, "controllerProxy");
-        this.postProcessor = Assert.requireNonNull(postProcessor, "postProcessor");
 
         try {
             factories = loadServiceProviders(ProjectorNodeFactory.class);
@@ -141,6 +138,7 @@ public class JavaFXProjectorImpl implements Projector {
         model.getStyleClass().addAll(node.getStyleClass());
         bind(node.styleProperty()).to(model.styleProperty());
         bind(node.getStyleClass()).bidirectionalTo(model.getStyleClass());
+
         if (node instanceof Region) {
             final Region region = (Region) node;
             bind(region.minWidthProperty()).to(model.minWidthProperty(), value -> fallback(value, region::getMinWidth));
@@ -149,6 +147,10 @@ public class JavaFXProjectorImpl implements Projector {
             bind(region.maxHeightProperty()).to(model.maxHeightProperty(), value -> fallback(value, region::getMaxHeight));
             bind(region.prefWidthProperty()).to(model.prefWidthProperty(), value -> fallback(value, region::getPrefWidth));
             bind(region.prefHeightProperty()).to(model.prefHeightProperty(), value -> fallback(value, region::getPrefHeight));
+            if (model instanceof WithPadding) {
+                WithPadding withPadding = (WithPadding) model;
+                bind(region.paddingProperty()).to(withPadding.paddingProperty(), value -> value == null ? new Insets(0) : new Insets(withPadding.getPadding()));
+            }
         }
     }
 
@@ -160,9 +162,9 @@ public class JavaFXProjectorImpl implements Projector {
         Assert.requireNonNull(itemModel, "itemModel");
         itemModel.idProperty().onChanged(evt -> {
             final String newId = evt.getNewValue();
-            postProcessor.postProcess(this, newId, itemModel, node);
+            postProcessors.forEach(processor -> processor.postProcess(this, newId, itemModel, node));
         });
-        postProcessor.postProcess(this, itemModel.getId(), itemModel, node);
+        postProcessors.forEach(processor -> processor.postProcess(this, itemModel.getId(), itemModel, node));
     }
 
     @Override
@@ -176,7 +178,7 @@ public class JavaFXProjectorImpl implements Projector {
     }
 
     @Override
-    public PostProcessor getPostProcessor() {
-        return postProcessor;
+    public List<PostProcessor> getPostProcessors() {
+        return postProcessors;
     }
 }

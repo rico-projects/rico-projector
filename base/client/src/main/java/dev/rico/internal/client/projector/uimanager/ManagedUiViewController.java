@@ -33,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
+import java.util.List;
 
 public class ManagedUiViewController<M extends ManagedUiModel> extends AbstractViewController<M> implements ViewPresenter {
 
@@ -68,7 +69,11 @@ public class ManagedUiViewController<M extends ManagedUiModel> extends AbstractV
     }
 
     protected ClientUiManager newClientUiManager() {
-        return new ClientUiManager(getControllerProxy(), newPostProcessor());
+        return new ClientUiManager(getControllerProxy());
+    }
+
+    public List<PostProcessor> getPostProcessors(){
+        return uiManager.getPostProcessors();
     }
 
     private void addCSSIfAvailable(final Parent parent) {
@@ -77,11 +82,6 @@ public class ManagedUiViewController<M extends ManagedUiModel> extends AbstractV
             final String uriToCss = uri.toExternalForm();
             parent.getStylesheets().add(uriToCss);
         }
-    }
-
-    protected PostProcessor newPostProcessor() {
-        return (projector, id, model, node) -> {
-        };
     }
 
     private String getStyleSheetName() {

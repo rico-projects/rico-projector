@@ -23,6 +23,7 @@ import dev.rico.internal.projector.ui.ItemModel;
 import dev.rico.internal.projector.ui.ManagedUiModel;
 import javafx.scene.Node;
 
+import java.util.List;
 import java.util.Map;
 
 public interface Projector {
@@ -35,5 +36,5 @@ public interface Projector {
 
     Map<IdentifiableModel, Node> getModelToNodeMap();
 
-    PostProcessor getPostProcessor();
+    List<PostProcessor> getPostProcessors();
 }

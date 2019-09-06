@@ -17,13 +17,6 @@
  */
 package dev.rico.internal.server.projector;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import javax.annotation.PostConstruct;
-
-import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.ManagedUiModel;
 import dev.rico.internal.projector.ui.dialog.QualifiedErrorDialogModel;
@@ -32,9 +25,16 @@ import dev.rico.server.remoting.ClientSessionExecutor;
 import dev.rico.server.remoting.Param;
 import dev.rico.server.remoting.RemotingAction;
 import dev.rico.server.remoting.RemotingContext;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.annotation.PostConstruct;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 
 public abstract class AbstractManagedUiController implements ManagedUiController {
-    
+
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractManagedUiController.class);
 
     private final ClientSessionExecutor sessionExecutor;
@@ -43,7 +43,6 @@ public abstract class AbstractManagedUiController implements ManagedUiController
     private ServerUiManager uiManager;
 
     public AbstractManagedUiController(final BeanManager beanManager, final RemotingContext session) {
-
         this.beanManager = Assert.requireNonNull(beanManager, "beanManager");
         this.session = Assert.requireNonNull(session, "session");
         sessionExecutor = session.createSessionExecutor();
