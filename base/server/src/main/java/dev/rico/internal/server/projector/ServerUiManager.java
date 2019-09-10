@@ -17,39 +17,15 @@
  */
 package dev.rico.internal.server.projector;
 
-import java.time.Instant;
-import java.util.Arrays;
-
 import dev.rico.internal.core.Assert;
-import dev.rico.internal.projector.ui.BorderPaneModel;
-import dev.rico.internal.projector.ui.ButtonModel;
-import dev.rico.internal.projector.ui.CheckBoxModel;
-import dev.rico.internal.projector.ui.DateTimeFieldModel;
-import dev.rico.internal.projector.ui.HyperlinkModel;
-import dev.rico.internal.projector.ui.ImageViewModel;
-import dev.rico.internal.projector.ui.ItemModel;
-import dev.rico.internal.projector.ui.LabelModel;
-import dev.rico.internal.projector.ui.PasswordFieldModel;
-import dev.rico.internal.projector.ui.RadioButtonModel;
-import dev.rico.internal.projector.ui.ScrollPaneModel;
-import dev.rico.internal.projector.ui.SeparatorModel;
-import dev.rico.internal.projector.ui.TextAreaModel;
-import dev.rico.internal.projector.ui.TextFieldModel;
-import dev.rico.internal.projector.ui.TitledPaneModel;
-import dev.rico.internal.projector.ui.ToggleButtonModel;
-import dev.rico.internal.projector.ui.ToolBarModel;
+import dev.rico.internal.projector.ui.*;
 import dev.rico.internal.projector.ui.box.HBoxItemModel;
 import dev.rico.internal.projector.ui.box.HBoxModel;
 import dev.rico.internal.projector.ui.box.VBoxItemModel;
 import dev.rico.internal.projector.ui.box.VBoxModel;
 import dev.rico.internal.projector.ui.choicebox.ChoiceBoxItemModel;
 import dev.rico.internal.projector.ui.choicebox.ChoiceBoxModel;
-import dev.rico.internal.projector.ui.dialog.ConfirmationDialogModel;
-import dev.rico.internal.projector.ui.dialog.CustomDialogModel;
-import dev.rico.internal.projector.ui.dialog.InfoDialogModel;
-import dev.rico.internal.projector.ui.dialog.QualifiedErrorDialogModel;
-import dev.rico.internal.projector.ui.dialog.ShutdownDialogModel;
-import dev.rico.internal.projector.ui.dialog.UnexpectedErrorDialogModel;
+import dev.rico.internal.projector.ui.dialog.*;
 import dev.rico.internal.projector.ui.flowpane.FlowPaneItemModel;
 import dev.rico.internal.projector.ui.flowpane.FlowPaneModel;
 import dev.rico.internal.projector.ui.gridpane.GridPaneItemModel;
@@ -59,28 +35,18 @@ import dev.rico.internal.projector.ui.listview.ListViewModel;
 import dev.rico.internal.projector.ui.menuitem.MenuItemModel;
 import dev.rico.internal.projector.ui.splitpane.SplitPaneItemModel;
 import dev.rico.internal.projector.ui.splitpane.SplitPaneModel;
-import dev.rico.internal.projector.ui.table.TableCheckBoxCellModel;
-import dev.rico.internal.projector.ui.table.TableCheckBoxColumnModel;
-import dev.rico.internal.projector.ui.table.TableChoiceBoxCellModel;
-import dev.rico.internal.projector.ui.table.TableChoiceBoxColumnModel;
-import dev.rico.internal.projector.ui.table.TableColumnModel;
-import dev.rico.internal.projector.ui.table.TableInstantCellModel;
-import dev.rico.internal.projector.ui.table.TableInstantColumnModel;
-import dev.rico.internal.projector.ui.table.TableIntegerCellModel;
-import dev.rico.internal.projector.ui.table.TableIntegerColumnModel;
-import dev.rico.internal.projector.ui.table.TableModel;
-import dev.rico.internal.projector.ui.table.TableRowModel;
-import dev.rico.internal.projector.ui.table.TableStringCellModel;
-import dev.rico.internal.projector.ui.table.TableStringColumnModel;
+import dev.rico.internal.projector.ui.table.*;
 import dev.rico.internal.projector.ui.tabpane.TabPaneItemModel;
 import dev.rico.internal.projector.ui.tabpane.TabPaneModel;
 import dev.rico.remoting.BeanManager;
 import javafx.geometry.Orientation;
 import javafx.scene.layout.Priority;
 
+import java.time.Instant;
+import java.util.Arrays;
+
 @SuppressWarnings("WeakerAccess")
 public class ServerUiManager extends BaseServerUiManager {
-
 
     public ServerUiManager(final BeanManager beanManager) {
         super(beanManager);
@@ -232,10 +198,6 @@ public class ServerUiManager extends BaseServerUiManager {
         return hyperlinkModel;
     }
 
-    public DateTimeFieldModel dateTimeField() {
-        return create(DateTimeFieldModel.class);
-    }
-
     public ChoiceBoxModel choiceBox() {
         return create(ChoiceBoxModel.class);
     }
@@ -300,6 +262,12 @@ public class ServerUiManager extends BaseServerUiManager {
         return column;
     }
 
+    public TableDoubleCellModel tableDoubleCell(Double value) {
+        TableDoubleCellModel cellModel = create(TableDoubleCellModel.class);
+        cellModel.setValue(value);
+        return cellModel;
+    }
+
     public TableColumnModel tableNumberColum(final String caption, final Double prefWidth) {
         final TableIntegerColumnModel column = create(TableIntegerColumnModel.class);
         configureTableColumn(null, column, caption, prefWidth);
@@ -358,6 +326,21 @@ public class ServerUiManager extends BaseServerUiManager {
         return cellModel;
     }
 
+    public TableIntegerColumnModel tableIntegerColum(String reference, String caption, Double prefWidth) {
+        TableIntegerColumnModel column = create(TableIntegerColumnModel.class);
+        configureTableColumn(reference, column, caption, prefWidth);
+        return column;
+    }
+
+    public TableIntegerColumnModel tableIntegerColum(String caption, Double prefWidth) {
+        return tableIntegerColum(null, caption, prefWidth);
+    }
+
+    public TableDoubleColumnModel tableDoubleColum(String reference, String caption, Double prefWidth) {
+        TableDoubleColumnModel column = create(TableDoubleColumnModel.class);
+        configureTableColumn(reference, column, caption, prefWidth);
+        return column;
+    }
 
     public ItemModel separator(final Orientation orientation) {
         final SeparatorModel separatorModel = create(SeparatorModel.class);

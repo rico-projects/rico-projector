@@ -27,7 +27,7 @@ import javafx.scene.image.ImageView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.URL;
+import java.io.InputStream;
 
 import static dev.rico.client.remoting.FXBinder.bind;
 
@@ -55,12 +55,12 @@ public class ImageViewFactory implements ProjectorNodeFactory<ImageViewModel, Im
         if (v == null) {
             return null;
         } else {
-            final URL resource = Image.class.getResource(v.substring("classpath:".length()));
+            final InputStream resource = ImageViewFactory.class.getResourceAsStream(v.substring("classpath:".length()));
             if (resource == null) {
                 LOG.warn("Image '{}' not found!", v);
                 return null;
             }
-            return new Image(resource.toExternalForm());
+            return new Image(resource);
         }
     }
 

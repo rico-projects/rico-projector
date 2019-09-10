@@ -23,6 +23,7 @@ import dev.rico.internal.projector.ui.ItemModel;
 import dev.rico.internal.projector.ui.ManagedUiModel;
 import javafx.scene.Node;
 
+import java.util.List;
 import java.util.Map;
 
 public interface Projector {
@@ -33,9 +34,7 @@ public interface Projector {
 
     ControllerProxy<? extends ManagedUiModel> getControllerProxy();
 
-    @Deprecated
     Map<IdentifiableModel, Node> getModelToNodeMap();
 
-    @Deprecated
-    PostProcessor getPostProcessor();
+    List<PostProcessor> getPostProcessors();
 }

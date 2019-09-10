@@ -17,14 +17,14 @@
  */
 package dev.rico.internal.server.projector;
 
-import java.util.Map;
-import java.util.UUID;
-import java.util.WeakHashMap;
-
 import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.IdentifiableModel;
 import dev.rico.internal.projector.ui.ItemModel;
 import dev.rico.remoting.BeanManager;
+
+import java.util.Map;
+import java.util.UUID;
+import java.util.WeakHashMap;
 
 public class BaseServerUiManager {
 
@@ -58,12 +58,6 @@ public class BaseServerUiManager {
             idToItemMap.put(evt.getNewValue(), model);
             idToItemMap.remove(oldId);
         });
-        if (model instanceof ItemModel) {
-            final ItemModel itemModel = (ItemModel) model;
-            itemModel.setDisable(false);
-            itemModel.setManaged(true);
-            itemModel.setVisible(true);
-        }
         return model;
     }
 

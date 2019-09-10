@@ -114,6 +114,10 @@ public class ItemModel<M extends ItemModel> extends IdentifiableModel {
         return messageDisplay.get();
     }
 
+    public void setMessageDisplay(ItemModel messageDisplay) {
+        this.messageDisplay.set(messageDisplay);
+    }
+
     public Property<ItemModel> messageDisplayProperty() {
         return messageDisplay;
     }

@@ -15,16 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.rico.internal.client.projector.uimanager;
+package dev.rico.internal.projector.ui.table;
 
-import dev.rico.client.remoting.ControllerProxy;
-import dev.rico.internal.projector.ui.TextFieldModel;
+import dev.rico.remoting.RemotingBean;
 
-import static dev.rico.client.remoting.FXBinder.bind;
-
-public class TextField extends javafx.scene.control.TextField implements TextInputControlConfigurator {
-    public TextField(ControllerProxy<?> controllerProxy, TextFieldModel model) {
-        bind(prefColumnCountProperty()).to(model.prefColumnCountProperty());
-        configureTextInputControl(controllerProxy, model, this);
-    }
+@RemotingBean
+public class TableDoubleColumnModel extends TableColumnModel {
 }

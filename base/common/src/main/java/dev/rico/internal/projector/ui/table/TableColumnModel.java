@@ -25,9 +25,11 @@ import dev.rico.remoting.RemotingBean;
 @SuppressWarnings("ClassWithoutLogger")
 @RemotingBean
 public class TableColumnModel extends IdentifiableModel {
+    private Property<String> cellFactoryClass;
     private ObservableList<TableColumnModel> children;
     private Property<String> caption;
     private Property<Boolean> editable;
+    private Property<Boolean> visible;
     private Property<Double> prefWidth;
 
     public Boolean getEditable() {
@@ -40,6 +42,18 @@ public class TableColumnModel extends IdentifiableModel {
 
     public Property<Boolean> editableProperty() {
         return editable;
+    }
+
+    public Boolean getVisible() {
+        return visible.get();
+    }
+
+    public void setVisible(Boolean visible) {
+        this.visible.set(visible);
+    }
+
+    public Property<Boolean> visibleProperty() {
+        return visible;
     }
 
     public String getCaption() {
@@ -69,4 +83,17 @@ public class TableColumnModel extends IdentifiableModel {
     public ObservableList<TableColumnModel> getChildren() {
         return children;
     }
+
+    public String getCellFactoryClass() {
+        return cellFactoryClass.get();
+    }
+
+    public void setCellFactoryClass(String cellFactoryClass) {
+        this.cellFactoryClass.set(cellFactoryClass);
+    }
+
+    public Property<String> cellFactoryClassProperty() {
+        return cellFactoryClass;
+    }
+
 }

@@ -22,7 +22,7 @@ import dev.rico.remoting.Property;
 import dev.rico.remoting.RemotingBean;
 
 @RemotingBean
-public class BorderPaneModel extends ItemModel  implements WithPadding{
+public class BorderPaneModel extends ItemModel implements WithPadding {
     private Property<ItemModel> top;
     private Property<ItemModel> left;
     private Property<ItemModel> center;
