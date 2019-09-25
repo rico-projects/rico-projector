@@ -20,6 +20,7 @@ package dev.rico.internal.client.projector.factories;
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorNodeFactory;
 import dev.rico.client.remoting.FXBinder;
+import dev.rico.client.remoting.Param;
 import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.mixed.CommonUiHelper;
 import dev.rico.internal.projector.ui.ButtonModel;
@@ -43,7 +44,7 @@ public abstract class ButtonBaseFactory<T extends ButtonModel, S extends ButtonB
     protected S createButtonBase(final Projector projector, final T model, final S node) {
         configureButton(model, node);
         if (model.getAction() != null) {
-            node.setOnAction(createOnActionHandler(projector, model.getAction(), node));
+            node.setOnAction(createOnActionHandler(projector, model.getAction(), node, new Param("button", model)));
         }
         return node;
     }
