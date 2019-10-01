@@ -34,6 +34,7 @@ import dev.rico.internal.projector.ui.table.*;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -88,7 +89,11 @@ public class TableFactory implements ProjectorNodeFactory<TableModel, TableView>
         tableColumn.setCellValueFactory(param -> FXWrapper.wrapObjectProperty(
                 param.getValue().getCells().get(conversionInfo.getIndex()).valueProperty()));
         if (conversionInfo.getInput() instanceof TableIntegerColumnModel) {
-            ((TableColumn) tableColumn).setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+            ((TableColumn) tableColumn).setCellFactory(list -> {
+                TextFieldTableCell<Object, Integer> cell = new TextFieldTableCell<>((new IntegerStringConverter()));
+                cell.setAlignment(Pos.CENTER_RIGHT);
+                return cell;
+            });
             tableColumn.setOnEditCommit(event -> onCommit("onTableIntegerCommit", projector, table, event, conversionInfo));
         } else if (conversionInfo.getInput() instanceof TableDoubleColumnModel) {
             bind(tableColumn.cellFactoryProperty()).to(conversionInfo.getInput().cellFactoryClassProperty(), className -> {
@@ -102,18 +107,22 @@ public class TableFactory implements ProjectorNodeFactory<TableModel, TableView>
             tableColumn.setOnEditCommit(event -> onCommit("onTableDoubleCommit", projector, table, event, conversionInfo));
         } else if (conversionInfo.getInput() instanceof TableInstantColumnModel) {
             final TableInstantColumnModel columnModel = (TableInstantColumnModel) conversionInfo.getInput();
-            tableColumn.setCellFactory(column -> new TableCell<TableRowModel, Object>() {
-                protected void updateItem(final Object item, final boolean empty) {
-                    super.updateItem(item, empty);
-                    if (item == null || empty) {
-                        setText(null);
-                    } else if (columnModel.getFormatString() != null) {
-                        setText(FormatterFactory.customFormat(
-                                columnModel.getFormatString()).format((Instant) item));
-                    } else {
-                        setText(FormatterFactory.dateFormatter().format((Instant) item));
+            tableColumn.setCellFactory(column -> {
+                TableCell<TableRowModel, Object> tableCell = new TableCell<TableRowModel, Object>() {
+                    protected void updateItem(final Object item, final boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item == null || empty) {
+                            setText(null);
+                        } else if (columnModel.getFormatString() != null) {
+                            setText(FormatterFactory.customFormat(
+                                    columnModel.getFormatString()).format((Instant) item));
+                        } else {
+                            setText(FormatterFactory.dateFormatter().format((Instant) item));
+                        }
                     }
-                }
+                };
+                tableCell.setAlignment(Pos.CENTER_RIGHT);
+                return tableCell;
             });
         } else if (conversionInfo.getInput() instanceof TableStringColumnModel) {
             tableColumn.setCellFactory(TextFieldTableCell.forTableColumn(new PlainStringConverter()));
