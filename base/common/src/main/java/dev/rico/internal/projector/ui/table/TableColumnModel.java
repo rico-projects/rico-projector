@@ -28,6 +28,7 @@ public class TableColumnModel extends IdentifiableModel {
     private Property<String> cellFactoryClass;
     private ObservableList<TableColumnModel> children;
     private Property<String> caption;
+    private Property<String> commitAction;
     private Property<Boolean> editable;
     private Property<Boolean> visible;
     private Property<Double> prefWidth;
@@ -54,6 +55,18 @@ public class TableColumnModel extends IdentifiableModel {
 
     public Property<Boolean> visibleProperty() {
         return visible;
+    }
+
+    public String getCommitAction() {
+        return commitAction.get();
+    }
+
+    public void setCommitAction(String commitAction) {
+        this.commitAction.set(commitAction);
+    }
+
+    public Property<String> commitActionProperty() {
+        return commitAction;
     }
 
     public String getCaption() {

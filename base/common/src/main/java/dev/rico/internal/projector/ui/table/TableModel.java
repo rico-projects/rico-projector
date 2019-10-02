@@ -25,6 +25,7 @@ import dev.rico.remoting.RemotingBean;
 @RemotingBean
 public class TableModel extends ItemModel {
     private ObservableList<TableColumnModel> columns;
+    private ObservableList<TableColumnModel> sortOrder;
     private ObservableList<TableRowModel> rows;
     private Property<TableRowModel> selectedRow;
     private Property<Boolean> editable;
@@ -32,6 +33,10 @@ public class TableModel extends ItemModel {
 
     public ObservableList<TableColumnModel> getColumns() {
         return columns;
+    }
+
+    public ObservableList<TableColumnModel> getSortOrder() {
+        return sortOrder;
     }
 
     public ObservableList<TableRowModel> getRows() {

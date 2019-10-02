@@ -1,0 +1,6 @@
+dev.rico.internal.client.projector.uimanager.table.StringTableColumnFactory
+dev.rico.internal.client.projector.uimanager.table.InstantTableColumnFactory
+dev.rico.internal.client.projector.uimanager.table.IntegerTableColumnFactory
+dev.rico.internal.client.projector.uimanager.table.DoubleTableColumnFactory
+dev.rico.internal.client.projector.uimanager.table.ChoiceBoxTableColumnFactory
+dev.rico.internal.client.projector.uimanager.table.CheckBoxTableColumnFactory

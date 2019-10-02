@@ -21,7 +21,7 @@ import dev.rico.internal.projector.ui.choicebox.ChoiceBoxItemModel;
 import dev.rico.remoting.ObservableList;
 import javafx.util.StringConverter;
 
-public class ChoiceBoxItemConverter extends StringConverter<Object> {
+public class ChoiceBoxItemConverter extends StringConverter<ChoiceBoxItemModel> {
 
     private final ObservableList<ChoiceBoxItemModel> items;
 
@@ -30,17 +30,14 @@ public class ChoiceBoxItemConverter extends StringConverter<Object> {
     }
 
     @Override
-    public String toString(final Object object) {
+    public String toString(final ChoiceBoxItemModel object) {
         if (object == null)
             return null;
-        if (object instanceof ChoiceBoxItemModel) {
-            return ((ChoiceBoxItemModel) object).getCaption();
-        }
-        throw new IllegalArgumentException("No " + ChoiceBoxItemModel.class.getSimpleName());
+        return object.getCaption();
     }
 
     @Override
-    public Object fromString(final String caption) {
+    public ChoiceBoxItemModel fromString(final String caption) {
         return items.stream().filter(choiceBoxItemModel -> choiceBoxItemModel.getCaption().equals(caption)).findFirst()
                 .orElse(null);
     }

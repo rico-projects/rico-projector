@@ -17,8 +17,12 @@
  */
 package dev.rico.internal.projector.ui.table;
 
-import dev.rico.remoting.RemotingBean;
+import dev.rico.remoting.Property;
 
-@RemotingBean
-public class TableCheckBoxColumnModel extends TableColumnModel {
+public class TableBooleanCellModel extends TableCellModel<Boolean> {
+    private Property<Boolean> value;
+
+    public Property<Boolean> valueProperty() {
+        return value;
+    }
 }

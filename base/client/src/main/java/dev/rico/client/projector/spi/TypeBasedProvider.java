@@ -20,4 +20,8 @@ package dev.rico.client.projector.spi;
 public interface TypeBasedProvider<T> {
 
     Class<T> getSupportedType();
+
+    default int getPriority() {
+        return 0;
+    }
 }

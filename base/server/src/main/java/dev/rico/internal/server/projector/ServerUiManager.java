@@ -250,8 +250,8 @@ public class ServerUiManager extends BaseServerUiManager {
         return column;
     }
 
-    public TableCheckBoxColumnModel tableCheckBoxColum(final String reference, final String caption, final Double prefWidth) {
-        final TableCheckBoxColumnModel column = create(TableCheckBoxColumnModel.class);
+    public TableBooleanColumnModel tableCheckBoxColum(final String reference, final String caption, final Double prefWidth) {
+        final TableBooleanColumnModel column = create(TableBooleanColumnModel.class);
         configureTableColumn(reference, column, caption, prefWidth);
         return column;
     }
@@ -314,8 +314,8 @@ public class ServerUiManager extends BaseServerUiManager {
         return cellModel;
     }
 
-    public TableCheckBoxCellModel tableCheckBoxCell(final Boolean value) {
-        final TableCheckBoxCellModel cellModel = create(TableCheckBoxCellModel.class);
+    public TableBooleanCellModel tableCheckBoxCell(final Boolean value) {
+        final TableBooleanCellModel cellModel = create(TableBooleanCellModel.class);
         cellModel.setValue(value);
         return cellModel;
     }
