@@ -94,6 +94,7 @@ public class ManagedTableView extends TableView<TableRowModel> implements Defaul
             });
         }
         column.setOnEditCommit(event -> onCommit(columnModel.getCommitAction(), projector, event));
+        bind(column.textProperty()).to(columnModel.captionProperty(), defaultValue(() -> ""));
         bind(column.editableProperty()).to(columnModel.editableProperty(), defaultValue(column::isEditable));
         bind(column.visibleProperty()).bidirectionalTo(columnModel.visibleProperty(), defaultValueBidirectional(column::isVisible));
         bind(column.editableProperty()).to(columnModel.editableProperty(), defaultValue(column::isEditable));

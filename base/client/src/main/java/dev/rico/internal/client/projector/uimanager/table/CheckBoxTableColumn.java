@@ -11,8 +11,6 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 
 class CheckBoxTableColumn extends TableColumn<TableRowModel, Boolean> {
     CheckBoxTableColumn(Projector projector, TableBooleanColumnModel model) {
-        super(model.getCaption());
-
         setCellValueFactory(param -> {
             ManagedTableView.UserData userData = (ManagedTableView.UserData) param.getTableColumn().getUserData();
             Boolean property = (Boolean) param.getValue().getCells().get(userData.originalIndex).getValue();

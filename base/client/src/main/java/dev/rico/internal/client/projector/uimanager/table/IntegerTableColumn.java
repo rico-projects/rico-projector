@@ -11,7 +11,6 @@ import javafx.util.converter.IntegerStringConverter;
 
 class IntegerTableColumn extends TableColumn<TableRowModel, Integer> {
     IntegerTableColumn(Projector projector, TableIntegerColumnModel model) {
-        super(model.getCaption());
         setCellFactory(column -> createIntegerCell(model));
     }
 

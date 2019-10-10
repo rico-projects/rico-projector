@@ -12,7 +12,6 @@ import javafx.scene.control.cell.ChoiceBoxTableCell;
 
 class ChoiceBoxTableColumn extends TableColumn<TableRowModel, ChoiceBoxItemModel> {
     ChoiceBoxTableColumn(Projector projector, TableChoiceBoxColumnModel model) {
-        super(model.getCaption());
         ObservableList<ChoiceBoxItemModel> items = model.getItems();
         setCellFactory(ChoiceBoxTableCell.forTableColumn(new ChoiceBoxItemConverter(items), FXWrapper.wrapList(items)));
     }

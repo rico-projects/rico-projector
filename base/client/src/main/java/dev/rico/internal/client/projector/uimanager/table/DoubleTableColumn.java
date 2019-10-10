@@ -11,7 +11,6 @@ import javafx.util.converter.DoubleStringConverter;
 
 class DoubleTableColumn extends TableColumn<TableRowModel, Double> {
     DoubleTableColumn(Projector projector, TableDoubleColumnModel model) {
-        super(model.getCaption());
         setCellFactory(column -> createDoubleCell(model));
     }
 

@@ -12,7 +12,6 @@ import java.time.Instant;
 
 class InstantTableColumn extends TableColumn<TableRowModel, Instant> {
     InstantTableColumn(Projector projector, TableInstantColumnModel model) {
-        super(model.getCaption());
         setCellFactory(column -> createInstantCell(model));
     }
 

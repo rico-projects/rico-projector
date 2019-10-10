@@ -8,7 +8,6 @@ import javafx.scene.control.cell.TextFieldTableCell;
 
 class StringTableColumn extends TableColumn<TableRowModel,String>{
     StringTableColumn(Projector projector, TableStringColumnModel model) {
-        super(model.getCaption());
         setCellFactory(TextFieldTableCell.forTableColumn());
     }
 }
