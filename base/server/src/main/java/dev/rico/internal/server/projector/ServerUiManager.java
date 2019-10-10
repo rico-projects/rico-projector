@@ -234,29 +234,29 @@ public class ServerUiManager extends BaseServerUiManager {
         return create(TableModel.class);
     }
 
-    public TableStringColumnModel tableStringColum(final String caption, final Double prefWidth) {
-        return tableStringColum(null, caption, prefWidth);
+    public TableStringColumnModel tableStringColumn(final String caption, final Double prefWidth) {
+        return tableStringColumn(null, caption, prefWidth);
     }
 
-    public TableStringColumnModel tableStringColum(final String reference, final String caption, final Double prefWidth) {
+    public TableStringColumnModel tableStringColumn(final String reference, final String caption, final Double prefWidth) {
         final TableStringColumnModel column = create(TableStringColumnModel.class);
         configureTableColumn(reference, column, caption, prefWidth);
         return column;
     }
 
-    public TableChoiceBoxColumnModel tableChoiceBoxColum(final String reference, final String caption, final Double prefWidth) {
+    public TableChoiceBoxColumnModel tableChoiceBoxColumn(final String reference, final String caption, final Double prefWidth) {
         final TableChoiceBoxColumnModel column = create(TableChoiceBoxColumnModel.class);
         configureTableColumn(reference, column, caption, prefWidth);
         return column;
     }
 
-    public TableBooleanColumnModel tableCheckBoxColum(final String reference, final String caption, final Double prefWidth) {
+    public TableBooleanColumnModel tableCheckBoxColumn(final String reference, final String caption, final Double prefWidth) {
         final TableBooleanColumnModel column = create(TableBooleanColumnModel.class);
         configureTableColumn(reference, column, caption, prefWidth);
         return column;
     }
 
-    public TableInstantColumnModel tableInstantColum(final String caption, final Double prefWidth) {
+    public TableInstantColumnModel tableInstantColumn(final String caption, final Double prefWidth) {
         final TableInstantColumnModel column = create(TableInstantColumnModel.class);
         configureTableColumn(null, column, caption, prefWidth);
         return column;
@@ -268,7 +268,7 @@ public class ServerUiManager extends BaseServerUiManager {
         return cellModel;
     }
 
-    public TableColumnModel tableNumberColum(final String caption, final Double prefWidth) {
+    public TableColumnModel tableNumberColumn(final String caption, final Double prefWidth) {
         final TableIntegerColumnModel column = create(TableIntegerColumnModel.class);
         configureTableColumn(null, column, caption, prefWidth);
         return column;
@@ -326,17 +326,17 @@ public class ServerUiManager extends BaseServerUiManager {
         return cellModel;
     }
 
-    public TableIntegerColumnModel tableIntegerColum(String reference, String caption, Double prefWidth) {
+    public TableIntegerColumnModel tableIntegerColumn(String reference, String caption, Double prefWidth) {
         TableIntegerColumnModel column = create(TableIntegerColumnModel.class);
         configureTableColumn(reference, column, caption, prefWidth);
         return column;
     }
 
-    public TableIntegerColumnModel tableIntegerColum(String caption, Double prefWidth) {
-        return tableIntegerColum(null, caption, prefWidth);
+    public TableIntegerColumnModel tableIntegerColumn(String caption, Double prefWidth) {
+        return tableIntegerColumn(null, caption, prefWidth);
     }
 
-    public TableDoubleColumnModel tableDoubleColum(String reference, String caption, Double prefWidth) {
+    public TableDoubleColumnModel tableDoubleColumn(String reference, String caption, Double prefWidth) {
         TableDoubleColumnModel column = create(TableDoubleColumnModel.class);
         configureTableColumn(reference, column, caption, prefWidth);
         return column;

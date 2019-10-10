@@ -14,7 +14,6 @@ class InstantTableColumn extends TableColumn<TableRowModel, Instant> {
     InstantTableColumn(Projector projector, TableInstantColumnModel model) {
         super(model.getCaption());
         setCellFactory(column -> createInstantCell(model));
-        setOnEditCommit(event -> System.out.println("Neuer Wert: " + event.getNewValue()));
     }
 
     private TableCell<TableRowModel, Instant> createInstantCell(TableInstantColumnModel model) {

@@ -13,7 +13,6 @@ class IntegerTableColumn extends TableColumn<TableRowModel, Integer> {
     IntegerTableColumn(Projector projector, TableIntegerColumnModel model) {
         super(model.getCaption());
         setCellFactory(column -> createIntegerCell(model));
-        setOnEditCommit(event -> System.out.println("Neuer Wert: " + event.getNewValue()));
     }
 
     private TableCell<TableRowModel, Integer> createIntegerCell(TableIntegerColumnModel model) {

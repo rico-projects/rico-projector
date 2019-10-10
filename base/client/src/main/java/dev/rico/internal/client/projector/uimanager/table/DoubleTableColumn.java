@@ -13,7 +13,6 @@ class DoubleTableColumn extends TableColumn<TableRowModel, Double> {
     DoubleTableColumn(Projector projector, TableDoubleColumnModel model) {
         super(model.getCaption());
         setCellFactory(column -> createDoubleCell(model));
-        setOnEditCommit(event -> System.out.println("Neuer Wert: " + event.getNewValue()));
     }
 
     private TableCell<TableRowModel, Double> createDoubleCell(TableDoubleColumnModel model) {

@@ -10,6 +10,5 @@ class StringTableColumn extends TableColumn<TableRowModel,String>{
     StringTableColumn(Projector projector, TableStringColumnModel model) {
         super(model.getCaption());
         setCellFactory(TextFieldTableCell.forTableColumn());
-        setOnEditCommit(event -> System.out.println("Neuer Wert: " + event.getNewValue()));
     }
 }

@@ -84,13 +84,15 @@ public class ManagedTableView extends TableView<TableRowModel> implements Defaul
         }
         TableColumn<TableRowModel, ?> column = (TableColumn) factory.iterator().next().create(projector, columnModel);
         column.setUserData(new UserData(columnModel, this.model.getColumns().indexOf(columnModel)));
-        column.setCellValueFactory(param -> {
-            ManagedTableView.UserData userData = (ManagedTableView.UserData) param.getTableColumn().getUserData();
-            TableRowModel managedRow = param.getValue();
-            ObservableList<TableCellModel> values = managedRow.getCells();
-            TableCellModel cell = values.get(userData.originalIndex);
-            return new SimpleObjectProperty(cell.getValue());
-        });
+        if (column.getCellValueFactory() == null) {
+            column.setCellValueFactory(param -> {
+                UserData userData = (UserData) param.getTableColumn().getUserData();
+                TableRowModel managedRow = param.getValue();
+                ObservableList<TableCellModel> values = managedRow.getCells();
+                TableCellModel cell = values.get(userData.originalIndex);
+                return new SimpleObjectProperty(cell.getValue());
+            });
+        }
         column.setOnEditCommit(event -> onCommit(columnModel.getCommitAction(), projector, event));
         bind(column.editableProperty()).to(columnModel.editableProperty(), defaultValue(column::isEditable));
         bind(column.visibleProperty()).bidirectionalTo(columnModel.visibleProperty(), defaultValueBidirectional(column::isVisible));
@@ -99,12 +101,15 @@ public class ManagedTableView extends TableView<TableRowModel> implements Defaul
         return column;
     }
 
-    private void onCommit(final String name, final Projector projector,
-                          final TableColumn.CellEditEvent<TableRowModel, ?> event) {
+    private void onCommit(final String name, final Projector projector, final TableColumn.CellEditEvent<TableRowModel, ?> event) {
+        onCommit(name, projector, event.getRowValue(), event.getTableColumn(), event.getNewValue());
+    }
+
+    void onCommit(String name, Projector projector, TableRowModel rowValue, TableColumn<TableRowModel, ?> tableColumn, Object newValue) {
         projector.getControllerProxy().invoke(name,
-                createRowParam(event.getRowValue()),
-                createColumnParam(getMatchingModel(event.getTableColumn())),
-                createNewValueParam(event.getNewValue())).exceptionally(throwable -> UnexpectedErrorDialog.showError(event.getTableView(), throwable));
+                createRowParam(rowValue),
+                createColumnParam(getMatchingModel(tableColumn)),
+                createNewValueParam(newValue)).exceptionally(throwable -> UnexpectedErrorDialog.showError(this, throwable));
     }
 
     private Param createRowParam(final IdentifiableModel model) {
@@ -116,6 +121,10 @@ public class ManagedTableView extends TableView<TableRowModel> implements Defaul
     }
 
     private Param createNewValueParam(final Object value) {
-        return new Param("newValue", value);
+        Object realValue = value;
+        if (value instanceof IdentifiableModel) {
+            realValue = ((IdentifiableModel) value).getReference();
+        }
+        return new Param("newValue", realValue);
     }
 }
