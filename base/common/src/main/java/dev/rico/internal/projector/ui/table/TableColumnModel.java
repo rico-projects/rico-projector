@@ -21,6 +21,7 @@ import dev.rico.internal.projector.ui.IdentifiableModel;
 import dev.rico.remoting.ObservableList;
 import dev.rico.remoting.Property;
 import dev.rico.remoting.RemotingBean;
+import javafx.scene.control.TableColumn;
 
 @SuppressWarnings("ClassWithoutLogger")
 @RemotingBean
@@ -32,6 +33,7 @@ public class TableColumnModel extends IdentifiableModel {
     private Property<Boolean> editable;
     private Property<Boolean> visible;
     private Property<Double> prefWidth;
+    private Property<TableColumn.SortType> sortType;
 
     public Boolean getEditable() {
         return editable.get();
@@ -43,6 +45,18 @@ public class TableColumnModel extends IdentifiableModel {
 
     public Property<Boolean> editableProperty() {
         return editable;
+    }
+
+    public TableColumn.SortType getSortType() {
+        return sortType.get();
+    }
+
+    public void setSortType(TableColumn.SortType sortType) {
+        this.sortType.set(sortType);
+    }
+
+    public Property<TableColumn.SortType> sortTypeProperty() {
+        return sortType;
     }
 
     public Boolean getVisible() {

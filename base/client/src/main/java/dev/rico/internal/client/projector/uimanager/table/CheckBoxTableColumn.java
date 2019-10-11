@@ -13,7 +13,7 @@ class CheckBoxTableColumn extends TableColumn<TableRowModel, Boolean> {
     CheckBoxTableColumn(Projector projector, TableBooleanColumnModel model) {
         setCellValueFactory(param -> {
             ManagedTableView.UserData userData = (ManagedTableView.UserData) param.getTableColumn().getUserData();
-            Boolean property = (Boolean) param.getValue().getCells().get(userData.originalIndex).getValue();
+            Boolean property = (Boolean) param.getValue().getCells().get(userData.getOriginalIndex()).getValue();
             BooleanProperty booleanProperty = new SimpleBooleanProperty(property);
             booleanProperty.addListener((ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) -> {
                 ManagedTableView tableView = (ManagedTableView) param.getTableView();

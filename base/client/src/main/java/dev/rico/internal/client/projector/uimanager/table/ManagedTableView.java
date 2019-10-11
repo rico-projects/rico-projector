@@ -67,12 +67,20 @@ public class ManagedTableView extends TableView<TableRowModel> implements Defaul
     }
 
     static public class UserData {
-        public final TableColumnModel model;
-        public final int originalIndex;
+        private final TableColumnModel model;
+        private final int originalIndex;
 
         private UserData(TableColumnModel model, int originalIndex) {
             this.model = model;
             this.originalIndex = originalIndex;
+        }
+
+        public TableColumnModel getModel() {
+            return model;
+        }
+
+        public int getOriginalIndex() {
+            return originalIndex;
         }
     }
 
@@ -96,8 +104,9 @@ public class ManagedTableView extends TableView<TableRowModel> implements Defaul
         column.setOnEditCommit(event -> onCommit(columnModel.getCommitAction(), projector, event));
         bind(column.textProperty()).to(columnModel.captionProperty(), defaultValue(() -> ""));
         bind(column.editableProperty()).to(columnModel.editableProperty(), defaultValue(column::isEditable));
-        bind(column.visibleProperty()).bidirectionalTo(columnModel.visibleProperty(), defaultValueBidirectional(column::isVisible));
         bind(column.editableProperty()).to(columnModel.editableProperty(), defaultValue(column::isEditable));
+        bind(column.visibleProperty()).bidirectionalTo(columnModel.visibleProperty(), defaultValueBidirectional(column::isVisible));
+        bind(column.sortTypeProperty()).bidirectionalTo(columnModel.sortTypeProperty(), defaultValueBidirectional(column::getSortType));
         bind(column.prefWidthProperty()).bidirectionalToNumeric(columnModel.prefWidthProperty(), defaultValueBidirectional(column::getPrefWidth));
         return column;
     }
