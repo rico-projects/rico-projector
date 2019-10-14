@@ -98,7 +98,11 @@ public class ManagedTableView extends TableView<TableRowModel> implements Defaul
                 TableRowModel managedRow = param.getValue();
                 ObservableList<TableCellModel> values = managedRow.getCells();
                 TableCellModel cell = values.get(userData.originalIndex);
-                return new SimpleObjectProperty(cell.getValue());
+                SimpleObjectProperty simpleObjectProperty = new SimpleObjectProperty(cell.getValue());
+                cell.valueProperty().onChanged(evt -> {
+                    simpleObjectProperty.setValue(evt.getNewValue());
+                });
+                return simpleObjectProperty;
             });
         }
         column.setOnEditCommit(event -> onCommit(columnModel.getCommitAction(), projector, event));
