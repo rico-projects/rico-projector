@@ -4,7 +4,6 @@ import dev.rico.client.projector.Projector;
 import dev.rico.internal.client.projector.mixed.FormatterFactory;
 import dev.rico.internal.projector.ui.table.TableInstantColumnModel;
 import dev.rico.internal.projector.ui.table.TableRowModel;
-import javafx.geometry.Pos;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 
@@ -17,7 +16,6 @@ class InstantTableColumn extends TableColumn<TableRowModel, Instant> {
 
     private TableCell<TableRowModel, Instant> createInstantCell(TableInstantColumnModel model) {
         TableCell<TableRowModel, Instant> tableCell = new InstantTableCell(model);
-        tableCell.setAlignment(Pos.CENTER_RIGHT);
         return tableCell;
     }
 
@@ -26,6 +24,7 @@ class InstantTableColumn extends TableColumn<TableRowModel, Instant> {
 
         InstantTableCell(TableInstantColumnModel model) {
             this.model = model;
+            getStyleClass().add("instant-table-cell");
         }
 
         protected void updateItem(final Instant item, final boolean empty) {
