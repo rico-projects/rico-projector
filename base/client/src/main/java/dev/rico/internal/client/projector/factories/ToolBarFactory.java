@@ -21,7 +21,9 @@ import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorNodeFactory;
 import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.ToolBarModel;
+import javafx.geometry.Insets;
 import javafx.scene.control.ToolBar;
+import javafx.scene.layout.Region;
 
 import static dev.rico.client.remoting.FXBinder.bind;
 
@@ -32,7 +34,21 @@ public class ToolBarFactory implements ProjectorNodeFactory<ToolBarModel, ToolBa
         Assert.requireNonNull(projector, "projector");
         Assert.requireNonNull(model, "model");
 
-        final ToolBar toolBar = new ToolBar();
+        final ToolBar toolBar = new ToolBar() {
+            @Override
+            public void resize(double width, double height) {
+                super.resize(width, height);
+                System.out.println("TOOLBAR HEIGHT: " + height);
+            }
+
+            @Override
+            protected double computePrefHeight(double width) {
+                return super.computePrefHeight(width);
+            }
+        };
+        toolBar.setPadding(new Insets(15));
+        toolBar.setMinHeight(Region.USE_PREF_SIZE);
+        toolBar.setMaxHeight(Region.USE_PREF_SIZE);
         bind(toolBar.getItems()).to(model.getItems(), projector::createNode);
         return toolBar;
     }

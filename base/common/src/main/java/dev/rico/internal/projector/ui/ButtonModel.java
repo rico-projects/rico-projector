@@ -25,7 +25,7 @@ import dev.rico.remoting.RemotingBean;
 public class ButtonModel extends ItemModel {
     private Property<String> caption;
     private Property<String> action;
-    private Property<String> image;
+    private Property<ItemModel> graphic;
     private Property<String> tooltip;
 
     public String getCaption() {
@@ -64,15 +64,15 @@ public class ButtonModel extends ItemModel {
         return tooltip;
     }
 
-    public String getImage() {
-        return image.get();
+    public ItemModel getGraphic() {
+        return graphic.get();
     }
 
-    public void setImage(String image) {
-        this.image.set(image);
+    public void setGraphic(ItemModel graphic) {
+        this.graphic.set(graphic);
     }
 
-    public Property<String> imageProperty() {
-        return image;
+    public Property<ItemModel> graphicProperty() {
+        return graphic;
     }
 }
