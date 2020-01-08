@@ -19,6 +19,7 @@ package dev.rico.internal.client.projector.factories;
 
 import dev.rico.client.projector.Projector;
 import dev.rico.client.projector.spi.ProjectorNodeFactory;
+import dev.rico.client.remoting.Param;
 import dev.rico.internal.core.Assert;
 import dev.rico.internal.projector.ui.CheckBoxModel;
 import javafx.scene.control.CheckBox;
@@ -36,7 +37,7 @@ public class CheckBoxFactory implements ProjectorNodeFactory<CheckBoxModel, Chec
         bind(checkBox.selectedProperty()).bidirectionalTo(model.selectedProperty());
         bind(checkBox.textProperty()).to(model.captionProperty());
         if (model.getAction() != null) {
-            checkBox.setOnAction(createOnActionHandler(projector, model.getAction(), checkBox));
+            checkBox.setOnAction(createOnActionHandler(projector, model.getAction(), checkBox, new Param("source", model)));
         }
         return checkBox;
     }
